@@ -7,7 +7,7 @@ import { Button } from "./ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Textarea } from "./ui/textarea"
 import { Card, CardContent } from "./ui/card"
-import { Heart, Share2, Bookmark, ExternalLink, MoreHorizontal } from "lucide-react"
+import { Heart, Share2, Bookmark, ExternalLink, MoreHorizontal, Download } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useAuth } from "./auth-provider"
@@ -27,6 +27,34 @@ export function PinDetail({ pinId }: PinDetailProps) {
   const [comment, setComment] = useState("")
   const [comments, setComments] = useState<Comment[]>([])
   const [showShareDialog, setShowShareDialog] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
+
+  const handleDownload = async () => {
+    if (!pin) return
+    
+    try {
+      setIsDownloading(true)
+      const response = await fetch(pin.imageUrl)
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      
+      // Extract file extension from the URL or default to png
+      const fileExtension = pin.imageUrl.split('.').pop()?.split('?')[0] || 'png'
+      const fileName = `pin-${pin.id}.${fileExtension}`
+      
+      link.href = url
+      link.download = fileName
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Error downloading image:', error)
+    } finally {
+      setIsDownloading(false)
+    }
+  }
 
   useEffect(() => {
     const foundPin = mockPins.find((p) => p.id === pinId)
@@ -91,8 +119,18 @@ export function PinDetail({ pinId }: PinDetailProps) {
                       <Button size="icon" variant="ghost" onClick={() => setShowShareDialog(true)}>
                         <Share2 className="h-5 w-5" />
                       </Button>
-                      <Button size="icon" variant="ghost">
-                        <MoreHorizontal className="h-5 w-5" />
+                      <Button 
+                        size="icon" 
+                        variant="ghost"
+                        onClick={handleDownload}
+                        disabled={isDownloading}
+                        title="Download image"
+                      >
+                        {isDownloading ? (
+                          <div className="h-5 w-5 border-2 border-transparent border-t-current rounded-full animate-spin" />
+                        ) : (
+                          <Download className="h-5 w-5" />
+                        )}
                       </Button>
                     </div>
                   </div>
