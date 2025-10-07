@@ -1,24 +1,21 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import { useRouter } from "next/navigation"
+import { createContext, useContext, type ReactNode } from "react"
+import { useSession, signIn, signOut } from "next-auth/react"
 
 interface User {
   id: string
   email: string
   name: string
   username: string
-  avatar: string
-  bio: string
-  following: string[]
-  followers: string[]
-  createdAt: string
+  avatar?: string
+  bio?: string
 }
 
 interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<void>
-  signup: (email: string, password: string, name: string, username: string) => Promise<void>
+  login: (email: string, password: string) => Promise<boolean>
+  signup: (email: string, password: string, name: string, username: string) => Promise<{ success: boolean; error?: string }>
   logout: () => void
   isLoading: boolean
 }
@@ -26,64 +23,77 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
+  const { data: session, status } = useSession()
+  
+  // Debug session status
+  console.log("AuthProvider - Session status:", status)
+  console.log("AuthProvider - Session data:", session)
 
-  useEffect(() => {
-    // Check for stored user session
-    const storedUser = localStorage.getItem("pinterest_user")
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
+  const login = async (email: string, password: string): Promise<boolean> => {
+    try {
+      console.log("Attempting login for:", email)
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      })
+      console.log("Login result:", result)
+      return result?.ok || false
+    } catch (error) {
+      console.error("Login failed:", error)
+      return false
     }
-    setIsLoading(false)
-  }, [])
-
-  const login = async (email: string, password: string) => {
-    // Mock login - in production this would call an API
-    const mockUser: User = {
-      id: "1",
-      email,
-      name: "Demo User",
-      username: email.split("@")[0],
-      avatar: `/placeholder.svg?height=100&width=100&query=user+avatar`,
-      bio: "Passionate about design and creativity",
-      following: [],
-      followers: [],
-      createdAt: new Date().toISOString(),
-    }
-
-    localStorage.setItem("pinterest_user", JSON.stringify(mockUser))
-    setUser(mockUser)
-    router.push("/home")
   }
 
-  const signup = async (email: string, password: string, name: string, username: string) => {
-    // Mock signup - in production this would call an API
-    const mockUser: User = {
-      id: Date.now().toString(),
-      email,
-      name,
-      username,
-      avatar: `/placeholder.svg?height=100&width=100&query=${name}+avatar`,
-      bio: "",
-      following: [],
-      followers: [],
-      createdAt: new Date().toISOString(),
-    }
+  const signup = async (email: string, password: string, name: string, username: string): Promise<{ success: boolean; error?: string }> => {
+    try {
+      console.log("Attempting signup for:", email, username)
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, username, password }),
+      })
 
-    localStorage.setItem("pinterest_user", JSON.stringify(mockUser))
-    setUser(mockUser)
-    router.push("/home")
+      console.log("Registration response status:", response.status)
+      
+      if (response.ok) {
+        console.log("Registration successful")
+        // For now, just return success - the user can login manually
+        // Auto-login can be problematic with NextAuth in some cases
+        return { success: true }
+      } else {
+        const errorData = await response.json().catch(() => ({}))
+        console.error("Registration failed:", response.status, errorData)
+        const errorMessage = errorData.error || `Registration failed with status ${response.status}`
+        return { success: false, error: errorMessage }
+      }
+    } catch (error) {
+      console.error("Registration failed:", error)
+      return { success: false, error: "Network error. Please check your connection and try again." }
+    }
   }
 
   const logout = () => {
-    localStorage.removeItem("pinterest_user")
-    setUser(null)
-    router.push("/login")
+    signOut()
   }
 
-  return <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>{children}</AuthContext.Provider>
+  const user: User | null = session?.user ? {
+    id: session.user.id,
+    name: session.user.name || "",
+    email: session.user.email || "",
+    username: session.user.username || "",
+    avatar: session.user.avatar || undefined
+  } : null
+
+  return <AuthContext.Provider value={{ 
+    user, 
+    login, 
+    signup, 
+    logout, 
+    isLoading: status === "loading" 
+  }}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {

@@ -1,49 +1,106 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { socialStore } from "@/lib/social-store"
 
 export function useLike(pinId: string) {
   const [isLiked, setIsLiked] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    setIsLiked(socialStore.isLiked(pinId))
-  }, [pinId])
-
-  const toggleLike = () => {
-    const newState = socialStore.toggleLike(pinId)
-    setIsLiked(newState)
+  const toggleLike = async () => {
+    if (isLoading) return
+    
+    setIsLoading(true)
+    try {
+      const response = await fetch(`/api/pins/${pinId}/like`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setIsLiked(data.liked)
+      }
+    } catch (error) {
+      console.error("Error toggling like:", error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  return { isLiked, toggleLike }
+  return { isLiked, toggleLike, isLoading }
 }
 
 export function useSave(pinId: string) {
   const [isSaved, setIsSaved] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    setIsSaved(socialStore.isSaved(pinId))
-  }, [pinId])
-
-  const toggleSave = () => {
-    const newState = socialStore.toggleSave(pinId)
-    setIsSaved(newState)
+  const toggleSave = async (boardId?: string) => {
+    if (isLoading) return
+    
+    setIsLoading(true)
+    try {
+      if (isSaved) {
+        // Remove save
+        const response = await fetch(`/api/pins/${pinId}/save`, {
+          method: "DELETE",
+        })
+        
+        if (response.ok) {
+          setIsSaved(false)
+        }
+      } else {
+        // Add save
+        const response = await fetch(`/api/pins/${pinId}/save`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ boardId }),
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          setIsSaved(data.saved)
+        }
+      }
+    } catch (error) {
+      console.error("Error toggling save:", error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  return { isSaved, toggleSave }
+  return { isSaved, toggleSave, isLoading }
 }
 
 export function useFollow(userId: string) {
   const [isFollowing, setIsFollowing] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    setIsFollowing(socialStore.isFollowing(userId))
-  }, [userId])
-
-  const toggleFollow = () => {
-    const newState = socialStore.toggleFollow(userId)
-    setIsFollowing(newState)
+  const toggleFollow = async () => {
+    if (isLoading) return
+    
+    setIsLoading(true)
+    try {
+      const response = await fetch(`/api/users/${userId}/follow`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setIsFollowing(data.following)
+      }
+    } catch (error) {
+      console.error("Error toggling follow:", error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  return { isFollowing, toggleFollow }
+  return { isFollowing, toggleFollow, isLoading }
 }

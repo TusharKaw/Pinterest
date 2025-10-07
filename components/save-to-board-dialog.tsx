@@ -22,28 +22,13 @@ export function SaveToBoardDialog({ open, onOpenChange, pinId }: SaveToBoardDial
   const [savedBoards, setSavedBoards] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    // Load user's boards
-    const mockBoards: Board[] = [
-      {
-        id: "1",
-        name: "Home Inspiration",
-        description: "Ideas for my dream home",
-        userId: user?.id || "1",
-        pins: [],
-        isPrivate: false,
-        createdAt: new Date().toISOString(),
-      },
-      {
-        id: "2",
-        name: "Travel Dreams",
-        description: "Places I want to visit",
-        userId: user?.id || "1",
-        pins: [],
-        isPrivate: false,
-        createdAt: new Date().toISOString(),
-      },
-    ]
-    setBoards(mockBoards)
+    if (user?.id) {
+      // Load user's boards from API
+      fetch(`/api/boards?userId=${user.id}`)
+        .then(response => response.json())
+        .then(data => setBoards(data))
+        .catch(error => console.error("Error loading boards:", error))
+    }
   }, [user])
 
   const filteredBoards = boards.filter((board) => board.name.toLowerCase().includes(searchQuery.toLowerCase()))

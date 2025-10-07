@@ -38,10 +38,20 @@ export type Comment = $Result.DefaultSelection<Prisma.$CommentPayload>
  * 
  */
 export type Like = $Result.DefaultSelection<Prisma.$LikePayload>
+/**
+ * Model Save
+ * 
+ */
+export type Save = $Result.DefaultSelection<Prisma.$SavePayload>
+/**
+ * Model Follow
+ * 
+ */
+export type Follow = $Result.DefaultSelection<Prisma.$FollowPayload>
 
 /**
  * ##  Prisma Client ʲˢ
- *
+ * 
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
@@ -50,19 +60,19 @@ export type Like = $Result.DefaultSelection<Prisma.$LikePayload>
  * const users = await prisma.user.findMany()
  * ```
  *
- *
+ * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-  const U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
+  U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
   ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
 
     /**
    * ##  Prisma Client ʲˢ
-   *
+   * 
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
@@ -71,12 +81,12 @@ export class PrismaClient<
    * const users = await prisma.user.findMany()
    * ```
    *
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
    */
 
   constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
-  $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
+  $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): void;
 
   /**
    * Connect with the database
@@ -88,13 +98,20 @@ export class PrismaClient<
    */
   $disconnect(): $Utils.JsPromise<void>;
 
+  /**
+   * Add a middleware
+   * @deprecated since 4.16.0. For new code, prefer client extensions instead.
+   * @see https://pris.ly/d/extensions
+   */
+  $use(cb: Prisma.Middleware): void
+
 /**
    * Executes a prepared raw query and returns the number of affected rows.
    * @example
    * ```
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
@@ -106,7 +123,7 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
@@ -117,7 +134,7 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
@@ -129,7 +146,7 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
@@ -153,9 +170,7 @@ export class PrismaClient<
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
 
 
-  $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
-    extArgs: ExtArgs
-  }>>
+  $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb, ExtArgs>
 
       /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -165,7 +180,7 @@ export class PrismaClient<
     * const users = await prisma.user.findMany()
     * ```
     */
-  get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+  get user(): Prisma.UserDelegate<ExtArgs>;
 
   /**
    * `prisma.pin`: Exposes CRUD operations for the **Pin** model.
@@ -175,7 +190,7 @@ export class PrismaClient<
     * const pins = await prisma.pin.findMany()
     * ```
     */
-  get pin(): Prisma.PinDelegate<ExtArgs, ClientOptions>;
+  get pin(): Prisma.PinDelegate<ExtArgs>;
 
   /**
    * `prisma.board`: Exposes CRUD operations for the **Board** model.
@@ -185,7 +200,7 @@ export class PrismaClient<
     * const boards = await prisma.board.findMany()
     * ```
     */
-  get board(): Prisma.BoardDelegate<ExtArgs, ClientOptions>;
+  get board(): Prisma.BoardDelegate<ExtArgs>;
 
   /**
    * `prisma.comment`: Exposes CRUD operations for the **Comment** model.
@@ -195,7 +210,7 @@ export class PrismaClient<
     * const comments = await prisma.comment.findMany()
     * ```
     */
-  get comment(): Prisma.CommentDelegate<ExtArgs, ClientOptions>;
+  get comment(): Prisma.CommentDelegate<ExtArgs>;
 
   /**
    * `prisma.like`: Exposes CRUD operations for the **Like** model.
@@ -205,7 +220,27 @@ export class PrismaClient<
     * const likes = await prisma.like.findMany()
     * ```
     */
-  get like(): Prisma.LikeDelegate<ExtArgs, ClientOptions>;
+  get like(): Prisma.LikeDelegate<ExtArgs>;
+
+  /**
+   * `prisma.save`: Exposes CRUD operations for the **Save** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Saves
+    * const saves = await prisma.save.findMany()
+    * ```
+    */
+  get save(): Prisma.SaveDelegate<ExtArgs>;
+
+  /**
+   * `prisma.follow`: Exposes CRUD operations for the **Follow** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Follows
+    * const follows = await prisma.follow.findMany()
+    * ```
+    */
+  get follow(): Prisma.FollowDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -226,6 +261,7 @@ export namespace Prisma {
   export import PrismaClientRustPanicError = runtime.PrismaClientRustPanicError
   export import PrismaClientInitializationError = runtime.PrismaClientInitializationError
   export import PrismaClientValidationError = runtime.PrismaClientValidationError
+  export import NotFoundError = runtime.NotFoundError
 
   /**
    * Re-export of sql-template-tag
@@ -246,7 +282,7 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
-   * Metrics
+   * Metrics 
    */
   export type Metrics = runtime.Metrics
   export type Metric<T> = runtime.Metric<T>
@@ -264,14 +300,14 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.16.3
-   * Query Engine version: bb420e667c1820a8c05a38023385f6cc7ef8e83a
+   * Prisma Client JS version: 5.22.0
+   * Query Engine version: 605197351a3c8bdd595af2d2a9bc3025bca48ea2
    */
   export type PrismaVersion = {
     client: string
   }
 
-  export const prismaVersion: PrismaVersion
+  export const prismaVersion: PrismaVersion 
 
   /**
    * Utility Types
@@ -287,15 +323,15 @@ export namespace Prisma {
 
   /**
    * Types of the values used to represent different kinds of `null` values when working with JSON fields.
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   namespace NullTypes {
     /**
     * Type of `Prisma.DbNull`.
-    *
+    * 
     * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
-    *
+    * 
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class DbNull {
@@ -305,9 +341,9 @@ export namespace Prisma {
 
     /**
     * Type of `Prisma.JsonNull`.
-    *
+    * 
     * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
-    *
+    * 
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class JsonNull {
@@ -317,9 +353,9 @@ export namespace Prisma {
 
     /**
     * Type of `Prisma.AnyNull`.
-    *
+    * 
     * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
-    *
+    * 
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class AnyNull {
@@ -330,21 +366,21 @@ export namespace Prisma {
 
   /**
    * Helper for filtering JSON entries that have `null` on the database (empty on the db)
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const DbNull: NullTypes.DbNull
 
   /**
    * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const JsonNull: NullTypes.JsonNull
 
   /**
    * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const AnyNull: NullTypes.AnyNull
@@ -532,7 +568,7 @@ export namespace Prisma {
   type AtLeast<O extends object, K extends string> = NoExpand<
     O extends unknown
     ? | (K extends keyof O ? { [P in K]: O[P] } & O : O)
-      | {[P in keyof O as P extends K ? P : never]-?: O[P]} & O
+      | {[P in keyof O as P extends K ? K : never]-?: O[P]} & O
     : never>;
 
   type _Strict<U, _U = U> = U extends unknown ? U & OptionalFlat<_Record<Exclude<Keys<_U>, keyof U>, never>> : never;
@@ -650,7 +686,9 @@ export namespace Prisma {
     Pin: 'Pin',
     Board: 'Board',
     Comment: 'Comment',
-    Like: 'Like'
+    Like: 'Like',
+    Save: 'Save',
+    Follow: 'Follow'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -660,16 +698,13 @@ export namespace Prisma {
     db?: Datasource
   }
 
-  interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
-    returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
+  interface TypeMapCb extends $Utils.Fn<{extArgs: $Extensions.InternalArgs, clientOptions: PrismaClientOptions }, $Utils.Record<string, any>> {
+    returns: Prisma.TypeMap<this['params']['extArgs'], this['params']['clientOptions']>
   }
 
-  export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> = {
-    globalOmitOptions: {
-      omit: GlobalOmitOptions
-    }
+  export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "pin" | "board" | "comment" | "like"
+      modelProps: "user" | "pin" | "board" | "comment" | "like" | "save" | "follow"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -724,10 +759,6 @@ export namespace Prisma {
           updateMany: {
             args: Prisma.UserUpdateManyArgs<ExtArgs>
             result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
           }
           upsert: {
             args: Prisma.UserUpsertArgs<ExtArgs>
@@ -799,10 +830,6 @@ export namespace Prisma {
             args: Prisma.PinUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
-          updateManyAndReturn: {
-            args: Prisma.PinUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PinPayload>[]
-          }
           upsert: {
             args: Prisma.PinUpsertArgs<ExtArgs>
             result: $Utils.PayloadToResult<Prisma.$PinPayload>
@@ -872,10 +899,6 @@ export namespace Prisma {
           updateMany: {
             args: Prisma.BoardUpdateManyArgs<ExtArgs>
             result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.BoardUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BoardPayload>[]
           }
           upsert: {
             args: Prisma.BoardUpsertArgs<ExtArgs>
@@ -947,10 +970,6 @@ export namespace Prisma {
             args: Prisma.CommentUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
-          updateManyAndReturn: {
-            args: Prisma.CommentUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CommentPayload>[]
-          }
           upsert: {
             args: Prisma.CommentUpsertArgs<ExtArgs>
             result: $Utils.PayloadToResult<Prisma.$CommentPayload>
@@ -1021,10 +1040,6 @@ export namespace Prisma {
             args: Prisma.LikeUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
-          updateManyAndReturn: {
-            args: Prisma.LikeUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$LikePayload>[]
-          }
           upsert: {
             args: Prisma.LikeUpsertArgs<ExtArgs>
             result: $Utils.PayloadToResult<Prisma.$LikePayload>
@@ -1040,6 +1055,146 @@ export namespace Prisma {
           count: {
             args: Prisma.LikeCountArgs<ExtArgs>
             result: $Utils.Optional<LikeCountAggregateOutputType> | number
+          }
+        }
+      }
+      Save: {
+        payload: Prisma.$SavePayload<ExtArgs>
+        fields: Prisma.SaveFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SaveFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SaveFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavePayload>
+          }
+          findFirst: {
+            args: Prisma.SaveFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SaveFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavePayload>
+          }
+          findMany: {
+            args: Prisma.SaveFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavePayload>[]
+          }
+          create: {
+            args: Prisma.SaveCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavePayload>
+          }
+          createMany: {
+            args: Prisma.SaveCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SaveCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavePayload>[]
+          }
+          delete: {
+            args: Prisma.SaveDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavePayload>
+          }
+          update: {
+            args: Prisma.SaveUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavePayload>
+          }
+          deleteMany: {
+            args: Prisma.SaveDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SaveUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SaveUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavePayload>
+          }
+          aggregate: {
+            args: Prisma.SaveAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSave>
+          }
+          groupBy: {
+            args: Prisma.SaveGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SaveGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SaveCountArgs<ExtArgs>
+            result: $Utils.Optional<SaveCountAggregateOutputType> | number
+          }
+        }
+      }
+      Follow: {
+        payload: Prisma.$FollowPayload<ExtArgs>
+        fields: Prisma.FollowFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FollowFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FollowFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowPayload>
+          }
+          findFirst: {
+            args: Prisma.FollowFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FollowFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowPayload>
+          }
+          findMany: {
+            args: Prisma.FollowFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowPayload>[]
+          }
+          create: {
+            args: Prisma.FollowCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowPayload>
+          }
+          createMany: {
+            args: Prisma.FollowCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FollowCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowPayload>[]
+          }
+          delete: {
+            args: Prisma.FollowDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowPayload>
+          }
+          update: {
+            args: Prisma.FollowUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowPayload>
+          }
+          deleteMany: {
+            args: Prisma.FollowDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FollowUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.FollowUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowPayload>
+          }
+          aggregate: {
+            args: Prisma.FollowAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFollow>
+          }
+          groupBy: {
+            args: Prisma.FollowGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FollowGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FollowCountArgs<ExtArgs>
+            result: $Utils.Optional<FollowCountAggregateOutputType> | number
           }
         }
       }
@@ -1086,24 +1241,16 @@ export namespace Prisma {
     /**
      * @example
      * ```
-     * // Shorthand for `emit: 'stdout'`
+     * // Defaults to stdout
      * log: ['query', 'info', 'warn', 'error']
      * 
-     * // Emit as events only
+     * // Emit as events
      * log: [
-     *   { emit: 'event', level: 'query' },
-     *   { emit: 'event', level: 'info' },
-     *   { emit: 'event', level: 'warn' }
-     *   { emit: 'event', level: 'error' }
+     *   { emit: 'stdout', level: 'query' },
+     *   { emit: 'stdout', level: 'info' },
+     *   { emit: 'stdout', level: 'warn' }
+     *   { emit: 'stdout', level: 'error' }
      * ]
-     * 
-     * / Emit as events and log to stdout
-     * og: [
-     *  { emit: 'stdout', level: 'query' },
-     *  { emit: 'stdout', level: 'info' },
-     *  { emit: 'stdout', level: 'warn' }
-     *  { emit: 'stdout', level: 'error' }
-     * 
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -1118,33 +1265,8 @@ export namespace Prisma {
       timeout?: number
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
-    /**
-     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
-     */
-    adapter?: runtime.SqlDriverAdapterFactory | null
-    /**
-     * Global configuration for omitting model fields by default.
-     * 
-     * @example
-     * ```
-     * const prisma = new PrismaClient({
-     *   omit: {
-     *     user: {
-     *       password: true
-     *     }
-     *   }
-     * })
-     * ```
-     */
-    omit?: Prisma.GlobalOmitConfig
   }
-  export type GlobalOmitConfig = {
-    user?: UserOmit
-    pin?: PinOmit
-    board?: BoardOmit
-    comment?: CommentOmit
-    like?: LikeOmit
-  }
+
 
   /* Types for Logging */
   export type LogLevel = 'info' | 'query' | 'warn' | 'error'
@@ -1153,15 +1275,10 @@ export namespace Prisma {
     emit: 'stdout' | 'event'
   }
 
-  export type CheckIsLogLevel<T> = T extends LogLevel ? T : never;
-
-  export type GetLogType<T> = CheckIsLogLevel<
-    T extends LogDefinition ? T['level'] : T
-  >;
-
-  export type GetEvents<T extends any[]> = T extends Array<LogLevel | LogDefinition>
-    ? GetLogType<T[number]>
-    : never;
+  export type GetLogType<T extends LogLevel | LogDefinition> = T extends LogDefinition ? T['emit'] extends 'event' ? T['level'] : never : never
+  export type GetEvents<T extends any> = T extends Array<LogLevel | LogDefinition> ?
+    GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
+    : never
 
   export type QueryEvent = {
     timestamp: Date
@@ -1190,7 +1307,6 @@ export namespace Prisma {
     | 'createManyAndReturn'
     | 'update'
     | 'updateMany'
-    | 'updateManyAndReturn'
     | 'upsert'
     | 'delete'
     | 'deleteMany'
@@ -1201,6 +1317,25 @@ export namespace Prisma {
     | 'runCommandRaw'
     | 'findRaw'
     | 'groupBy'
+
+  /**
+   * These options are being passed into the middleware as "params"
+   */
+  export type MiddlewareParams = {
+    model?: ModelName
+    action: PrismaAction
+    args: any
+    dataPath: string[]
+    runInTransaction: boolean
+  }
+
+  /**
+   * The `T` type makes sure, that the `return proceed` is not forgotten in the middleware implementation
+   */
+  export type Middleware<T = any> = (
+    params: MiddlewareParams,
+    next: (params: MiddlewareParams) => $Utils.JsPromise<T>,
+  ) => $Utils.JsPromise<T>
 
   // tested in getLogLevel.test.ts
   export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
@@ -1228,6 +1363,9 @@ export namespace Prisma {
     boards: number
     comments: number
     likes: number
+    saves: number
+    follows: number
+    followers: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1235,6 +1373,9 @@ export namespace Prisma {
     boards?: boolean | UserCountOutputTypeCountBoardsArgs
     comments?: boolean | UserCountOutputTypeCountCommentsArgs
     likes?: boolean | UserCountOutputTypeCountLikesArgs
+    saves?: boolean | UserCountOutputTypeCountSavesArgs
+    follows?: boolean | UserCountOutputTypeCountFollowsArgs
+    followers?: boolean | UserCountOutputTypeCountFollowersArgs
   }
 
   // Custom InputTypes
@@ -1276,6 +1417,27 @@ export namespace Prisma {
     where?: LikeWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSavesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SaveWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFollowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FollowWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFollowersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FollowWhereInput
+  }
+
 
   /**
    * Count Type PinCountOutputType
@@ -1285,12 +1447,14 @@ export namespace Prisma {
     boards: number
     comments: number
     likes: number
+    saves: number
   }
 
   export type PinCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     boards?: boolean | PinCountOutputTypeCountBoardsArgs
     comments?: boolean | PinCountOutputTypeCountCommentsArgs
     likes?: boolean | PinCountOutputTypeCountLikesArgs
+    saves?: boolean | PinCountOutputTypeCountSavesArgs
   }
 
   // Custom InputTypes
@@ -1325,6 +1489,13 @@ export namespace Prisma {
     where?: LikeWhereInput
   }
 
+  /**
+   * PinCountOutputType without action
+   */
+  export type PinCountOutputTypeCountSavesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SaveWhereInput
+  }
+
 
   /**
    * Count Type BoardCountOutputType
@@ -1332,10 +1503,12 @@ export namespace Prisma {
 
   export type BoardCountOutputType = {
     pins: number
+    saves: number
   }
 
   export type BoardCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     pins?: boolean | BoardCountOutputTypeCountPinsArgs
+    saves?: boolean | BoardCountOutputTypeCountSavesArgs
   }
 
   // Custom InputTypes
@@ -1354,6 +1527,13 @@ export namespace Prisma {
    */
   export type BoardCountOutputTypeCountPinsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PinWhereInput
+  }
+
+  /**
+   * BoardCountOutputType without action
+   */
+  export type BoardCountOutputTypeCountSavesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SaveWhereInput
   }
 
 
@@ -1378,6 +1558,7 @@ export namespace Prisma {
     username: string | null
     password: string | null
     avatar: string | null
+    bio: string | null
     isGuest: boolean | null
     emailVerified: boolean | null
     createdAt: Date | null
@@ -1391,6 +1572,7 @@ export namespace Prisma {
     username: string | null
     password: string | null
     avatar: string | null
+    bio: string | null
     isGuest: boolean | null
     emailVerified: boolean | null
     createdAt: Date | null
@@ -1404,6 +1586,7 @@ export namespace Prisma {
     username: number
     password: number
     avatar: number
+    bio: number
     isGuest: number
     emailVerified: number
     createdAt: number
@@ -1419,6 +1602,7 @@ export namespace Prisma {
     username?: true
     password?: true
     avatar?: true
+    bio?: true
     isGuest?: true
     emailVerified?: true
     createdAt?: true
@@ -1432,6 +1616,7 @@ export namespace Prisma {
     username?: true
     password?: true
     avatar?: true
+    bio?: true
     isGuest?: true
     emailVerified?: true
     createdAt?: true
@@ -1445,6 +1630,7 @@ export namespace Prisma {
     username?: true
     password?: true
     avatar?: true
+    bio?: true
     isGuest?: true
     emailVerified?: true
     createdAt?: true
@@ -1531,6 +1717,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar: string | null
+    bio: string | null
     isGuest: boolean
     emailVerified: boolean
     createdAt: Date
@@ -1561,6 +1748,7 @@ export namespace Prisma {
     username?: boolean
     password?: boolean
     avatar?: boolean
+    bio?: boolean
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: boolean
@@ -1569,6 +1757,9 @@ export namespace Prisma {
     boards?: boolean | User$boardsArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
     likes?: boolean | User$likesArgs<ExtArgs>
+    saves?: boolean | User$savesArgs<ExtArgs>
+    follows?: boolean | User$followsArgs<ExtArgs>
+    followers?: boolean | User$followersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1579,19 +1770,7 @@ export namespace Prisma {
     username?: boolean
     password?: boolean
     avatar?: boolean
-    isGuest?: boolean
-    emailVerified?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["user"]>
-
-  export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    email?: boolean
-    username?: boolean
-    password?: boolean
-    avatar?: boolean
+    bio?: boolean
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: boolean
@@ -1605,22 +1784,24 @@ export namespace Prisma {
     username?: boolean
     password?: boolean
     avatar?: boolean
+    bio?: boolean
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "username" | "password" | "avatar" | "isGuest" | "emailVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     pins?: boolean | User$pinsArgs<ExtArgs>
     boards?: boolean | User$boardsArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
     likes?: boolean | User$likesArgs<ExtArgs>
+    saves?: boolean | User$savesArgs<ExtArgs>
+    follows?: boolean | User$followsArgs<ExtArgs>
+    followers?: boolean | User$followersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -1629,6 +1810,9 @@ export namespace Prisma {
       boards: Prisma.$BoardPayload<ExtArgs>[]
       comments: Prisma.$CommentPayload<ExtArgs>[]
       likes: Prisma.$LikePayload<ExtArgs>[]
+      saves: Prisma.$SavePayload<ExtArgs>[]
+      follows: Prisma.$FollowPayload<ExtArgs>[]
+      followers: Prisma.$FollowPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1637,6 +1821,7 @@ export namespace Prisma {
       username: string
       password: string
       avatar: string | null
+      bio: string | null
       isGuest: boolean
       emailVerified: boolean
       createdAt: Date
@@ -1647,12 +1832,12 @@ export namespace Prisma {
 
   type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
 
-  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<UserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<UserFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: UserCountAggregateInputType | true
     }
 
-  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User'], meta: { name: 'User' } }
     /**
      * Find zero or one User that matches the filter.
@@ -1665,10 +1850,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one User that matches the filter or throw an error with `error.code='P2025'`
+     * Find one User that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
      * @example
@@ -1679,7 +1864,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
      * Find the first User that matches the filter.
@@ -1694,7 +1879,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
      * Find the first User that matches the filter or
@@ -1710,7 +1895,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
      * Find zero or more Users that matches the filter.
@@ -1728,7 +1913,7 @@ export namespace Prisma {
      * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany">>
 
     /**
      * Create a User.
@@ -1742,7 +1927,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
      * Create many Users.
@@ -1770,7 +1955,7 @@ export namespace Prisma {
      * })
      * 
      * // Create many Users and only return the `id`
-     * const userWithIdOnly = await prisma.user.createManyAndReturn({
+     * const userWithIdOnly = await prisma.user.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -1780,7 +1965,7 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn">>
 
     /**
      * Delete a User.
@@ -1794,7 +1979,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
      * Update one User.
@@ -1811,7 +1996,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
      * Delete zero or more Users.
@@ -1847,36 +2032,6 @@ export namespace Prisma {
     updateMany<T extends UserUpdateManyArgs>(args: SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Users and returns the data updated in the database.
-     * @param {UserUpdateManyAndReturnArgs} args - Arguments to update many Users.
-     * @example
-     * // Update many Users
-     * const user = await prisma.user.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Users and only return the `id`
-     * const userWithIdOnly = await prisma.user.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
      * Create or update one User.
      * @param {UserUpsertArgs} args - Arguments to update or create a User.
      * @example
@@ -1893,7 +2048,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
 
     /**
@@ -2033,12 +2188,15 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    pins<T extends User$pinsArgs<ExtArgs> = {}>(args?: Subset<T, User$pinsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    boards<T extends User$boardsArgs<ExtArgs> = {}>(args?: Subset<T, User$boardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    comments<T extends User$commentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    likes<T extends User$likesArgs<ExtArgs> = {}>(args?: Subset<T, User$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pins<T extends User$pinsArgs<ExtArgs> = {}>(args?: Subset<T, User$pinsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findMany"> | Null>
+    boards<T extends User$boardsArgs<ExtArgs> = {}>(args?: Subset<T, User$boardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany"> | Null>
+    comments<T extends User$commentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany"> | Null>
+    likes<T extends User$likesArgs<ExtArgs> = {}>(args?: Subset<T, User$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany"> | Null>
+    saves<T extends User$savesArgs<ExtArgs> = {}>(args?: Subset<T, User$savesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "findMany"> | Null>
+    follows<T extends User$followsArgs<ExtArgs> = {}>(args?: Subset<T, User$followsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany"> | Null>
+    followers<T extends User$followersArgs<ExtArgs> = {}>(args?: Subset<T, User$followersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2066,7 +2224,7 @@ export namespace Prisma {
 
   /**
    * Fields of the User model
-   */
+   */ 
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
@@ -2074,6 +2232,7 @@ export namespace Prisma {
     readonly username: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly avatar: FieldRef<"User", 'String'>
+    readonly bio: FieldRef<"User", 'String'>
     readonly isGuest: FieldRef<"User", 'Boolean'>
     readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -2090,10 +2249,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -2113,10 +2268,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -2134,10 +2285,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -2187,10 +2334,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -2239,10 +2382,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -2286,10 +2425,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -2318,10 +2453,6 @@ export namespace Prisma {
      */
     select?: UserSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * The data used to create many Users.
      */
     data: UserCreateManyInput | UserCreateManyInput[]
@@ -2335,10 +2466,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -2365,36 +2492,6 @@ export namespace Prisma {
      * Filter which Users to update
      */
     where?: UserWhereInput
-    /**
-     * Limit how many Users to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * User updateManyAndReturn
-   */
-  export type UserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * The data used to update Users.
-     */
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
-    /**
-     * Filter which Users to update
-     */
-    where?: UserWhereInput
-    /**
-     * Limit how many Users to update.
-     */
-    limit?: number
   }
 
   /**
@@ -2405,10 +2502,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -2436,10 +2529,6 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
@@ -2457,10 +2546,6 @@ export namespace Prisma {
      * Filter which Users to delete
      */
     where?: UserWhereInput
-    /**
-     * Limit how many Users to delete.
-     */
-    limit?: number
   }
 
   /**
@@ -2471,10 +2556,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Pin
      */
     select?: PinSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -2496,10 +2577,6 @@ export namespace Prisma {
      */
     select?: BoardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: BoardInclude<ExtArgs> | null
@@ -2519,10 +2596,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Comment
      */
     select?: CommentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -2544,10 +2617,6 @@ export namespace Prisma {
      */
     select?: LikeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: LikeInclude<ExtArgs> | null
@@ -2560,6 +2629,66 @@ export namespace Prisma {
   }
 
   /**
+   * User.saves
+   */
+  export type User$savesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    where?: SaveWhereInput
+    orderBy?: SaveOrderByWithRelationInput | SaveOrderByWithRelationInput[]
+    cursor?: SaveWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SaveScalarFieldEnum | SaveScalarFieldEnum[]
+  }
+
+  /**
+   * User.follows
+   */
+  export type User$followsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    where?: FollowWhereInput
+    orderBy?: FollowOrderByWithRelationInput | FollowOrderByWithRelationInput[]
+    cursor?: FollowWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FollowScalarFieldEnum | FollowScalarFieldEnum[]
+  }
+
+  /**
+   * User.followers
+   */
+  export type User$followersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    where?: FollowWhereInput
+    orderBy?: FollowOrderByWithRelationInput | FollowOrderByWithRelationInput[]
+    cursor?: FollowWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FollowScalarFieldEnum | FollowScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2567,10 +2696,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -2584,8 +2709,20 @@ export namespace Prisma {
 
   export type AggregatePin = {
     _count: PinCountAggregateOutputType | null
+    _avg: PinAvgAggregateOutputType | null
+    _sum: PinSumAggregateOutputType | null
     _min: PinMinAggregateOutputType | null
     _max: PinMaxAggregateOutputType | null
+  }
+
+  export type PinAvgAggregateOutputType = {
+    imageWidth: number | null
+    imageHeight: number | null
+  }
+
+  export type PinSumAggregateOutputType = {
+    imageWidth: number | null
+    imageHeight: number | null
   }
 
   export type PinMinAggregateOutputType = {
@@ -2593,7 +2730,10 @@ export namespace Prisma {
     title: string | null
     description: string | null
     imageUrl: string | null
+    imageWidth: number | null
+    imageHeight: number | null
     link: string | null
+    tags: string | null
     userId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2604,7 +2744,10 @@ export namespace Prisma {
     title: string | null
     description: string | null
     imageUrl: string | null
+    imageWidth: number | null
+    imageHeight: number | null
     link: string | null
+    tags: string | null
     userId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2615,7 +2758,10 @@ export namespace Prisma {
     title: number
     description: number
     imageUrl: number
+    imageWidth: number
+    imageHeight: number
     link: number
+    tags: number
     userId: number
     createdAt: number
     updatedAt: number
@@ -2623,12 +2769,25 @@ export namespace Prisma {
   }
 
 
+  export type PinAvgAggregateInputType = {
+    imageWidth?: true
+    imageHeight?: true
+  }
+
+  export type PinSumAggregateInputType = {
+    imageWidth?: true
+    imageHeight?: true
+  }
+
   export type PinMinAggregateInputType = {
     id?: true
     title?: true
     description?: true
     imageUrl?: true
+    imageWidth?: true
+    imageHeight?: true
     link?: true
+    tags?: true
     userId?: true
     createdAt?: true
     updatedAt?: true
@@ -2639,7 +2798,10 @@ export namespace Prisma {
     title?: true
     description?: true
     imageUrl?: true
+    imageWidth?: true
+    imageHeight?: true
     link?: true
+    tags?: true
     userId?: true
     createdAt?: true
     updatedAt?: true
@@ -2650,7 +2812,10 @@ export namespace Prisma {
     title?: true
     description?: true
     imageUrl?: true
+    imageWidth?: true
+    imageHeight?: true
     link?: true
+    tags?: true
     userId?: true
     createdAt?: true
     updatedAt?: true
@@ -2695,6 +2860,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: PinAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PinSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: PinMinAggregateInputType
@@ -2725,6 +2902,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: PinCountAggregateInputType | true
+    _avg?: PinAvgAggregateInputType
+    _sum?: PinSumAggregateInputType
     _min?: PinMinAggregateInputType
     _max?: PinMaxAggregateInputType
   }
@@ -2734,11 +2913,16 @@ export namespace Prisma {
     title: string
     description: string | null
     imageUrl: string
+    imageWidth: number | null
+    imageHeight: number | null
     link: string | null
+    tags: string | null
     userId: string
     createdAt: Date
     updatedAt: Date
     _count: PinCountAggregateOutputType | null
+    _avg: PinAvgAggregateOutputType | null
+    _sum: PinSumAggregateOutputType | null
     _min: PinMinAggregateOutputType | null
     _max: PinMaxAggregateOutputType | null
   }
@@ -2762,7 +2946,10 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     imageUrl?: boolean
+    imageWidth?: boolean
+    imageHeight?: boolean
     link?: boolean
+    tags?: boolean
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2770,6 +2957,7 @@ export namespace Prisma {
     boards?: boolean | Pin$boardsArgs<ExtArgs>
     comments?: boolean | Pin$commentsArgs<ExtArgs>
     likes?: boolean | Pin$likesArgs<ExtArgs>
+    saves?: boolean | Pin$savesArgs<ExtArgs>
     _count?: boolean | PinCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pin"]>
 
@@ -2778,19 +2966,10 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     imageUrl?: boolean
+    imageWidth?: boolean
+    imageHeight?: boolean
     link?: boolean
-    userId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["pin"]>
-
-  export type PinSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    title?: boolean
-    description?: boolean
-    imageUrl?: boolean
-    link?: boolean
+    tags?: boolean
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2802,24 +2981,24 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     imageUrl?: boolean
+    imageWidth?: boolean
+    imageHeight?: boolean
     link?: boolean
+    tags?: boolean
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PinOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "imageUrl" | "link" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["pin"]>
   export type PinInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     boards?: boolean | Pin$boardsArgs<ExtArgs>
     comments?: boolean | Pin$commentsArgs<ExtArgs>
     likes?: boolean | Pin$likesArgs<ExtArgs>
+    saves?: boolean | Pin$savesArgs<ExtArgs>
     _count?: boolean | PinCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PinIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type PinIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
@@ -2830,13 +3009,17 @@ export namespace Prisma {
       boards: Prisma.$BoardPayload<ExtArgs>[]
       comments: Prisma.$CommentPayload<ExtArgs>[]
       likes: Prisma.$LikePayload<ExtArgs>[]
+      saves: Prisma.$SavePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
       description: string | null
       imageUrl: string
+      imageWidth: number | null
+      imageHeight: number | null
       link: string | null
+      tags: string | null
       userId: string
       createdAt: Date
       updatedAt: Date
@@ -2846,12 +3029,12 @@ export namespace Prisma {
 
   type PinGetPayload<S extends boolean | null | undefined | PinDefaultArgs> = $Result.GetResult<Prisma.$PinPayload, S>
 
-  type PinCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<PinFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type PinCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PinFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: PinCountAggregateInputType | true
     }
 
-  export interface PinDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface PinDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Pin'], meta: { name: 'Pin' } }
     /**
      * Find zero or one Pin that matches the filter.
@@ -2864,10 +3047,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends PinFindUniqueArgs>(args: SelectSubset<T, PinFindUniqueArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends PinFindUniqueArgs>(args: SelectSubset<T, PinFindUniqueArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Pin that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Pin that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {PinFindUniqueOrThrowArgs} args - Arguments to find a Pin
      * @example
@@ -2878,7 +3061,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends PinFindUniqueOrThrowArgs>(args: SelectSubset<T, PinFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends PinFindUniqueOrThrowArgs>(args: SelectSubset<T, PinFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
      * Find the first Pin that matches the filter.
@@ -2893,7 +3076,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends PinFindFirstArgs>(args?: SelectSubset<T, PinFindFirstArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends PinFindFirstArgs>(args?: SelectSubset<T, PinFindFirstArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
      * Find the first Pin that matches the filter or
@@ -2909,7 +3092,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends PinFindFirstOrThrowArgs>(args?: SelectSubset<T, PinFindFirstOrThrowArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends PinFindFirstOrThrowArgs>(args?: SelectSubset<T, PinFindFirstOrThrowArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
      * Find zero or more Pins that matches the filter.
@@ -2927,7 +3110,7 @@ export namespace Prisma {
      * const pinWithIdOnly = await prisma.pin.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends PinFindManyArgs>(args?: SelectSubset<T, PinFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends PinFindManyArgs>(args?: SelectSubset<T, PinFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findMany">>
 
     /**
      * Create a Pin.
@@ -2941,7 +3124,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends PinCreateArgs>(args: SelectSubset<T, PinCreateArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends PinCreateArgs>(args: SelectSubset<T, PinCreateArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
      * Create many Pins.
@@ -2969,7 +3152,7 @@ export namespace Prisma {
      * })
      * 
      * // Create many Pins and only return the `id`
-     * const pinWithIdOnly = await prisma.pin.createManyAndReturn({
+     * const pinWithIdOnly = await prisma.pin.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -2979,7 +3162,7 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends PinCreateManyAndReturnArgs>(args?: SelectSubset<T, PinCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends PinCreateManyAndReturnArgs>(args?: SelectSubset<T, PinCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "createManyAndReturn">>
 
     /**
      * Delete a Pin.
@@ -2993,7 +3176,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends PinDeleteArgs>(args: SelectSubset<T, PinDeleteArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends PinDeleteArgs>(args: SelectSubset<T, PinDeleteArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
      * Update one Pin.
@@ -3010,7 +3193,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends PinUpdateArgs>(args: SelectSubset<T, PinUpdateArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends PinUpdateArgs>(args: SelectSubset<T, PinUpdateArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
      * Delete zero or more Pins.
@@ -3046,36 +3229,6 @@ export namespace Prisma {
     updateMany<T extends PinUpdateManyArgs>(args: SelectSubset<T, PinUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Pins and returns the data updated in the database.
-     * @param {PinUpdateManyAndReturnArgs} args - Arguments to update many Pins.
-     * @example
-     * // Update many Pins
-     * const pin = await prisma.pin.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Pins and only return the `id`
-     * const pinWithIdOnly = await prisma.pin.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends PinUpdateManyAndReturnArgs>(args: SelectSubset<T, PinUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
      * Create or update one Pin.
      * @param {PinUpsertArgs} args - Arguments to update or create a Pin.
      * @example
@@ -3092,7 +3245,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends PinUpsertArgs>(args: SelectSubset<T, PinUpsertArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends PinUpsertArgs>(args: SelectSubset<T, PinUpsertArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
 
     /**
@@ -3232,12 +3385,13 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__PinClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__PinClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    boards<T extends Pin$boardsArgs<ExtArgs> = {}>(args?: Subset<T, Pin$boardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    comments<T extends Pin$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Pin$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    likes<T extends Pin$likesArgs<ExtArgs> = {}>(args?: Subset<T, Pin$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    boards<T extends Pin$boardsArgs<ExtArgs> = {}>(args?: Subset<T, Pin$boardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany"> | Null>
+    comments<T extends Pin$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Pin$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany"> | Null>
+    likes<T extends Pin$likesArgs<ExtArgs> = {}>(args?: Subset<T, Pin$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany"> | Null>
+    saves<T extends Pin$savesArgs<ExtArgs> = {}>(args?: Subset<T, Pin$savesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3265,13 +3419,16 @@ export namespace Prisma {
 
   /**
    * Fields of the Pin model
-   */
+   */ 
   interface PinFieldRefs {
     readonly id: FieldRef<"Pin", 'String'>
     readonly title: FieldRef<"Pin", 'String'>
     readonly description: FieldRef<"Pin", 'String'>
     readonly imageUrl: FieldRef<"Pin", 'String'>
+    readonly imageWidth: FieldRef<"Pin", 'Int'>
+    readonly imageHeight: FieldRef<"Pin", 'Int'>
     readonly link: FieldRef<"Pin", 'String'>
+    readonly tags: FieldRef<"Pin", 'String'>
     readonly userId: FieldRef<"Pin", 'String'>
     readonly createdAt: FieldRef<"Pin", 'DateTime'>
     readonly updatedAt: FieldRef<"Pin", 'DateTime'>
@@ -3287,10 +3444,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Pin
      */
     select?: PinSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3310,10 +3463,6 @@ export namespace Prisma {
      */
     select?: PinSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: PinInclude<ExtArgs> | null
@@ -3331,10 +3480,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Pin
      */
     select?: PinSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3384,10 +3529,6 @@ export namespace Prisma {
      */
     select?: PinSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: PinInclude<ExtArgs> | null
@@ -3436,10 +3577,6 @@ export namespace Prisma {
      */
     select?: PinSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: PinInclude<ExtArgs> | null
@@ -3483,10 +3620,6 @@ export namespace Prisma {
      */
     select?: PinSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: PinInclude<ExtArgs> | null
@@ -3515,10 +3648,6 @@ export namespace Prisma {
      */
     select?: PinSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
-    /**
      * The data used to create many Pins.
      */
     data: PinCreateManyInput | PinCreateManyInput[]
@@ -3536,10 +3665,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Pin
      */
     select?: PinSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3566,40 +3691,6 @@ export namespace Prisma {
      * Filter which Pins to update
      */
     where?: PinWhereInput
-    /**
-     * Limit how many Pins to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Pin updateManyAndReturn
-   */
-  export type PinUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Pin
-     */
-    select?: PinSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
-    /**
-     * The data used to update Pins.
-     */
-    data: XOR<PinUpdateManyMutationInput, PinUncheckedUpdateManyInput>
-    /**
-     * Filter which Pins to update
-     */
-    where?: PinWhereInput
-    /**
-     * Limit how many Pins to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PinIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3610,10 +3701,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Pin
      */
     select?: PinSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3641,10 +3728,6 @@ export namespace Prisma {
      */
     select?: PinSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: PinInclude<ExtArgs> | null
@@ -3662,10 +3745,6 @@ export namespace Prisma {
      * Filter which Pins to delete
      */
     where?: PinWhereInput
-    /**
-     * Limit how many Pins to delete.
-     */
-    limit?: number
   }
 
   /**
@@ -3676,10 +3755,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Board
      */
     select?: BoardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3701,10 +3776,6 @@ export namespace Prisma {
      */
     select?: CommentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: CommentInclude<ExtArgs> | null
@@ -3725,10 +3796,6 @@ export namespace Prisma {
      */
     select?: LikeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: LikeInclude<ExtArgs> | null
@@ -3741,6 +3808,26 @@ export namespace Prisma {
   }
 
   /**
+   * Pin.saves
+   */
+  export type Pin$savesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    where?: SaveWhereInput
+    orderBy?: SaveOrderByWithRelationInput | SaveOrderByWithRelationInput[]
+    cursor?: SaveWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SaveScalarFieldEnum | SaveScalarFieldEnum[]
+  }
+
+  /**
    * Pin without action
    */
   export type PinDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3748,10 +3835,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Pin
      */
     select?: PinSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3774,6 +3857,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     isPrivate: boolean | null
+    coverImage: string | null
     userId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3784,6 +3868,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     isPrivate: boolean | null
+    coverImage: string | null
     userId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3794,6 +3879,7 @@ export namespace Prisma {
     name: number
     description: number
     isPrivate: number
+    coverImage: number
     userId: number
     createdAt: number
     updatedAt: number
@@ -3806,6 +3892,7 @@ export namespace Prisma {
     name?: true
     description?: true
     isPrivate?: true
+    coverImage?: true
     userId?: true
     createdAt?: true
     updatedAt?: true
@@ -3816,6 +3903,7 @@ export namespace Prisma {
     name?: true
     description?: true
     isPrivate?: true
+    coverImage?: true
     userId?: true
     createdAt?: true
     updatedAt?: true
@@ -3826,6 +3914,7 @@ export namespace Prisma {
     name?: true
     description?: true
     isPrivate?: true
+    coverImage?: true
     userId?: true
     createdAt?: true
     updatedAt?: true
@@ -3909,6 +3998,7 @@ export namespace Prisma {
     name: string
     description: string | null
     isPrivate: boolean
+    coverImage: string | null
     userId: string
     createdAt: Date
     updatedAt: Date
@@ -3936,11 +4026,13 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     isPrivate?: boolean
+    coverImage?: boolean
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     pins?: boolean | Board$pinsArgs<ExtArgs>
+    saves?: boolean | Board$savesArgs<ExtArgs>
     _count?: boolean | BoardCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["board"]>
 
@@ -3949,17 +4041,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     isPrivate?: boolean
-    userId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["board"]>
-
-  export type BoardSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    description?: boolean
-    isPrivate?: boolean
+    coverImage?: boolean
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3971,21 +4053,19 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     isPrivate?: boolean
+    coverImage?: boolean
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BoardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "isPrivate" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["board"]>
   export type BoardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     pins?: boolean | Board$pinsArgs<ExtArgs>
+    saves?: boolean | Board$savesArgs<ExtArgs>
     _count?: boolean | BoardCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BoardIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type BoardIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
@@ -3994,12 +4074,14 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       pins: Prisma.$PinPayload<ExtArgs>[]
+      saves: Prisma.$SavePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       description: string | null
       isPrivate: boolean
+      coverImage: string | null
       userId: string
       createdAt: Date
       updatedAt: Date
@@ -4009,12 +4091,12 @@ export namespace Prisma {
 
   type BoardGetPayload<S extends boolean | null | undefined | BoardDefaultArgs> = $Result.GetResult<Prisma.$BoardPayload, S>
 
-  type BoardCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<BoardFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type BoardCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<BoardFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: BoardCountAggregateInputType | true
     }
 
-  export interface BoardDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface BoardDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Board'], meta: { name: 'Board' } }
     /**
      * Find zero or one Board that matches the filter.
@@ -4027,10 +4109,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends BoardFindUniqueArgs>(args: SelectSubset<T, BoardFindUniqueArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends BoardFindUniqueArgs>(args: SelectSubset<T, BoardFindUniqueArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Board that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Board that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {BoardFindUniqueOrThrowArgs} args - Arguments to find a Board
      * @example
@@ -4041,7 +4123,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends BoardFindUniqueOrThrowArgs>(args: SelectSubset<T, BoardFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends BoardFindUniqueOrThrowArgs>(args: SelectSubset<T, BoardFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
      * Find the first Board that matches the filter.
@@ -4056,7 +4138,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends BoardFindFirstArgs>(args?: SelectSubset<T, BoardFindFirstArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends BoardFindFirstArgs>(args?: SelectSubset<T, BoardFindFirstArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
      * Find the first Board that matches the filter or
@@ -4072,7 +4154,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends BoardFindFirstOrThrowArgs>(args?: SelectSubset<T, BoardFindFirstOrThrowArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends BoardFindFirstOrThrowArgs>(args?: SelectSubset<T, BoardFindFirstOrThrowArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
      * Find zero or more Boards that matches the filter.
@@ -4090,7 +4172,7 @@ export namespace Prisma {
      * const boardWithIdOnly = await prisma.board.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends BoardFindManyArgs>(args?: SelectSubset<T, BoardFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends BoardFindManyArgs>(args?: SelectSubset<T, BoardFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany">>
 
     /**
      * Create a Board.
@@ -4104,7 +4186,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends BoardCreateArgs>(args: SelectSubset<T, BoardCreateArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends BoardCreateArgs>(args: SelectSubset<T, BoardCreateArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
      * Create many Boards.
@@ -4132,7 +4214,7 @@ export namespace Prisma {
      * })
      * 
      * // Create many Boards and only return the `id`
-     * const boardWithIdOnly = await prisma.board.createManyAndReturn({
+     * const boardWithIdOnly = await prisma.board.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -4142,7 +4224,7 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends BoardCreateManyAndReturnArgs>(args?: SelectSubset<T, BoardCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends BoardCreateManyAndReturnArgs>(args?: SelectSubset<T, BoardCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "createManyAndReturn">>
 
     /**
      * Delete a Board.
@@ -4156,7 +4238,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends BoardDeleteArgs>(args: SelectSubset<T, BoardDeleteArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends BoardDeleteArgs>(args: SelectSubset<T, BoardDeleteArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
      * Update one Board.
@@ -4173,7 +4255,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends BoardUpdateArgs>(args: SelectSubset<T, BoardUpdateArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends BoardUpdateArgs>(args: SelectSubset<T, BoardUpdateArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
      * Delete zero or more Boards.
@@ -4209,36 +4291,6 @@ export namespace Prisma {
     updateMany<T extends BoardUpdateManyArgs>(args: SelectSubset<T, BoardUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Boards and returns the data updated in the database.
-     * @param {BoardUpdateManyAndReturnArgs} args - Arguments to update many Boards.
-     * @example
-     * // Update many Boards
-     * const board = await prisma.board.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Boards and only return the `id`
-     * const boardWithIdOnly = await prisma.board.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends BoardUpdateManyAndReturnArgs>(args: SelectSubset<T, BoardUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
      * Create or update one Board.
      * @param {BoardUpsertArgs} args - Arguments to update or create a Board.
      * @example
@@ -4255,7 +4307,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends BoardUpsertArgs>(args: SelectSubset<T, BoardUpsertArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends BoardUpsertArgs>(args: SelectSubset<T, BoardUpsertArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
 
     /**
@@ -4395,10 +4447,11 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__BoardClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__BoardClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    pins<T extends Board$pinsArgs<ExtArgs> = {}>(args?: Subset<T, Board$pinsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    pins<T extends Board$pinsArgs<ExtArgs> = {}>(args?: Subset<T, Board$pinsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findMany"> | Null>
+    saves<T extends Board$savesArgs<ExtArgs> = {}>(args?: Subset<T, Board$savesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4426,12 +4479,13 @@ export namespace Prisma {
 
   /**
    * Fields of the Board model
-   */
+   */ 
   interface BoardFieldRefs {
     readonly id: FieldRef<"Board", 'String'>
     readonly name: FieldRef<"Board", 'String'>
     readonly description: FieldRef<"Board", 'String'>
     readonly isPrivate: FieldRef<"Board", 'Boolean'>
+    readonly coverImage: FieldRef<"Board", 'String'>
     readonly userId: FieldRef<"Board", 'String'>
     readonly createdAt: FieldRef<"Board", 'DateTime'>
     readonly updatedAt: FieldRef<"Board", 'DateTime'>
@@ -4447,10 +4501,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Board
      */
     select?: BoardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -4470,10 +4520,6 @@ export namespace Prisma {
      */
     select?: BoardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: BoardInclude<ExtArgs> | null
@@ -4491,10 +4537,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Board
      */
     select?: BoardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -4544,10 +4586,6 @@ export namespace Prisma {
      */
     select?: BoardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: BoardInclude<ExtArgs> | null
@@ -4596,10 +4634,6 @@ export namespace Prisma {
      */
     select?: BoardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: BoardInclude<ExtArgs> | null
@@ -4643,10 +4677,6 @@ export namespace Prisma {
      */
     select?: BoardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: BoardInclude<ExtArgs> | null
@@ -4675,10 +4705,6 @@ export namespace Prisma {
      */
     select?: BoardSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
-    /**
      * The data used to create many Boards.
      */
     data: BoardCreateManyInput | BoardCreateManyInput[]
@@ -4696,10 +4722,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Board
      */
     select?: BoardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -4726,40 +4748,6 @@ export namespace Prisma {
      * Filter which Boards to update
      */
     where?: BoardWhereInput
-    /**
-     * Limit how many Boards to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Board updateManyAndReturn
-   */
-  export type BoardUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Board
-     */
-    select?: BoardSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
-    /**
-     * The data used to update Boards.
-     */
-    data: XOR<BoardUpdateManyMutationInput, BoardUncheckedUpdateManyInput>
-    /**
-     * Filter which Boards to update
-     */
-    where?: BoardWhereInput
-    /**
-     * Limit how many Boards to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BoardIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4770,10 +4758,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Board
      */
     select?: BoardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -4801,10 +4785,6 @@ export namespace Prisma {
      */
     select?: BoardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: BoardInclude<ExtArgs> | null
@@ -4822,10 +4802,6 @@ export namespace Prisma {
      * Filter which Boards to delete
      */
     where?: BoardWhereInput
-    /**
-     * Limit how many Boards to delete.
-     */
-    limit?: number
   }
 
   /**
@@ -4836,10 +4812,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Pin
      */
     select?: PinSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Pin
-     */
-    omit?: PinOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -4853,6 +4825,26 @@ export namespace Prisma {
   }
 
   /**
+   * Board.saves
+   */
+  export type Board$savesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    where?: SaveWhereInput
+    orderBy?: SaveOrderByWithRelationInput | SaveOrderByWithRelationInput[]
+    cursor?: SaveWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SaveScalarFieldEnum | SaveScalarFieldEnum[]
+  }
+
+  /**
    * Board without action
    */
   export type BoardDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4860,10 +4852,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Board
      */
     select?: BoardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Board
-     */
-    omit?: BoardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -5058,17 +5046,6 @@ export namespace Prisma {
     pin?: boolean | PinDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["comment"]>
 
-  export type CommentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    content?: boolean
-    userId?: boolean
-    pinId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    pin?: boolean | PinDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["comment"]>
-
   export type CommentSelectScalar = {
     id?: boolean
     content?: boolean
@@ -5078,16 +5055,11 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "userId" | "pinId" | "createdAt" | "updatedAt", ExtArgs["result"]["comment"]>
   export type CommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     pin?: boolean | PinDefaultArgs<ExtArgs>
   }
   export type CommentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    pin?: boolean | PinDefaultArgs<ExtArgs>
-  }
-  export type CommentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     pin?: boolean | PinDefaultArgs<ExtArgs>
   }
@@ -5111,12 +5083,12 @@ export namespace Prisma {
 
   type CommentGetPayload<S extends boolean | null | undefined | CommentDefaultArgs> = $Result.GetResult<Prisma.$CommentPayload, S>
 
-  type CommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type CommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<CommentFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: CommentCountAggregateInputType | true
     }
 
-  export interface CommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface CommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Comment'], meta: { name: 'Comment' } }
     /**
      * Find zero or one Comment that matches the filter.
@@ -5129,10 +5101,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends CommentFindUniqueArgs>(args: SelectSubset<T, CommentFindUniqueArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends CommentFindUniqueArgs>(args: SelectSubset<T, CommentFindUniqueArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Comment that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Comment that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {CommentFindUniqueOrThrowArgs} args - Arguments to find a Comment
      * @example
@@ -5143,7 +5115,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends CommentFindUniqueOrThrowArgs>(args: SelectSubset<T, CommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends CommentFindUniqueOrThrowArgs>(args: SelectSubset<T, CommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
      * Find the first Comment that matches the filter.
@@ -5158,7 +5130,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends CommentFindFirstArgs>(args?: SelectSubset<T, CommentFindFirstArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends CommentFindFirstArgs>(args?: SelectSubset<T, CommentFindFirstArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
      * Find the first Comment that matches the filter or
@@ -5174,7 +5146,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends CommentFindFirstOrThrowArgs>(args?: SelectSubset<T, CommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends CommentFindFirstOrThrowArgs>(args?: SelectSubset<T, CommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
      * Find zero or more Comments that matches the filter.
@@ -5192,7 +5164,7 @@ export namespace Prisma {
      * const commentWithIdOnly = await prisma.comment.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends CommentFindManyArgs>(args?: SelectSubset<T, CommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends CommentFindManyArgs>(args?: SelectSubset<T, CommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany">>
 
     /**
      * Create a Comment.
@@ -5206,7 +5178,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends CommentCreateArgs>(args: SelectSubset<T, CommentCreateArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends CommentCreateArgs>(args: SelectSubset<T, CommentCreateArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
      * Create many Comments.
@@ -5234,7 +5206,7 @@ export namespace Prisma {
      * })
      * 
      * // Create many Comments and only return the `id`
-     * const commentWithIdOnly = await prisma.comment.createManyAndReturn({
+     * const commentWithIdOnly = await prisma.comment.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -5244,7 +5216,7 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends CommentCreateManyAndReturnArgs>(args?: SelectSubset<T, CommentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends CommentCreateManyAndReturnArgs>(args?: SelectSubset<T, CommentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "createManyAndReturn">>
 
     /**
      * Delete a Comment.
@@ -5258,7 +5230,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends CommentDeleteArgs>(args: SelectSubset<T, CommentDeleteArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends CommentDeleteArgs>(args: SelectSubset<T, CommentDeleteArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
      * Update one Comment.
@@ -5275,7 +5247,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends CommentUpdateArgs>(args: SelectSubset<T, CommentUpdateArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends CommentUpdateArgs>(args: SelectSubset<T, CommentUpdateArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
      * Delete zero or more Comments.
@@ -5311,36 +5283,6 @@ export namespace Prisma {
     updateMany<T extends CommentUpdateManyArgs>(args: SelectSubset<T, CommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Comments and returns the data updated in the database.
-     * @param {CommentUpdateManyAndReturnArgs} args - Arguments to update many Comments.
-     * @example
-     * // Update many Comments
-     * const comment = await prisma.comment.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Comments and only return the `id`
-     * const commentWithIdOnly = await prisma.comment.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends CommentUpdateManyAndReturnArgs>(args: SelectSubset<T, CommentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
      * Create or update one Comment.
      * @param {CommentUpsertArgs} args - Arguments to update or create a Comment.
      * @example
@@ -5357,7 +5299,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends CommentUpsertArgs>(args: SelectSubset<T, CommentUpsertArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends CommentUpsertArgs>(args: SelectSubset<T, CommentUpsertArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
 
     /**
@@ -5497,10 +5439,10 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__CommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__CommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    pin<T extends PinDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PinDefaultArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    pin<T extends PinDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PinDefaultArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5528,7 +5470,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Comment model
-   */
+   */ 
   interface CommentFieldRefs {
     readonly id: FieldRef<"Comment", 'String'>
     readonly content: FieldRef<"Comment", 'String'>
@@ -5549,10 +5491,6 @@ export namespace Prisma {
      */
     select?: CommentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: CommentInclude<ExtArgs> | null
@@ -5571,10 +5509,6 @@ export namespace Prisma {
      */
     select?: CommentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: CommentInclude<ExtArgs> | null
@@ -5592,10 +5526,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Comment
      */
     select?: CommentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -5645,10 +5575,6 @@ export namespace Prisma {
      */
     select?: CommentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: CommentInclude<ExtArgs> | null
@@ -5697,10 +5623,6 @@ export namespace Prisma {
      */
     select?: CommentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: CommentInclude<ExtArgs> | null
@@ -5744,10 +5666,6 @@ export namespace Prisma {
      */
     select?: CommentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: CommentInclude<ExtArgs> | null
@@ -5776,10 +5694,6 @@ export namespace Prisma {
      */
     select?: CommentSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
-    /**
      * The data used to create many Comments.
      */
     data: CommentCreateManyInput | CommentCreateManyInput[]
@@ -5797,10 +5711,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Comment
      */
     select?: CommentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -5827,40 +5737,6 @@ export namespace Prisma {
      * Filter which Comments to update
      */
     where?: CommentWhereInput
-    /**
-     * Limit how many Comments to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Comment updateManyAndReturn
-   */
-  export type CommentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Comment
-     */
-    select?: CommentSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
-    /**
-     * The data used to update Comments.
-     */
-    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyInput>
-    /**
-     * Filter which Comments to update
-     */
-    where?: CommentWhereInput
-    /**
-     * Limit how many Comments to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CommentIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5871,10 +5747,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Comment
      */
     select?: CommentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -5902,10 +5774,6 @@ export namespace Prisma {
      */
     select?: CommentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: CommentInclude<ExtArgs> | null
@@ -5923,10 +5791,6 @@ export namespace Prisma {
      * Filter which Comments to delete
      */
     where?: CommentWhereInput
-    /**
-     * Limit how many Comments to delete.
-     */
-    limit?: number
   }
 
   /**
@@ -5937,10 +5801,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Comment
      */
     select?: CommentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Comment
-     */
-    omit?: CommentOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -6117,15 +5977,6 @@ export namespace Prisma {
     pin?: boolean | PinDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["like"]>
 
-  export type LikeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    pinId?: boolean
-    createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    pin?: boolean | PinDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["like"]>
-
   export type LikeSelectScalar = {
     id?: boolean
     userId?: boolean
@@ -6133,16 +5984,11 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type LikeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "pinId" | "createdAt", ExtArgs["result"]["like"]>
   export type LikeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     pin?: boolean | PinDefaultArgs<ExtArgs>
   }
   export type LikeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    pin?: boolean | PinDefaultArgs<ExtArgs>
-  }
-  export type LikeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     pin?: boolean | PinDefaultArgs<ExtArgs>
   }
@@ -6164,12 +6010,12 @@ export namespace Prisma {
 
   type LikeGetPayload<S extends boolean | null | undefined | LikeDefaultArgs> = $Result.GetResult<Prisma.$LikePayload, S>
 
-  type LikeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<LikeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type LikeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<LikeFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: LikeCountAggregateInputType | true
     }
 
-  export interface LikeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface LikeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Like'], meta: { name: 'Like' } }
     /**
      * Find zero or one Like that matches the filter.
@@ -6182,10 +6028,10 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends LikeFindUniqueArgs>(args: SelectSubset<T, LikeFindUniqueArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends LikeFindUniqueArgs>(args: SelectSubset<T, LikeFindUniqueArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Like that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Like that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {LikeFindUniqueOrThrowArgs} args - Arguments to find a Like
      * @example
@@ -6196,7 +6042,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends LikeFindUniqueOrThrowArgs>(args: SelectSubset<T, LikeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends LikeFindUniqueOrThrowArgs>(args: SelectSubset<T, LikeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
 
     /**
      * Find the first Like that matches the filter.
@@ -6211,7 +6057,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends LikeFindFirstArgs>(args?: SelectSubset<T, LikeFindFirstArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends LikeFindFirstArgs>(args?: SelectSubset<T, LikeFindFirstArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
 
     /**
      * Find the first Like that matches the filter or
@@ -6227,7 +6073,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends LikeFindFirstOrThrowArgs>(args?: SelectSubset<T, LikeFindFirstOrThrowArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends LikeFindFirstOrThrowArgs>(args?: SelectSubset<T, LikeFindFirstOrThrowArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
 
     /**
      * Find zero or more Likes that matches the filter.
@@ -6245,7 +6091,7 @@ export namespace Prisma {
      * const likeWithIdOnly = await prisma.like.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends LikeFindManyArgs>(args?: SelectSubset<T, LikeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends LikeFindManyArgs>(args?: SelectSubset<T, LikeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany">>
 
     /**
      * Create a Like.
@@ -6259,7 +6105,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends LikeCreateArgs>(args: SelectSubset<T, LikeCreateArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends LikeCreateArgs>(args: SelectSubset<T, LikeCreateArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "create">, never, ExtArgs>
 
     /**
      * Create many Likes.
@@ -6287,7 +6133,7 @@ export namespace Prisma {
      * })
      * 
      * // Create many Likes and only return the `id`
-     * const likeWithIdOnly = await prisma.like.createManyAndReturn({
+     * const likeWithIdOnly = await prisma.like.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -6297,7 +6143,7 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends LikeCreateManyAndReturnArgs>(args?: SelectSubset<T, LikeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends LikeCreateManyAndReturnArgs>(args?: SelectSubset<T, LikeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "createManyAndReturn">>
 
     /**
      * Delete a Like.
@@ -6311,7 +6157,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends LikeDeleteArgs>(args: SelectSubset<T, LikeDeleteArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends LikeDeleteArgs>(args: SelectSubset<T, LikeDeleteArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
     /**
      * Update one Like.
@@ -6328,7 +6174,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends LikeUpdateArgs>(args: SelectSubset<T, LikeUpdateArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends LikeUpdateArgs>(args: SelectSubset<T, LikeUpdateArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "update">, never, ExtArgs>
 
     /**
      * Delete zero or more Likes.
@@ -6364,36 +6210,6 @@ export namespace Prisma {
     updateMany<T extends LikeUpdateManyArgs>(args: SelectSubset<T, LikeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Likes and returns the data updated in the database.
-     * @param {LikeUpdateManyAndReturnArgs} args - Arguments to update many Likes.
-     * @example
-     * // Update many Likes
-     * const like = await prisma.like.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Likes and only return the `id`
-     * const likeWithIdOnly = await prisma.like.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends LikeUpdateManyAndReturnArgs>(args: SelectSubset<T, LikeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
      * Create or update one Like.
      * @param {LikeUpsertArgs} args - Arguments to update or create a Like.
      * @example
@@ -6410,7 +6226,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends LikeUpsertArgs>(args: SelectSubset<T, LikeUpsertArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends LikeUpsertArgs>(args: SelectSubset<T, LikeUpsertArgs<ExtArgs>>): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
 
 
     /**
@@ -6550,10 +6366,10 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__LikeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__LikeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    pin<T extends PinDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PinDefaultArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    pin<T extends PinDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PinDefaultArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6581,7 +6397,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Like model
-   */
+   */ 
   interface LikeFieldRefs {
     readonly id: FieldRef<"Like", 'String'>
     readonly userId: FieldRef<"Like", 'String'>
@@ -6599,10 +6415,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Like
      */
     select?: LikeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -6622,10 +6434,6 @@ export namespace Prisma {
      */
     select?: LikeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: LikeInclude<ExtArgs> | null
@@ -6643,10 +6451,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Like
      */
     select?: LikeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -6696,10 +6500,6 @@ export namespace Prisma {
      */
     select?: LikeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: LikeInclude<ExtArgs> | null
@@ -6748,10 +6548,6 @@ export namespace Prisma {
      */
     select?: LikeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: LikeInclude<ExtArgs> | null
@@ -6795,10 +6591,6 @@ export namespace Prisma {
      */
     select?: LikeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: LikeInclude<ExtArgs> | null
@@ -6827,10 +6619,6 @@ export namespace Prisma {
      */
     select?: LikeSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
-    /**
      * The data used to create many Likes.
      */
     data: LikeCreateManyInput | LikeCreateManyInput[]
@@ -6848,10 +6636,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Like
      */
     select?: LikeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -6878,40 +6662,6 @@ export namespace Prisma {
      * Filter which Likes to update
      */
     where?: LikeWhereInput
-    /**
-     * Limit how many Likes to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Like updateManyAndReturn
-   */
-  export type LikeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Like
-     */
-    select?: LikeSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
-    /**
-     * The data used to update Likes.
-     */
-    data: XOR<LikeUpdateManyMutationInput, LikeUncheckedUpdateManyInput>
-    /**
-     * Filter which Likes to update
-     */
-    where?: LikeWhereInput
-    /**
-     * Limit how many Likes to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LikeIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -6922,10 +6672,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Like
      */
     select?: LikeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -6953,10 +6699,6 @@ export namespace Prisma {
      */
     select?: LikeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: LikeInclude<ExtArgs> | null
@@ -6974,10 +6716,6 @@ export namespace Prisma {
      * Filter which Likes to delete
      */
     where?: LikeWhereInput
-    /**
-     * Limit how many Likes to delete.
-     */
-    limit?: number
   }
 
   /**
@@ -6989,13 +6727,1892 @@ export namespace Prisma {
      */
     select?: LikeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Like
-     */
-    omit?: LikeOmit<ExtArgs> | null
-    /**
      * Choose, which related nodes to fetch as well
      */
     include?: LikeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Save
+   */
+
+  export type AggregateSave = {
+    _count: SaveCountAggregateOutputType | null
+    _min: SaveMinAggregateOutputType | null
+    _max: SaveMaxAggregateOutputType | null
+  }
+
+  export type SaveMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    pinId: string | null
+    boardId: string | null
+    createdAt: Date | null
+  }
+
+  export type SaveMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    pinId: string | null
+    boardId: string | null
+    createdAt: Date | null
+  }
+
+  export type SaveCountAggregateOutputType = {
+    id: number
+    userId: number
+    pinId: number
+    boardId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SaveMinAggregateInputType = {
+    id?: true
+    userId?: true
+    pinId?: true
+    boardId?: true
+    createdAt?: true
+  }
+
+  export type SaveMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    pinId?: true
+    boardId?: true
+    createdAt?: true
+  }
+
+  export type SaveCountAggregateInputType = {
+    id?: true
+    userId?: true
+    pinId?: true
+    boardId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SaveAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Save to aggregate.
+     */
+    where?: SaveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Saves to fetch.
+     */
+    orderBy?: SaveOrderByWithRelationInput | SaveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SaveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Saves from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Saves.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Saves
+    **/
+    _count?: true | SaveCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SaveMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SaveMaxAggregateInputType
+  }
+
+  export type GetSaveAggregateType<T extends SaveAggregateArgs> = {
+        [P in keyof T & keyof AggregateSave]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSave[P]>
+      : GetScalarType<T[P], AggregateSave[P]>
+  }
+
+
+
+
+  export type SaveGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SaveWhereInput
+    orderBy?: SaveOrderByWithAggregationInput | SaveOrderByWithAggregationInput[]
+    by: SaveScalarFieldEnum[] | SaveScalarFieldEnum
+    having?: SaveScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SaveCountAggregateInputType | true
+    _min?: SaveMinAggregateInputType
+    _max?: SaveMaxAggregateInputType
+  }
+
+  export type SaveGroupByOutputType = {
+    id: string
+    userId: string
+    pinId: string
+    boardId: string | null
+    createdAt: Date
+    _count: SaveCountAggregateOutputType | null
+    _min: SaveMinAggregateOutputType | null
+    _max: SaveMaxAggregateOutputType | null
+  }
+
+  type GetSaveGroupByPayload<T extends SaveGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SaveGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SaveGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SaveGroupByOutputType[P]>
+            : GetScalarType<T[P], SaveGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SaveSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    pinId?: boolean
+    boardId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    pin?: boolean | PinDefaultArgs<ExtArgs>
+    board?: boolean | Save$boardArgs<ExtArgs>
+  }, ExtArgs["result"]["save"]>
+
+  export type SaveSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    pinId?: boolean
+    boardId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    pin?: boolean | PinDefaultArgs<ExtArgs>
+    board?: boolean | Save$boardArgs<ExtArgs>
+  }, ExtArgs["result"]["save"]>
+
+  export type SaveSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    pinId?: boolean
+    boardId?: boolean
+    createdAt?: boolean
+  }
+
+  export type SaveInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    pin?: boolean | PinDefaultArgs<ExtArgs>
+    board?: boolean | Save$boardArgs<ExtArgs>
+  }
+  export type SaveIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    pin?: boolean | PinDefaultArgs<ExtArgs>
+    board?: boolean | Save$boardArgs<ExtArgs>
+  }
+
+  export type $SavePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Save"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      pin: Prisma.$PinPayload<ExtArgs>
+      board: Prisma.$BoardPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      pinId: string
+      boardId: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["save"]>
+    composites: {}
+  }
+
+  type SaveGetPayload<S extends boolean | null | undefined | SaveDefaultArgs> = $Result.GetResult<Prisma.$SavePayload, S>
+
+  type SaveCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<SaveFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: SaveCountAggregateInputType | true
+    }
+
+  export interface SaveDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Save'], meta: { name: 'Save' } }
+    /**
+     * Find zero or one Save that matches the filter.
+     * @param {SaveFindUniqueArgs} args - Arguments to find a Save
+     * @example
+     * // Get one Save
+     * const save = await prisma.save.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SaveFindUniqueArgs>(args: SelectSubset<T, SaveFindUniqueArgs<ExtArgs>>): Prisma__SaveClient<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Save that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {SaveFindUniqueOrThrowArgs} args - Arguments to find a Save
+     * @example
+     * // Get one Save
+     * const save = await prisma.save.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SaveFindUniqueOrThrowArgs>(args: SelectSubset<T, SaveFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SaveClient<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Save that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaveFindFirstArgs} args - Arguments to find a Save
+     * @example
+     * // Get one Save
+     * const save = await prisma.save.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SaveFindFirstArgs>(args?: SelectSubset<T, SaveFindFirstArgs<ExtArgs>>): Prisma__SaveClient<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Save that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaveFindFirstOrThrowArgs} args - Arguments to find a Save
+     * @example
+     * // Get one Save
+     * const save = await prisma.save.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SaveFindFirstOrThrowArgs>(args?: SelectSubset<T, SaveFindFirstOrThrowArgs<ExtArgs>>): Prisma__SaveClient<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Saves that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaveFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Saves
+     * const saves = await prisma.save.findMany()
+     * 
+     * // Get first 10 Saves
+     * const saves = await prisma.save.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const saveWithIdOnly = await prisma.save.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SaveFindManyArgs>(args?: SelectSubset<T, SaveFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Save.
+     * @param {SaveCreateArgs} args - Arguments to create a Save.
+     * @example
+     * // Create one Save
+     * const Save = await prisma.save.create({
+     *   data: {
+     *     // ... data to create a Save
+     *   }
+     * })
+     * 
+     */
+    create<T extends SaveCreateArgs>(args: SelectSubset<T, SaveCreateArgs<ExtArgs>>): Prisma__SaveClient<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Saves.
+     * @param {SaveCreateManyArgs} args - Arguments to create many Saves.
+     * @example
+     * // Create many Saves
+     * const save = await prisma.save.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SaveCreateManyArgs>(args?: SelectSubset<T, SaveCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Saves and returns the data saved in the database.
+     * @param {SaveCreateManyAndReturnArgs} args - Arguments to create many Saves.
+     * @example
+     * // Create many Saves
+     * const save = await prisma.save.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Saves and only return the `id`
+     * const saveWithIdOnly = await prisma.save.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SaveCreateManyAndReturnArgs>(args?: SelectSubset<T, SaveCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Save.
+     * @param {SaveDeleteArgs} args - Arguments to delete one Save.
+     * @example
+     * // Delete one Save
+     * const Save = await prisma.save.delete({
+     *   where: {
+     *     // ... filter to delete one Save
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SaveDeleteArgs>(args: SelectSubset<T, SaveDeleteArgs<ExtArgs>>): Prisma__SaveClient<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Save.
+     * @param {SaveUpdateArgs} args - Arguments to update one Save.
+     * @example
+     * // Update one Save
+     * const save = await prisma.save.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SaveUpdateArgs>(args: SelectSubset<T, SaveUpdateArgs<ExtArgs>>): Prisma__SaveClient<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Saves.
+     * @param {SaveDeleteManyArgs} args - Arguments to filter Saves to delete.
+     * @example
+     * // Delete a few Saves
+     * const { count } = await prisma.save.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SaveDeleteManyArgs>(args?: SelectSubset<T, SaveDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Saves.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaveUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Saves
+     * const save = await prisma.save.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SaveUpdateManyArgs>(args: SelectSubset<T, SaveUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Save.
+     * @param {SaveUpsertArgs} args - Arguments to update or create a Save.
+     * @example
+     * // Update or create a Save
+     * const save = await prisma.save.upsert({
+     *   create: {
+     *     // ... data to create a Save
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Save we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SaveUpsertArgs>(args: SelectSubset<T, SaveUpsertArgs<ExtArgs>>): Prisma__SaveClient<$Result.GetResult<Prisma.$SavePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Saves.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaveCountArgs} args - Arguments to filter Saves to count.
+     * @example
+     * // Count the number of Saves
+     * const count = await prisma.save.count({
+     *   where: {
+     *     // ... the filter for the Saves we want to count
+     *   }
+     * })
+    **/
+    count<T extends SaveCountArgs>(
+      args?: Subset<T, SaveCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SaveCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Save.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaveAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SaveAggregateArgs>(args: Subset<T, SaveAggregateArgs>): Prisma.PrismaPromise<GetSaveAggregateType<T>>
+
+    /**
+     * Group by Save.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaveGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SaveGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SaveGroupByArgs['orderBy'] }
+        : { orderBy?: SaveGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SaveGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSaveGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Save model
+   */
+  readonly fields: SaveFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Save.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SaveClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    pin<T extends PinDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PinDefaultArgs<ExtArgs>>): Prisma__PinClient<$Result.GetResult<Prisma.$PinPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    board<T extends Save$boardArgs<ExtArgs> = {}>(args?: Subset<T, Save$boardArgs<ExtArgs>>): Prisma__BoardClient<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Save model
+   */ 
+  interface SaveFieldRefs {
+    readonly id: FieldRef<"Save", 'String'>
+    readonly userId: FieldRef<"Save", 'String'>
+    readonly pinId: FieldRef<"Save", 'String'>
+    readonly boardId: FieldRef<"Save", 'String'>
+    readonly createdAt: FieldRef<"Save", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Save findUnique
+   */
+  export type SaveFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    /**
+     * Filter, which Save to fetch.
+     */
+    where: SaveWhereUniqueInput
+  }
+
+  /**
+   * Save findUniqueOrThrow
+   */
+  export type SaveFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    /**
+     * Filter, which Save to fetch.
+     */
+    where: SaveWhereUniqueInput
+  }
+
+  /**
+   * Save findFirst
+   */
+  export type SaveFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    /**
+     * Filter, which Save to fetch.
+     */
+    where?: SaveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Saves to fetch.
+     */
+    orderBy?: SaveOrderByWithRelationInput | SaveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Saves.
+     */
+    cursor?: SaveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Saves from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Saves.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Saves.
+     */
+    distinct?: SaveScalarFieldEnum | SaveScalarFieldEnum[]
+  }
+
+  /**
+   * Save findFirstOrThrow
+   */
+  export type SaveFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    /**
+     * Filter, which Save to fetch.
+     */
+    where?: SaveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Saves to fetch.
+     */
+    orderBy?: SaveOrderByWithRelationInput | SaveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Saves.
+     */
+    cursor?: SaveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Saves from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Saves.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Saves.
+     */
+    distinct?: SaveScalarFieldEnum | SaveScalarFieldEnum[]
+  }
+
+  /**
+   * Save findMany
+   */
+  export type SaveFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    /**
+     * Filter, which Saves to fetch.
+     */
+    where?: SaveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Saves to fetch.
+     */
+    orderBy?: SaveOrderByWithRelationInput | SaveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Saves.
+     */
+    cursor?: SaveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Saves from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Saves.
+     */
+    skip?: number
+    distinct?: SaveScalarFieldEnum | SaveScalarFieldEnum[]
+  }
+
+  /**
+   * Save create
+   */
+  export type SaveCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Save.
+     */
+    data: XOR<SaveCreateInput, SaveUncheckedCreateInput>
+  }
+
+  /**
+   * Save createMany
+   */
+  export type SaveCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Saves.
+     */
+    data: SaveCreateManyInput | SaveCreateManyInput[]
+  }
+
+  /**
+   * Save createManyAndReturn
+   */
+  export type SaveCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Saves.
+     */
+    data: SaveCreateManyInput | SaveCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Save update
+   */
+  export type SaveUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Save.
+     */
+    data: XOR<SaveUpdateInput, SaveUncheckedUpdateInput>
+    /**
+     * Choose, which Save to update.
+     */
+    where: SaveWhereUniqueInput
+  }
+
+  /**
+   * Save updateMany
+   */
+  export type SaveUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Saves.
+     */
+    data: XOR<SaveUpdateManyMutationInput, SaveUncheckedUpdateManyInput>
+    /**
+     * Filter which Saves to update
+     */
+    where?: SaveWhereInput
+  }
+
+  /**
+   * Save upsert
+   */
+  export type SaveUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Save to update in case it exists.
+     */
+    where: SaveWhereUniqueInput
+    /**
+     * In case the Save found by the `where` argument doesn't exist, create a new Save with this data.
+     */
+    create: XOR<SaveCreateInput, SaveUncheckedCreateInput>
+    /**
+     * In case the Save was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SaveUpdateInput, SaveUncheckedUpdateInput>
+  }
+
+  /**
+   * Save delete
+   */
+  export type SaveDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+    /**
+     * Filter which Save to delete.
+     */
+    where: SaveWhereUniqueInput
+  }
+
+  /**
+   * Save deleteMany
+   */
+  export type SaveDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Saves to delete
+     */
+    where?: SaveWhereInput
+  }
+
+  /**
+   * Save.board
+   */
+  export type Save$boardArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Board
+     */
+    select?: BoardSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoardInclude<ExtArgs> | null
+    where?: BoardWhereInput
+  }
+
+  /**
+   * Save without action
+   */
+  export type SaveDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Save
+     */
+    select?: SaveSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaveInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Follow
+   */
+
+  export type AggregateFollow = {
+    _count: FollowCountAggregateOutputType | null
+    _min: FollowMinAggregateOutputType | null
+    _max: FollowMaxAggregateOutputType | null
+  }
+
+  export type FollowMinAggregateOutputType = {
+    id: string | null
+    followerId: string | null
+    followingId: string | null
+    createdAt: Date | null
+  }
+
+  export type FollowMaxAggregateOutputType = {
+    id: string | null
+    followerId: string | null
+    followingId: string | null
+    createdAt: Date | null
+  }
+
+  export type FollowCountAggregateOutputType = {
+    id: number
+    followerId: number
+    followingId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type FollowMinAggregateInputType = {
+    id?: true
+    followerId?: true
+    followingId?: true
+    createdAt?: true
+  }
+
+  export type FollowMaxAggregateInputType = {
+    id?: true
+    followerId?: true
+    followingId?: true
+    createdAt?: true
+  }
+
+  export type FollowCountAggregateInputType = {
+    id?: true
+    followerId?: true
+    followingId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type FollowAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Follow to aggregate.
+     */
+    where?: FollowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Follows to fetch.
+     */
+    orderBy?: FollowOrderByWithRelationInput | FollowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FollowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Follows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Follows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Follows
+    **/
+    _count?: true | FollowCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FollowMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FollowMaxAggregateInputType
+  }
+
+  export type GetFollowAggregateType<T extends FollowAggregateArgs> = {
+        [P in keyof T & keyof AggregateFollow]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFollow[P]>
+      : GetScalarType<T[P], AggregateFollow[P]>
+  }
+
+
+
+
+  export type FollowGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FollowWhereInput
+    orderBy?: FollowOrderByWithAggregationInput | FollowOrderByWithAggregationInput[]
+    by: FollowScalarFieldEnum[] | FollowScalarFieldEnum
+    having?: FollowScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FollowCountAggregateInputType | true
+    _min?: FollowMinAggregateInputType
+    _max?: FollowMaxAggregateInputType
+  }
+
+  export type FollowGroupByOutputType = {
+    id: string
+    followerId: string
+    followingId: string
+    createdAt: Date
+    _count: FollowCountAggregateOutputType | null
+    _min: FollowMinAggregateOutputType | null
+    _max: FollowMaxAggregateOutputType | null
+  }
+
+  type GetFollowGroupByPayload<T extends FollowGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FollowGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FollowGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FollowGroupByOutputType[P]>
+            : GetScalarType<T[P], FollowGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FollowSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    followerId?: boolean
+    followingId?: boolean
+    createdAt?: boolean
+    follower?: boolean | UserDefaultArgs<ExtArgs>
+    following?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["follow"]>
+
+  export type FollowSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    followerId?: boolean
+    followingId?: boolean
+    createdAt?: boolean
+    follower?: boolean | UserDefaultArgs<ExtArgs>
+    following?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["follow"]>
+
+  export type FollowSelectScalar = {
+    id?: boolean
+    followerId?: boolean
+    followingId?: boolean
+    createdAt?: boolean
+  }
+
+  export type FollowInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    follower?: boolean | UserDefaultArgs<ExtArgs>
+    following?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FollowIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    follower?: boolean | UserDefaultArgs<ExtArgs>
+    following?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $FollowPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Follow"
+    objects: {
+      follower: Prisma.$UserPayload<ExtArgs>
+      following: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      followerId: string
+      followingId: string
+      createdAt: Date
+    }, ExtArgs["result"]["follow"]>
+    composites: {}
+  }
+
+  type FollowGetPayload<S extends boolean | null | undefined | FollowDefaultArgs> = $Result.GetResult<Prisma.$FollowPayload, S>
+
+  type FollowCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<FollowFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: FollowCountAggregateInputType | true
+    }
+
+  export interface FollowDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Follow'], meta: { name: 'Follow' } }
+    /**
+     * Find zero or one Follow that matches the filter.
+     * @param {FollowFindUniqueArgs} args - Arguments to find a Follow
+     * @example
+     * // Get one Follow
+     * const follow = await prisma.follow.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FollowFindUniqueArgs>(args: SelectSubset<T, FollowFindUniqueArgs<ExtArgs>>): Prisma__FollowClient<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Follow that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {FollowFindUniqueOrThrowArgs} args - Arguments to find a Follow
+     * @example
+     * // Get one Follow
+     * const follow = await prisma.follow.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FollowFindUniqueOrThrowArgs>(args: SelectSubset<T, FollowFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FollowClient<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Follow that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowFindFirstArgs} args - Arguments to find a Follow
+     * @example
+     * // Get one Follow
+     * const follow = await prisma.follow.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FollowFindFirstArgs>(args?: SelectSubset<T, FollowFindFirstArgs<ExtArgs>>): Prisma__FollowClient<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Follow that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowFindFirstOrThrowArgs} args - Arguments to find a Follow
+     * @example
+     * // Get one Follow
+     * const follow = await prisma.follow.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FollowFindFirstOrThrowArgs>(args?: SelectSubset<T, FollowFindFirstOrThrowArgs<ExtArgs>>): Prisma__FollowClient<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Follows that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Follows
+     * const follows = await prisma.follow.findMany()
+     * 
+     * // Get first 10 Follows
+     * const follows = await prisma.follow.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const followWithIdOnly = await prisma.follow.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FollowFindManyArgs>(args?: SelectSubset<T, FollowFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Follow.
+     * @param {FollowCreateArgs} args - Arguments to create a Follow.
+     * @example
+     * // Create one Follow
+     * const Follow = await prisma.follow.create({
+     *   data: {
+     *     // ... data to create a Follow
+     *   }
+     * })
+     * 
+     */
+    create<T extends FollowCreateArgs>(args: SelectSubset<T, FollowCreateArgs<ExtArgs>>): Prisma__FollowClient<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Follows.
+     * @param {FollowCreateManyArgs} args - Arguments to create many Follows.
+     * @example
+     * // Create many Follows
+     * const follow = await prisma.follow.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FollowCreateManyArgs>(args?: SelectSubset<T, FollowCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Follows and returns the data saved in the database.
+     * @param {FollowCreateManyAndReturnArgs} args - Arguments to create many Follows.
+     * @example
+     * // Create many Follows
+     * const follow = await prisma.follow.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Follows and only return the `id`
+     * const followWithIdOnly = await prisma.follow.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FollowCreateManyAndReturnArgs>(args?: SelectSubset<T, FollowCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Follow.
+     * @param {FollowDeleteArgs} args - Arguments to delete one Follow.
+     * @example
+     * // Delete one Follow
+     * const Follow = await prisma.follow.delete({
+     *   where: {
+     *     // ... filter to delete one Follow
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FollowDeleteArgs>(args: SelectSubset<T, FollowDeleteArgs<ExtArgs>>): Prisma__FollowClient<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Follow.
+     * @param {FollowUpdateArgs} args - Arguments to update one Follow.
+     * @example
+     * // Update one Follow
+     * const follow = await prisma.follow.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FollowUpdateArgs>(args: SelectSubset<T, FollowUpdateArgs<ExtArgs>>): Prisma__FollowClient<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Follows.
+     * @param {FollowDeleteManyArgs} args - Arguments to filter Follows to delete.
+     * @example
+     * // Delete a few Follows
+     * const { count } = await prisma.follow.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FollowDeleteManyArgs>(args?: SelectSubset<T, FollowDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Follows.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Follows
+     * const follow = await prisma.follow.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FollowUpdateManyArgs>(args: SelectSubset<T, FollowUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Follow.
+     * @param {FollowUpsertArgs} args - Arguments to update or create a Follow.
+     * @example
+     * // Update or create a Follow
+     * const follow = await prisma.follow.upsert({
+     *   create: {
+     *     // ... data to create a Follow
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Follow we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FollowUpsertArgs>(args: SelectSubset<T, FollowUpsertArgs<ExtArgs>>): Prisma__FollowClient<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Follows.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowCountArgs} args - Arguments to filter Follows to count.
+     * @example
+     * // Count the number of Follows
+     * const count = await prisma.follow.count({
+     *   where: {
+     *     // ... the filter for the Follows we want to count
+     *   }
+     * })
+    **/
+    count<T extends FollowCountArgs>(
+      args?: Subset<T, FollowCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FollowCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Follow.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FollowAggregateArgs>(args: Subset<T, FollowAggregateArgs>): Prisma.PrismaPromise<GetFollowAggregateType<T>>
+
+    /**
+     * Group by Follow.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FollowGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FollowGroupByArgs['orderBy'] }
+        : { orderBy?: FollowGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FollowGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFollowGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Follow model
+   */
+  readonly fields: FollowFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Follow.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FollowClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    follower<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    following<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Follow model
+   */ 
+  interface FollowFieldRefs {
+    readonly id: FieldRef<"Follow", 'String'>
+    readonly followerId: FieldRef<"Follow", 'String'>
+    readonly followingId: FieldRef<"Follow", 'String'>
+    readonly createdAt: FieldRef<"Follow", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Follow findUnique
+   */
+  export type FollowFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    /**
+     * Filter, which Follow to fetch.
+     */
+    where: FollowWhereUniqueInput
+  }
+
+  /**
+   * Follow findUniqueOrThrow
+   */
+  export type FollowFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    /**
+     * Filter, which Follow to fetch.
+     */
+    where: FollowWhereUniqueInput
+  }
+
+  /**
+   * Follow findFirst
+   */
+  export type FollowFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    /**
+     * Filter, which Follow to fetch.
+     */
+    where?: FollowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Follows to fetch.
+     */
+    orderBy?: FollowOrderByWithRelationInput | FollowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Follows.
+     */
+    cursor?: FollowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Follows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Follows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Follows.
+     */
+    distinct?: FollowScalarFieldEnum | FollowScalarFieldEnum[]
+  }
+
+  /**
+   * Follow findFirstOrThrow
+   */
+  export type FollowFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    /**
+     * Filter, which Follow to fetch.
+     */
+    where?: FollowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Follows to fetch.
+     */
+    orderBy?: FollowOrderByWithRelationInput | FollowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Follows.
+     */
+    cursor?: FollowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Follows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Follows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Follows.
+     */
+    distinct?: FollowScalarFieldEnum | FollowScalarFieldEnum[]
+  }
+
+  /**
+   * Follow findMany
+   */
+  export type FollowFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    /**
+     * Filter, which Follows to fetch.
+     */
+    where?: FollowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Follows to fetch.
+     */
+    orderBy?: FollowOrderByWithRelationInput | FollowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Follows.
+     */
+    cursor?: FollowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Follows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Follows.
+     */
+    skip?: number
+    distinct?: FollowScalarFieldEnum | FollowScalarFieldEnum[]
+  }
+
+  /**
+   * Follow create
+   */
+  export type FollowCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Follow.
+     */
+    data: XOR<FollowCreateInput, FollowUncheckedCreateInput>
+  }
+
+  /**
+   * Follow createMany
+   */
+  export type FollowCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Follows.
+     */
+    data: FollowCreateManyInput | FollowCreateManyInput[]
+  }
+
+  /**
+   * Follow createManyAndReturn
+   */
+  export type FollowCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Follows.
+     */
+    data: FollowCreateManyInput | FollowCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Follow update
+   */
+  export type FollowUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Follow.
+     */
+    data: XOR<FollowUpdateInput, FollowUncheckedUpdateInput>
+    /**
+     * Choose, which Follow to update.
+     */
+    where: FollowWhereUniqueInput
+  }
+
+  /**
+   * Follow updateMany
+   */
+  export type FollowUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Follows.
+     */
+    data: XOR<FollowUpdateManyMutationInput, FollowUncheckedUpdateManyInput>
+    /**
+     * Filter which Follows to update
+     */
+    where?: FollowWhereInput
+  }
+
+  /**
+   * Follow upsert
+   */
+  export type FollowUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Follow to update in case it exists.
+     */
+    where: FollowWhereUniqueInput
+    /**
+     * In case the Follow found by the `where` argument doesn't exist, create a new Follow with this data.
+     */
+    create: XOR<FollowCreateInput, FollowUncheckedCreateInput>
+    /**
+     * In case the Follow was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FollowUpdateInput, FollowUncheckedUpdateInput>
+  }
+
+  /**
+   * Follow delete
+   */
+  export type FollowDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
+    /**
+     * Filter which Follow to delete.
+     */
+    where: FollowWhereUniqueInput
+  }
+
+  /**
+   * Follow deleteMany
+   */
+  export type FollowDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Follows to delete
+     */
+    where?: FollowWhereInput
+  }
+
+  /**
+   * Follow without action
+   */
+  export type FollowDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Follow
+     */
+    select?: FollowSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowInclude<ExtArgs> | null
   }
 
 
@@ -7017,6 +8634,7 @@ export namespace Prisma {
     username: 'username',
     password: 'password',
     avatar: 'avatar',
+    bio: 'bio',
     isGuest: 'isGuest',
     emailVerified: 'emailVerified',
     createdAt: 'createdAt',
@@ -7031,7 +8649,10 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     imageUrl: 'imageUrl',
+    imageWidth: 'imageWidth',
+    imageHeight: 'imageHeight',
     link: 'link',
+    tags: 'tags',
     userId: 'userId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -7045,6 +8666,7 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     isPrivate: 'isPrivate',
+    coverImage: 'coverImage',
     userId: 'userId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -7075,6 +8697,27 @@ export namespace Prisma {
   export type LikeScalarFieldEnum = (typeof LikeScalarFieldEnum)[keyof typeof LikeScalarFieldEnum]
 
 
+  export const SaveScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    pinId: 'pinId',
+    boardId: 'boardId',
+    createdAt: 'createdAt'
+  };
+
+  export type SaveScalarFieldEnum = (typeof SaveScalarFieldEnum)[keyof typeof SaveScalarFieldEnum]
+
+
+  export const FollowScalarFieldEnum: {
+    id: 'id',
+    followerId: 'followerId',
+    followingId: 'followingId',
+    createdAt: 'createdAt'
+  };
+
+  export type FollowScalarFieldEnum = (typeof FollowScalarFieldEnum)[keyof typeof FollowScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -7092,7 +8735,7 @@ export namespace Prisma {
 
 
   /**
-   * Field references
+   * Field references 
    */
 
 
@@ -7122,6 +8765,13 @@ export namespace Prisma {
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
   /**
    * Deep Input Types
    */
@@ -7137,6 +8787,7 @@ export namespace Prisma {
     username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     avatar?: StringNullableFilter<"User"> | string | null
+    bio?: StringNullableFilter<"User"> | string | null
     isGuest?: BoolFilter<"User"> | boolean
     emailVerified?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -7145,6 +8796,9 @@ export namespace Prisma {
     boards?: BoardListRelationFilter
     comments?: CommentListRelationFilter
     likes?: LikeListRelationFilter
+    saves?: SaveListRelationFilter
+    follows?: FollowListRelationFilter
+    followers?: FollowListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -7154,6 +8808,7 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     avatar?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
     isGuest?: SortOrder
     emailVerified?: SortOrder
     createdAt?: SortOrder
@@ -7162,6 +8817,9 @@ export namespace Prisma {
     boards?: BoardOrderByRelationAggregateInput
     comments?: CommentOrderByRelationAggregateInput
     likes?: LikeOrderByRelationAggregateInput
+    saves?: SaveOrderByRelationAggregateInput
+    follows?: FollowOrderByRelationAggregateInput
+    followers?: FollowOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7174,6 +8832,7 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     avatar?: StringNullableFilter<"User"> | string | null
+    bio?: StringNullableFilter<"User"> | string | null
     isGuest?: BoolFilter<"User"> | boolean
     emailVerified?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -7182,6 +8841,9 @@ export namespace Prisma {
     boards?: BoardListRelationFilter
     comments?: CommentListRelationFilter
     likes?: LikeListRelationFilter
+    saves?: SaveListRelationFilter
+    follows?: FollowListRelationFilter
+    followers?: FollowListRelationFilter
   }, "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -7191,6 +8853,7 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     avatar?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
     isGuest?: SortOrder
     emailVerified?: SortOrder
     createdAt?: SortOrder
@@ -7210,6 +8873,7 @@ export namespace Prisma {
     username?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
     avatar?: StringNullableWithAggregatesFilter<"User"> | string | null
+    bio?: StringNullableWithAggregatesFilter<"User"> | string | null
     isGuest?: BoolWithAggregatesFilter<"User"> | boolean
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -7224,14 +8888,18 @@ export namespace Prisma {
     title?: StringFilter<"Pin"> | string
     description?: StringNullableFilter<"Pin"> | string | null
     imageUrl?: StringFilter<"Pin"> | string
+    imageWidth?: IntNullableFilter<"Pin"> | number | null
+    imageHeight?: IntNullableFilter<"Pin"> | number | null
     link?: StringNullableFilter<"Pin"> | string | null
+    tags?: StringNullableFilter<"Pin"> | string | null
     userId?: StringFilter<"Pin"> | string
     createdAt?: DateTimeFilter<"Pin"> | Date | string
     updatedAt?: DateTimeFilter<"Pin"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
     boards?: BoardListRelationFilter
     comments?: CommentListRelationFilter
     likes?: LikeListRelationFilter
+    saves?: SaveListRelationFilter
   }
 
   export type PinOrderByWithRelationInput = {
@@ -7239,7 +8907,10 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     imageUrl?: SortOrder
+    imageWidth?: SortOrderInput | SortOrder
+    imageHeight?: SortOrderInput | SortOrder
     link?: SortOrderInput | SortOrder
+    tags?: SortOrderInput | SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7247,6 +8918,7 @@ export namespace Prisma {
     boards?: BoardOrderByRelationAggregateInput
     comments?: CommentOrderByRelationAggregateInput
     likes?: LikeOrderByRelationAggregateInput
+    saves?: SaveOrderByRelationAggregateInput
   }
 
   export type PinWhereUniqueInput = Prisma.AtLeast<{
@@ -7257,14 +8929,18 @@ export namespace Prisma {
     title?: StringFilter<"Pin"> | string
     description?: StringNullableFilter<"Pin"> | string | null
     imageUrl?: StringFilter<"Pin"> | string
+    imageWidth?: IntNullableFilter<"Pin"> | number | null
+    imageHeight?: IntNullableFilter<"Pin"> | number | null
     link?: StringNullableFilter<"Pin"> | string | null
+    tags?: StringNullableFilter<"Pin"> | string | null
     userId?: StringFilter<"Pin"> | string
     createdAt?: DateTimeFilter<"Pin"> | Date | string
     updatedAt?: DateTimeFilter<"Pin"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
     boards?: BoardListRelationFilter
     comments?: CommentListRelationFilter
     likes?: LikeListRelationFilter
+    saves?: SaveListRelationFilter
   }, "id">
 
   export type PinOrderByWithAggregationInput = {
@@ -7272,13 +8948,18 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     imageUrl?: SortOrder
+    imageWidth?: SortOrderInput | SortOrder
+    imageHeight?: SortOrderInput | SortOrder
     link?: SortOrderInput | SortOrder
+    tags?: SortOrderInput | SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PinCountOrderByAggregateInput
+    _avg?: PinAvgOrderByAggregateInput
     _max?: PinMaxOrderByAggregateInput
     _min?: PinMinOrderByAggregateInput
+    _sum?: PinSumOrderByAggregateInput
   }
 
   export type PinScalarWhereWithAggregatesInput = {
@@ -7289,7 +8970,10 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Pin"> | string
     description?: StringNullableWithAggregatesFilter<"Pin"> | string | null
     imageUrl?: StringWithAggregatesFilter<"Pin"> | string
+    imageWidth?: IntNullableWithAggregatesFilter<"Pin"> | number | null
+    imageHeight?: IntNullableWithAggregatesFilter<"Pin"> | number | null
     link?: StringNullableWithAggregatesFilter<"Pin"> | string | null
+    tags?: StringNullableWithAggregatesFilter<"Pin"> | string | null
     userId?: StringWithAggregatesFilter<"Pin"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Pin"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Pin"> | Date | string
@@ -7303,11 +8987,13 @@ export namespace Prisma {
     name?: StringFilter<"Board"> | string
     description?: StringNullableFilter<"Board"> | string | null
     isPrivate?: BoolFilter<"Board"> | boolean
+    coverImage?: StringNullableFilter<"Board"> | string | null
     userId?: StringFilter<"Board"> | string
     createdAt?: DateTimeFilter<"Board"> | Date | string
     updatedAt?: DateTimeFilter<"Board"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
     pins?: PinListRelationFilter
+    saves?: SaveListRelationFilter
   }
 
   export type BoardOrderByWithRelationInput = {
@@ -7315,11 +9001,13 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     isPrivate?: SortOrder
+    coverImage?: SortOrderInput | SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     pins?: PinOrderByRelationAggregateInput
+    saves?: SaveOrderByRelationAggregateInput
   }
 
   export type BoardWhereUniqueInput = Prisma.AtLeast<{
@@ -7330,11 +9018,13 @@ export namespace Prisma {
     name?: StringFilter<"Board"> | string
     description?: StringNullableFilter<"Board"> | string | null
     isPrivate?: BoolFilter<"Board"> | boolean
+    coverImage?: StringNullableFilter<"Board"> | string | null
     userId?: StringFilter<"Board"> | string
     createdAt?: DateTimeFilter<"Board"> | Date | string
     updatedAt?: DateTimeFilter<"Board"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
     pins?: PinListRelationFilter
+    saves?: SaveListRelationFilter
   }, "id">
 
   export type BoardOrderByWithAggregationInput = {
@@ -7342,6 +9032,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     isPrivate?: SortOrder
+    coverImage?: SortOrderInput | SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7358,6 +9049,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Board"> | string
     description?: StringNullableWithAggregatesFilter<"Board"> | string | null
     isPrivate?: BoolWithAggregatesFilter<"Board"> | boolean
+    coverImage?: StringNullableWithAggregatesFilter<"Board"> | string | null
     userId?: StringWithAggregatesFilter<"Board"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Board"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Board"> | Date | string
@@ -7373,8 +9065,8 @@ export namespace Prisma {
     pinId?: StringFilter<"Comment"> | string
     createdAt?: DateTimeFilter<"Comment"> | Date | string
     updatedAt?: DateTimeFilter<"Comment"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    pin?: XOR<PinScalarRelationFilter, PinWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    pin?: XOR<PinRelationFilter, PinWhereInput>
   }
 
   export type CommentOrderByWithRelationInput = {
@@ -7398,8 +9090,8 @@ export namespace Prisma {
     pinId?: StringFilter<"Comment"> | string
     createdAt?: DateTimeFilter<"Comment"> | Date | string
     updatedAt?: DateTimeFilter<"Comment"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    pin?: XOR<PinScalarRelationFilter, PinWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    pin?: XOR<PinRelationFilter, PinWhereInput>
   }, "id">
 
   export type CommentOrderByWithAggregationInput = {
@@ -7434,8 +9126,8 @@ export namespace Prisma {
     userId?: StringFilter<"Like"> | string
     pinId?: StringFilter<"Like"> | string
     createdAt?: DateTimeFilter<"Like"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    pin?: XOR<PinScalarRelationFilter, PinWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    pin?: XOR<PinRelationFilter, PinWhereInput>
   }
 
   export type LikeOrderByWithRelationInput = {
@@ -7456,8 +9148,8 @@ export namespace Prisma {
     userId?: StringFilter<"Like"> | string
     pinId?: StringFilter<"Like"> | string
     createdAt?: DateTimeFilter<"Like"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    pin?: XOR<PinScalarRelationFilter, PinWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    pin?: XOR<PinRelationFilter, PinWhereInput>
   }, "id" | "userId_pinId">
 
   export type LikeOrderByWithAggregationInput = {
@@ -7480,6 +9172,122 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Like"> | Date | string
   }
 
+  export type SaveWhereInput = {
+    AND?: SaveWhereInput | SaveWhereInput[]
+    OR?: SaveWhereInput[]
+    NOT?: SaveWhereInput | SaveWhereInput[]
+    id?: StringFilter<"Save"> | string
+    userId?: StringFilter<"Save"> | string
+    pinId?: StringFilter<"Save"> | string
+    boardId?: StringNullableFilter<"Save"> | string | null
+    createdAt?: DateTimeFilter<"Save"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    pin?: XOR<PinRelationFilter, PinWhereInput>
+    board?: XOR<BoardNullableRelationFilter, BoardWhereInput> | null
+  }
+
+  export type SaveOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    pinId?: SortOrder
+    boardId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    pin?: PinOrderByWithRelationInput
+    board?: BoardOrderByWithRelationInput
+  }
+
+  export type SaveWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_pinId?: SaveUserIdPinIdCompoundUniqueInput
+    AND?: SaveWhereInput | SaveWhereInput[]
+    OR?: SaveWhereInput[]
+    NOT?: SaveWhereInput | SaveWhereInput[]
+    userId?: StringFilter<"Save"> | string
+    pinId?: StringFilter<"Save"> | string
+    boardId?: StringNullableFilter<"Save"> | string | null
+    createdAt?: DateTimeFilter<"Save"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    pin?: XOR<PinRelationFilter, PinWhereInput>
+    board?: XOR<BoardNullableRelationFilter, BoardWhereInput> | null
+  }, "id" | "userId_pinId">
+
+  export type SaveOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    pinId?: SortOrder
+    boardId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: SaveCountOrderByAggregateInput
+    _max?: SaveMaxOrderByAggregateInput
+    _min?: SaveMinOrderByAggregateInput
+  }
+
+  export type SaveScalarWhereWithAggregatesInput = {
+    AND?: SaveScalarWhereWithAggregatesInput | SaveScalarWhereWithAggregatesInput[]
+    OR?: SaveScalarWhereWithAggregatesInput[]
+    NOT?: SaveScalarWhereWithAggregatesInput | SaveScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Save"> | string
+    userId?: StringWithAggregatesFilter<"Save"> | string
+    pinId?: StringWithAggregatesFilter<"Save"> | string
+    boardId?: StringNullableWithAggregatesFilter<"Save"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Save"> | Date | string
+  }
+
+  export type FollowWhereInput = {
+    AND?: FollowWhereInput | FollowWhereInput[]
+    OR?: FollowWhereInput[]
+    NOT?: FollowWhereInput | FollowWhereInput[]
+    id?: StringFilter<"Follow"> | string
+    followerId?: StringFilter<"Follow"> | string
+    followingId?: StringFilter<"Follow"> | string
+    createdAt?: DateTimeFilter<"Follow"> | Date | string
+    follower?: XOR<UserRelationFilter, UserWhereInput>
+    following?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type FollowOrderByWithRelationInput = {
+    id?: SortOrder
+    followerId?: SortOrder
+    followingId?: SortOrder
+    createdAt?: SortOrder
+    follower?: UserOrderByWithRelationInput
+    following?: UserOrderByWithRelationInput
+  }
+
+  export type FollowWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    followerId_followingId?: FollowFollowerIdFollowingIdCompoundUniqueInput
+    AND?: FollowWhereInput | FollowWhereInput[]
+    OR?: FollowWhereInput[]
+    NOT?: FollowWhereInput | FollowWhereInput[]
+    followerId?: StringFilter<"Follow"> | string
+    followingId?: StringFilter<"Follow"> | string
+    createdAt?: DateTimeFilter<"Follow"> | Date | string
+    follower?: XOR<UserRelationFilter, UserWhereInput>
+    following?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "followerId_followingId">
+
+  export type FollowOrderByWithAggregationInput = {
+    id?: SortOrder
+    followerId?: SortOrder
+    followingId?: SortOrder
+    createdAt?: SortOrder
+    _count?: FollowCountOrderByAggregateInput
+    _max?: FollowMaxOrderByAggregateInput
+    _min?: FollowMinOrderByAggregateInput
+  }
+
+  export type FollowScalarWhereWithAggregatesInput = {
+    AND?: FollowScalarWhereWithAggregatesInput | FollowScalarWhereWithAggregatesInput[]
+    OR?: FollowScalarWhereWithAggregatesInput[]
+    NOT?: FollowScalarWhereWithAggregatesInput | FollowScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Follow"> | string
+    followerId?: StringWithAggregatesFilter<"Follow"> | string
+    followingId?: StringWithAggregatesFilter<"Follow"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Follow"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -7487,6 +9295,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -7495,6 +9304,9 @@ export namespace Prisma {
     boards?: BoardCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    saves?: SaveCreateNestedManyWithoutUserInput
+    follows?: FollowCreateNestedManyWithoutFollowerInput
+    followers?: FollowCreateNestedManyWithoutFollowingInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7504,6 +9316,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -7512,6 +9325,9 @@ export namespace Prisma {
     boards?: BoardUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    saves?: SaveUncheckedCreateNestedManyWithoutUserInput
+    follows?: FollowUncheckedCreateNestedManyWithoutFollowerInput
+    followers?: FollowUncheckedCreateNestedManyWithoutFollowingInput
   }
 
   export type UserUpdateInput = {
@@ -7521,6 +9337,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7529,6 +9346,9 @@ export namespace Prisma {
     boards?: BoardUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    saves?: SaveUpdateManyWithoutUserNestedInput
+    follows?: FollowUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUpdateManyWithoutFollowingNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7538,6 +9358,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7546,6 +9367,9 @@ export namespace Prisma {
     boards?: BoardUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutUserNestedInput
+    follows?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7555,6 +9379,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -7568,6 +9393,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7581,6 +9407,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7592,13 +9419,17 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPinsInput
     boards?: BoardCreateNestedManyWithoutPinsInput
     comments?: CommentCreateNestedManyWithoutPinInput
     likes?: LikeCreateNestedManyWithoutPinInput
+    saves?: SaveCreateNestedManyWithoutPinInput
   }
 
   export type PinUncheckedCreateInput = {
@@ -7606,13 +9437,17 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     boards?: BoardUncheckedCreateNestedManyWithoutPinsInput
     comments?: CommentUncheckedCreateNestedManyWithoutPinInput
     likes?: LikeUncheckedCreateNestedManyWithoutPinInput
+    saves?: SaveUncheckedCreateNestedManyWithoutPinInput
   }
 
   export type PinUpdateInput = {
@@ -7620,13 +9455,17 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPinsNestedInput
     boards?: BoardUpdateManyWithoutPinsNestedInput
     comments?: CommentUpdateManyWithoutPinNestedInput
     likes?: LikeUpdateManyWithoutPinNestedInput
+    saves?: SaveUpdateManyWithoutPinNestedInput
   }
 
   export type PinUncheckedUpdateInput = {
@@ -7634,13 +9473,17 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     boards?: BoardUncheckedUpdateManyWithoutPinsNestedInput
     comments?: CommentUncheckedUpdateManyWithoutPinNestedInput
     likes?: LikeUncheckedUpdateManyWithoutPinNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutPinNestedInput
   }
 
   export type PinCreateManyInput = {
@@ -7648,7 +9491,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7659,7 +9505,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7669,7 +9518,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7680,10 +9532,12 @@ export namespace Prisma {
     name: string
     description?: string | null
     isPrivate?: boolean
+    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutBoardsInput
     pins?: PinCreateNestedManyWithoutBoardsInput
+    saves?: SaveCreateNestedManyWithoutBoardInput
   }
 
   export type BoardUncheckedCreateInput = {
@@ -7691,10 +9545,12 @@ export namespace Prisma {
     name: string
     description?: string | null
     isPrivate?: boolean
+    coverImage?: string | null
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     pins?: PinUncheckedCreateNestedManyWithoutBoardsInput
+    saves?: SaveUncheckedCreateNestedManyWithoutBoardInput
   }
 
   export type BoardUpdateInput = {
@@ -7702,10 +9558,12 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutBoardsNestedInput
     pins?: PinUpdateManyWithoutBoardsNestedInput
+    saves?: SaveUpdateManyWithoutBoardNestedInput
   }
 
   export type BoardUncheckedUpdateInput = {
@@ -7713,10 +9571,12 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pins?: PinUncheckedUpdateManyWithoutBoardsNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutBoardNestedInput
   }
 
   export type BoardCreateManyInput = {
@@ -7724,6 +9584,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     isPrivate?: boolean
+    coverImage?: string | null
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7734,6 +9595,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7743,6 +9605,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7856,6 +9719,106 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SaveCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSavesInput
+    pin: PinCreateNestedOneWithoutSavesInput
+    board?: BoardCreateNestedOneWithoutSavesInput
+  }
+
+  export type SaveUncheckedCreateInput = {
+    id?: string
+    userId: string
+    pinId: string
+    boardId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SaveUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSavesNestedInput
+    pin?: PinUpdateOneRequiredWithoutSavesNestedInput
+    board?: BoardUpdateOneWithoutSavesNestedInput
+  }
+
+  export type SaveUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    pinId?: StringFieldUpdateOperationsInput | string
+    boardId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaveCreateManyInput = {
+    id?: string
+    userId: string
+    pinId: string
+    boardId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SaveUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaveUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    pinId?: StringFieldUpdateOperationsInput | string
+    boardId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    follower: UserCreateNestedOneWithoutFollowsInput
+    following: UserCreateNestedOneWithoutFollowersInput
+  }
+
+  export type FollowUncheckedCreateInput = {
+    id?: string
+    followerId: string
+    followingId: string
+    createdAt?: Date | string
+  }
+
+  export type FollowUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    follower?: UserUpdateOneRequiredWithoutFollowsNestedInput
+    following?: UserUpdateOneRequiredWithoutFollowersNestedInput
+  }
+
+  export type FollowUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followerId?: StringFieldUpdateOperationsInput | string
+    followingId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowCreateManyInput = {
+    id?: string
+    followerId: string
+    followingId: string
+    createdAt?: Date | string
+  }
+
+  export type FollowUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followerId?: StringFieldUpdateOperationsInput | string
+    followingId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -7924,6 +9887,18 @@ export namespace Prisma {
     none?: LikeWhereInput
   }
 
+  export type SaveListRelationFilter = {
+    every?: SaveWhereInput
+    some?: SaveWhereInput
+    none?: SaveWhereInput
+  }
+
+  export type FollowListRelationFilter = {
+    every?: FollowWhereInput
+    some?: FollowWhereInput
+    none?: FollowWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -7945,6 +9920,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type SaveOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FollowOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -7952,6 +9935,7 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     avatar?: SortOrder
+    bio?: SortOrder
     isGuest?: SortOrder
     emailVerified?: SortOrder
     createdAt?: SortOrder
@@ -7965,6 +9949,7 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     avatar?: SortOrder
+    bio?: SortOrder
     isGuest?: SortOrder
     emailVerified?: SortOrder
     createdAt?: SortOrder
@@ -7978,6 +9963,7 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     avatar?: SortOrder
+    bio?: SortOrder
     isGuest?: SortOrder
     emailVerified?: SortOrder
     createdAt?: SortOrder
@@ -8040,7 +10026,18 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type UserScalarRelationFilter = {
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type UserRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
   }
@@ -8050,10 +10047,18 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     imageUrl?: SortOrder
+    imageWidth?: SortOrder
+    imageHeight?: SortOrder
     link?: SortOrder
+    tags?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PinAvgOrderByAggregateInput = {
+    imageWidth?: SortOrder
+    imageHeight?: SortOrder
   }
 
   export type PinMaxOrderByAggregateInput = {
@@ -8061,7 +10066,10 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     imageUrl?: SortOrder
+    imageWidth?: SortOrder
+    imageHeight?: SortOrder
     link?: SortOrder
+    tags?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8072,10 +10080,34 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     imageUrl?: SortOrder
+    imageWidth?: SortOrder
+    imageHeight?: SortOrder
     link?: SortOrder
+    tags?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PinSumOrderByAggregateInput = {
+    imageWidth?: SortOrder
+    imageHeight?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type BoardCountOrderByAggregateInput = {
@@ -8083,6 +10115,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     isPrivate?: SortOrder
+    coverImage?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8093,6 +10126,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     isPrivate?: SortOrder
+    coverImage?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8103,12 +10137,13 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     isPrivate?: SortOrder
+    coverImage?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type PinScalarRelationFilter = {
+  export type PinRelationFilter = {
     is?: PinWhereInput
     isNot?: PinWhereInput
   }
@@ -8166,6 +10201,66 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type BoardNullableRelationFilter = {
+    is?: BoardWhereInput | null
+    isNot?: BoardWhereInput | null
+  }
+
+  export type SaveUserIdPinIdCompoundUniqueInput = {
+    userId: string
+    pinId: string
+  }
+
+  export type SaveCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    pinId?: SortOrder
+    boardId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SaveMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    pinId?: SortOrder
+    boardId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SaveMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    pinId?: SortOrder
+    boardId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FollowFollowerIdFollowingIdCompoundUniqueInput = {
+    followerId: string
+    followingId: string
+  }
+
+  export type FollowCountOrderByAggregateInput = {
+    id?: SortOrder
+    followerId?: SortOrder
+    followingId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FollowMaxOrderByAggregateInput = {
+    id?: SortOrder
+    followerId?: SortOrder
+    followingId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FollowMinOrderByAggregateInput = {
+    id?: SortOrder
+    followerId?: SortOrder
+    followingId?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type PinCreateNestedManyWithoutUserInput = {
     create?: XOR<PinCreateWithoutUserInput, PinUncheckedCreateWithoutUserInput> | PinCreateWithoutUserInput[] | PinUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PinCreateOrConnectWithoutUserInput | PinCreateOrConnectWithoutUserInput[]
@@ -8194,6 +10289,27 @@ export namespace Prisma {
     connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
+  export type SaveCreateNestedManyWithoutUserInput = {
+    create?: XOR<SaveCreateWithoutUserInput, SaveUncheckedCreateWithoutUserInput> | SaveCreateWithoutUserInput[] | SaveUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutUserInput | SaveCreateOrConnectWithoutUserInput[]
+    createMany?: SaveCreateManyUserInputEnvelope
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+  }
+
+  export type FollowCreateNestedManyWithoutFollowerInput = {
+    create?: XOR<FollowCreateWithoutFollowerInput, FollowUncheckedCreateWithoutFollowerInput> | FollowCreateWithoutFollowerInput[] | FollowUncheckedCreateWithoutFollowerInput[]
+    connectOrCreate?: FollowCreateOrConnectWithoutFollowerInput | FollowCreateOrConnectWithoutFollowerInput[]
+    createMany?: FollowCreateManyFollowerInputEnvelope
+    connect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+  }
+
+  export type FollowCreateNestedManyWithoutFollowingInput = {
+    create?: XOR<FollowCreateWithoutFollowingInput, FollowUncheckedCreateWithoutFollowingInput> | FollowCreateWithoutFollowingInput[] | FollowUncheckedCreateWithoutFollowingInput[]
+    connectOrCreate?: FollowCreateOrConnectWithoutFollowingInput | FollowCreateOrConnectWithoutFollowingInput[]
+    createMany?: FollowCreateManyFollowingInputEnvelope
+    connect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+  }
+
   export type PinUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<PinCreateWithoutUserInput, PinUncheckedCreateWithoutUserInput> | PinCreateWithoutUserInput[] | PinUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PinCreateOrConnectWithoutUserInput | PinCreateOrConnectWithoutUserInput[]
@@ -8220,6 +10336,27 @@ export namespace Prisma {
     connectOrCreate?: LikeCreateOrConnectWithoutUserInput | LikeCreateOrConnectWithoutUserInput[]
     createMany?: LikeCreateManyUserInputEnvelope
     connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+  }
+
+  export type SaveUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SaveCreateWithoutUserInput, SaveUncheckedCreateWithoutUserInput> | SaveCreateWithoutUserInput[] | SaveUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutUserInput | SaveCreateOrConnectWithoutUserInput[]
+    createMany?: SaveCreateManyUserInputEnvelope
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+  }
+
+  export type FollowUncheckedCreateNestedManyWithoutFollowerInput = {
+    create?: XOR<FollowCreateWithoutFollowerInput, FollowUncheckedCreateWithoutFollowerInput> | FollowCreateWithoutFollowerInput[] | FollowUncheckedCreateWithoutFollowerInput[]
+    connectOrCreate?: FollowCreateOrConnectWithoutFollowerInput | FollowCreateOrConnectWithoutFollowerInput[]
+    createMany?: FollowCreateManyFollowerInputEnvelope
+    connect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+  }
+
+  export type FollowUncheckedCreateNestedManyWithoutFollowingInput = {
+    create?: XOR<FollowCreateWithoutFollowingInput, FollowUncheckedCreateWithoutFollowingInput> | FollowCreateWithoutFollowingInput[] | FollowUncheckedCreateWithoutFollowingInput[]
+    connectOrCreate?: FollowCreateOrConnectWithoutFollowingInput | FollowCreateOrConnectWithoutFollowingInput[]
+    createMany?: FollowCreateManyFollowingInputEnvelope
+    connect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8294,6 +10431,48 @@ export namespace Prisma {
     deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
+  export type SaveUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SaveCreateWithoutUserInput, SaveUncheckedCreateWithoutUserInput> | SaveCreateWithoutUserInput[] | SaveUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutUserInput | SaveCreateOrConnectWithoutUserInput[]
+    upsert?: SaveUpsertWithWhereUniqueWithoutUserInput | SaveUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SaveCreateManyUserInputEnvelope
+    set?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    disconnect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    delete?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    update?: SaveUpdateWithWhereUniqueWithoutUserInput | SaveUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SaveUpdateManyWithWhereWithoutUserInput | SaveUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SaveScalarWhereInput | SaveScalarWhereInput[]
+  }
+
+  export type FollowUpdateManyWithoutFollowerNestedInput = {
+    create?: XOR<FollowCreateWithoutFollowerInput, FollowUncheckedCreateWithoutFollowerInput> | FollowCreateWithoutFollowerInput[] | FollowUncheckedCreateWithoutFollowerInput[]
+    connectOrCreate?: FollowCreateOrConnectWithoutFollowerInput | FollowCreateOrConnectWithoutFollowerInput[]
+    upsert?: FollowUpsertWithWhereUniqueWithoutFollowerInput | FollowUpsertWithWhereUniqueWithoutFollowerInput[]
+    createMany?: FollowCreateManyFollowerInputEnvelope
+    set?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    disconnect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    delete?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    connect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    update?: FollowUpdateWithWhereUniqueWithoutFollowerInput | FollowUpdateWithWhereUniqueWithoutFollowerInput[]
+    updateMany?: FollowUpdateManyWithWhereWithoutFollowerInput | FollowUpdateManyWithWhereWithoutFollowerInput[]
+    deleteMany?: FollowScalarWhereInput | FollowScalarWhereInput[]
+  }
+
+  export type FollowUpdateManyWithoutFollowingNestedInput = {
+    create?: XOR<FollowCreateWithoutFollowingInput, FollowUncheckedCreateWithoutFollowingInput> | FollowCreateWithoutFollowingInput[] | FollowUncheckedCreateWithoutFollowingInput[]
+    connectOrCreate?: FollowCreateOrConnectWithoutFollowingInput | FollowCreateOrConnectWithoutFollowingInput[]
+    upsert?: FollowUpsertWithWhereUniqueWithoutFollowingInput | FollowUpsertWithWhereUniqueWithoutFollowingInput[]
+    createMany?: FollowCreateManyFollowingInputEnvelope
+    set?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    disconnect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    delete?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    connect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    update?: FollowUpdateWithWhereUniqueWithoutFollowingInput | FollowUpdateWithWhereUniqueWithoutFollowingInput[]
+    updateMany?: FollowUpdateManyWithWhereWithoutFollowingInput | FollowUpdateManyWithWhereWithoutFollowingInput[]
+    deleteMany?: FollowScalarWhereInput | FollowScalarWhereInput[]
+  }
+
   export type PinUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<PinCreateWithoutUserInput, PinUncheckedCreateWithoutUserInput> | PinCreateWithoutUserInput[] | PinUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PinCreateOrConnectWithoutUserInput | PinCreateOrConnectWithoutUserInput[]
@@ -8350,6 +10529,48 @@ export namespace Prisma {
     deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
+  export type SaveUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SaveCreateWithoutUserInput, SaveUncheckedCreateWithoutUserInput> | SaveCreateWithoutUserInput[] | SaveUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutUserInput | SaveCreateOrConnectWithoutUserInput[]
+    upsert?: SaveUpsertWithWhereUniqueWithoutUserInput | SaveUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SaveCreateManyUserInputEnvelope
+    set?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    disconnect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    delete?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    update?: SaveUpdateWithWhereUniqueWithoutUserInput | SaveUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SaveUpdateManyWithWhereWithoutUserInput | SaveUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SaveScalarWhereInput | SaveScalarWhereInput[]
+  }
+
+  export type FollowUncheckedUpdateManyWithoutFollowerNestedInput = {
+    create?: XOR<FollowCreateWithoutFollowerInput, FollowUncheckedCreateWithoutFollowerInput> | FollowCreateWithoutFollowerInput[] | FollowUncheckedCreateWithoutFollowerInput[]
+    connectOrCreate?: FollowCreateOrConnectWithoutFollowerInput | FollowCreateOrConnectWithoutFollowerInput[]
+    upsert?: FollowUpsertWithWhereUniqueWithoutFollowerInput | FollowUpsertWithWhereUniqueWithoutFollowerInput[]
+    createMany?: FollowCreateManyFollowerInputEnvelope
+    set?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    disconnect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    delete?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    connect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    update?: FollowUpdateWithWhereUniqueWithoutFollowerInput | FollowUpdateWithWhereUniqueWithoutFollowerInput[]
+    updateMany?: FollowUpdateManyWithWhereWithoutFollowerInput | FollowUpdateManyWithWhereWithoutFollowerInput[]
+    deleteMany?: FollowScalarWhereInput | FollowScalarWhereInput[]
+  }
+
+  export type FollowUncheckedUpdateManyWithoutFollowingNestedInput = {
+    create?: XOR<FollowCreateWithoutFollowingInput, FollowUncheckedCreateWithoutFollowingInput> | FollowCreateWithoutFollowingInput[] | FollowUncheckedCreateWithoutFollowingInput[]
+    connectOrCreate?: FollowCreateOrConnectWithoutFollowingInput | FollowCreateOrConnectWithoutFollowingInput[]
+    upsert?: FollowUpsertWithWhereUniqueWithoutFollowingInput | FollowUpsertWithWhereUniqueWithoutFollowingInput[]
+    createMany?: FollowCreateManyFollowingInputEnvelope
+    set?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    disconnect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    delete?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    connect?: FollowWhereUniqueInput | FollowWhereUniqueInput[]
+    update?: FollowUpdateWithWhereUniqueWithoutFollowingInput | FollowUpdateWithWhereUniqueWithoutFollowingInput[]
+    updateMany?: FollowUpdateManyWithWhereWithoutFollowingInput | FollowUpdateManyWithWhereWithoutFollowingInput[]
+    deleteMany?: FollowScalarWhereInput | FollowScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutPinsInput = {
     create?: XOR<UserCreateWithoutPinsInput, UserUncheckedCreateWithoutPinsInput>
     connectOrCreate?: UserCreateOrConnectWithoutPinsInput
@@ -8376,6 +10597,13 @@ export namespace Prisma {
     connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
+  export type SaveCreateNestedManyWithoutPinInput = {
+    create?: XOR<SaveCreateWithoutPinInput, SaveUncheckedCreateWithoutPinInput> | SaveCreateWithoutPinInput[] | SaveUncheckedCreateWithoutPinInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutPinInput | SaveCreateOrConnectWithoutPinInput[]
+    createMany?: SaveCreateManyPinInputEnvelope
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+  }
+
   export type BoardUncheckedCreateNestedManyWithoutPinsInput = {
     create?: XOR<BoardCreateWithoutPinsInput, BoardUncheckedCreateWithoutPinsInput> | BoardCreateWithoutPinsInput[] | BoardUncheckedCreateWithoutPinsInput[]
     connectOrCreate?: BoardCreateOrConnectWithoutPinsInput | BoardCreateOrConnectWithoutPinsInput[]
@@ -8394,6 +10622,21 @@ export namespace Prisma {
     connectOrCreate?: LikeCreateOrConnectWithoutPinInput | LikeCreateOrConnectWithoutPinInput[]
     createMany?: LikeCreateManyPinInputEnvelope
     connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+  }
+
+  export type SaveUncheckedCreateNestedManyWithoutPinInput = {
+    create?: XOR<SaveCreateWithoutPinInput, SaveUncheckedCreateWithoutPinInput> | SaveCreateWithoutPinInput[] | SaveUncheckedCreateWithoutPinInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutPinInput | SaveCreateOrConnectWithoutPinInput[]
+    createMany?: SaveCreateManyPinInputEnvelope
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutPinsNestedInput = {
@@ -8445,6 +10688,20 @@ export namespace Prisma {
     deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
+  export type SaveUpdateManyWithoutPinNestedInput = {
+    create?: XOR<SaveCreateWithoutPinInput, SaveUncheckedCreateWithoutPinInput> | SaveCreateWithoutPinInput[] | SaveUncheckedCreateWithoutPinInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutPinInput | SaveCreateOrConnectWithoutPinInput[]
+    upsert?: SaveUpsertWithWhereUniqueWithoutPinInput | SaveUpsertWithWhereUniqueWithoutPinInput[]
+    createMany?: SaveCreateManyPinInputEnvelope
+    set?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    disconnect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    delete?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    update?: SaveUpdateWithWhereUniqueWithoutPinInput | SaveUpdateWithWhereUniqueWithoutPinInput[]
+    updateMany?: SaveUpdateManyWithWhereWithoutPinInput | SaveUpdateManyWithWhereWithoutPinInput[]
+    deleteMany?: SaveScalarWhereInput | SaveScalarWhereInput[]
+  }
+
   export type BoardUncheckedUpdateManyWithoutPinsNestedInput = {
     create?: XOR<BoardCreateWithoutPinsInput, BoardUncheckedCreateWithoutPinsInput> | BoardCreateWithoutPinsInput[] | BoardUncheckedCreateWithoutPinsInput[]
     connectOrCreate?: BoardCreateOrConnectWithoutPinsInput | BoardCreateOrConnectWithoutPinsInput[]
@@ -8486,6 +10743,20 @@ export namespace Prisma {
     deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
+  export type SaveUncheckedUpdateManyWithoutPinNestedInput = {
+    create?: XOR<SaveCreateWithoutPinInput, SaveUncheckedCreateWithoutPinInput> | SaveCreateWithoutPinInput[] | SaveUncheckedCreateWithoutPinInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutPinInput | SaveCreateOrConnectWithoutPinInput[]
+    upsert?: SaveUpsertWithWhereUniqueWithoutPinInput | SaveUpsertWithWhereUniqueWithoutPinInput[]
+    createMany?: SaveCreateManyPinInputEnvelope
+    set?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    disconnect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    delete?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    update?: SaveUpdateWithWhereUniqueWithoutPinInput | SaveUpdateWithWhereUniqueWithoutPinInput[]
+    updateMany?: SaveUpdateManyWithWhereWithoutPinInput | SaveUpdateManyWithWhereWithoutPinInput[]
+    deleteMany?: SaveScalarWhereInput | SaveScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutBoardsInput = {
     create?: XOR<UserCreateWithoutBoardsInput, UserUncheckedCreateWithoutBoardsInput>
     connectOrCreate?: UserCreateOrConnectWithoutBoardsInput
@@ -8498,10 +10769,24 @@ export namespace Prisma {
     connect?: PinWhereUniqueInput | PinWhereUniqueInput[]
   }
 
+  export type SaveCreateNestedManyWithoutBoardInput = {
+    create?: XOR<SaveCreateWithoutBoardInput, SaveUncheckedCreateWithoutBoardInput> | SaveCreateWithoutBoardInput[] | SaveUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutBoardInput | SaveCreateOrConnectWithoutBoardInput[]
+    createMany?: SaveCreateManyBoardInputEnvelope
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+  }
+
   export type PinUncheckedCreateNestedManyWithoutBoardsInput = {
     create?: XOR<PinCreateWithoutBoardsInput, PinUncheckedCreateWithoutBoardsInput> | PinCreateWithoutBoardsInput[] | PinUncheckedCreateWithoutBoardsInput[]
     connectOrCreate?: PinCreateOrConnectWithoutBoardsInput | PinCreateOrConnectWithoutBoardsInput[]
     connect?: PinWhereUniqueInput | PinWhereUniqueInput[]
+  }
+
+  export type SaveUncheckedCreateNestedManyWithoutBoardInput = {
+    create?: XOR<SaveCreateWithoutBoardInput, SaveUncheckedCreateWithoutBoardInput> | SaveCreateWithoutBoardInput[] | SaveUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutBoardInput | SaveCreateOrConnectWithoutBoardInput[]
+    createMany?: SaveCreateManyBoardInputEnvelope
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutBoardsNestedInput = {
@@ -8525,6 +10810,20 @@ export namespace Prisma {
     deleteMany?: PinScalarWhereInput | PinScalarWhereInput[]
   }
 
+  export type SaveUpdateManyWithoutBoardNestedInput = {
+    create?: XOR<SaveCreateWithoutBoardInput, SaveUncheckedCreateWithoutBoardInput> | SaveCreateWithoutBoardInput[] | SaveUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutBoardInput | SaveCreateOrConnectWithoutBoardInput[]
+    upsert?: SaveUpsertWithWhereUniqueWithoutBoardInput | SaveUpsertWithWhereUniqueWithoutBoardInput[]
+    createMany?: SaveCreateManyBoardInputEnvelope
+    set?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    disconnect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    delete?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    update?: SaveUpdateWithWhereUniqueWithoutBoardInput | SaveUpdateWithWhereUniqueWithoutBoardInput[]
+    updateMany?: SaveUpdateManyWithWhereWithoutBoardInput | SaveUpdateManyWithWhereWithoutBoardInput[]
+    deleteMany?: SaveScalarWhereInput | SaveScalarWhereInput[]
+  }
+
   export type PinUncheckedUpdateManyWithoutBoardsNestedInput = {
     create?: XOR<PinCreateWithoutBoardsInput, PinUncheckedCreateWithoutBoardsInput> | PinCreateWithoutBoardsInput[] | PinUncheckedCreateWithoutBoardsInput[]
     connectOrCreate?: PinCreateOrConnectWithoutBoardsInput | PinCreateOrConnectWithoutBoardsInput[]
@@ -8536,6 +10835,20 @@ export namespace Prisma {
     update?: PinUpdateWithWhereUniqueWithoutBoardsInput | PinUpdateWithWhereUniqueWithoutBoardsInput[]
     updateMany?: PinUpdateManyWithWhereWithoutBoardsInput | PinUpdateManyWithWhereWithoutBoardsInput[]
     deleteMany?: PinScalarWhereInput | PinScalarWhereInput[]
+  }
+
+  export type SaveUncheckedUpdateManyWithoutBoardNestedInput = {
+    create?: XOR<SaveCreateWithoutBoardInput, SaveUncheckedCreateWithoutBoardInput> | SaveCreateWithoutBoardInput[] | SaveUncheckedCreateWithoutBoardInput[]
+    connectOrCreate?: SaveCreateOrConnectWithoutBoardInput | SaveCreateOrConnectWithoutBoardInput[]
+    upsert?: SaveUpsertWithWhereUniqueWithoutBoardInput | SaveUpsertWithWhereUniqueWithoutBoardInput[]
+    createMany?: SaveCreateManyBoardInputEnvelope
+    set?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    disconnect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    delete?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    connect?: SaveWhereUniqueInput | SaveWhereUniqueInput[]
+    update?: SaveUpdateWithWhereUniqueWithoutBoardInput | SaveUpdateWithWhereUniqueWithoutBoardInput[]
+    updateMany?: SaveUpdateManyWithWhereWithoutBoardInput | SaveUpdateManyWithWhereWithoutBoardInput[]
+    deleteMany?: SaveScalarWhereInput | SaveScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCommentsInput = {
@@ -8592,6 +10905,78 @@ export namespace Prisma {
     upsert?: PinUpsertWithoutLikesInput
     connect?: PinWhereUniqueInput
     update?: XOR<XOR<PinUpdateToOneWithWhereWithoutLikesInput, PinUpdateWithoutLikesInput>, PinUncheckedUpdateWithoutLikesInput>
+  }
+
+  export type UserCreateNestedOneWithoutSavesInput = {
+    create?: XOR<UserCreateWithoutSavesInput, UserUncheckedCreateWithoutSavesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSavesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PinCreateNestedOneWithoutSavesInput = {
+    create?: XOR<PinCreateWithoutSavesInput, PinUncheckedCreateWithoutSavesInput>
+    connectOrCreate?: PinCreateOrConnectWithoutSavesInput
+    connect?: PinWhereUniqueInput
+  }
+
+  export type BoardCreateNestedOneWithoutSavesInput = {
+    create?: XOR<BoardCreateWithoutSavesInput, BoardUncheckedCreateWithoutSavesInput>
+    connectOrCreate?: BoardCreateOrConnectWithoutSavesInput
+    connect?: BoardWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSavesNestedInput = {
+    create?: XOR<UserCreateWithoutSavesInput, UserUncheckedCreateWithoutSavesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSavesInput
+    upsert?: UserUpsertWithoutSavesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSavesInput, UserUpdateWithoutSavesInput>, UserUncheckedUpdateWithoutSavesInput>
+  }
+
+  export type PinUpdateOneRequiredWithoutSavesNestedInput = {
+    create?: XOR<PinCreateWithoutSavesInput, PinUncheckedCreateWithoutSavesInput>
+    connectOrCreate?: PinCreateOrConnectWithoutSavesInput
+    upsert?: PinUpsertWithoutSavesInput
+    connect?: PinWhereUniqueInput
+    update?: XOR<XOR<PinUpdateToOneWithWhereWithoutSavesInput, PinUpdateWithoutSavesInput>, PinUncheckedUpdateWithoutSavesInput>
+  }
+
+  export type BoardUpdateOneWithoutSavesNestedInput = {
+    create?: XOR<BoardCreateWithoutSavesInput, BoardUncheckedCreateWithoutSavesInput>
+    connectOrCreate?: BoardCreateOrConnectWithoutSavesInput
+    upsert?: BoardUpsertWithoutSavesInput
+    disconnect?: BoardWhereInput | boolean
+    delete?: BoardWhereInput | boolean
+    connect?: BoardWhereUniqueInput
+    update?: XOR<XOR<BoardUpdateToOneWithWhereWithoutSavesInput, BoardUpdateWithoutSavesInput>, BoardUncheckedUpdateWithoutSavesInput>
+  }
+
+  export type UserCreateNestedOneWithoutFollowsInput = {
+    create?: XOR<UserCreateWithoutFollowsInput, UserUncheckedCreateWithoutFollowsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFollowsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutFollowersInput = {
+    create?: XOR<UserCreateWithoutFollowersInput, UserUncheckedCreateWithoutFollowersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFollowersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFollowsNestedInput = {
+    create?: XOR<UserCreateWithoutFollowsInput, UserUncheckedCreateWithoutFollowsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFollowsInput
+    upsert?: UserUpsertWithoutFollowsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFollowsInput, UserUpdateWithoutFollowsInput>, UserUncheckedUpdateWithoutFollowsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutFollowersNestedInput = {
+    create?: XOR<UserCreateWithoutFollowersInput, UserUncheckedCreateWithoutFollowersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFollowersInput
+    upsert?: UserUpsertWithoutFollowersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFollowersInput, UserUpdateWithoutFollowersInput>, UserUncheckedUpdateWithoutFollowersInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8716,17 +11101,48 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type PinCreateWithoutUserInput = {
     id?: string
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     boards?: BoardCreateNestedManyWithoutPinsInput
     comments?: CommentCreateNestedManyWithoutPinInput
     likes?: LikeCreateNestedManyWithoutPinInput
+    saves?: SaveCreateNestedManyWithoutPinInput
   }
 
   export type PinUncheckedCreateWithoutUserInput = {
@@ -8734,12 +11150,16 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     boards?: BoardUncheckedCreateNestedManyWithoutPinsInput
     comments?: CommentUncheckedCreateNestedManyWithoutPinInput
     likes?: LikeUncheckedCreateNestedManyWithoutPinInput
+    saves?: SaveUncheckedCreateNestedManyWithoutPinInput
   }
 
   export type PinCreateOrConnectWithoutUserInput = {
@@ -8756,9 +11176,11 @@ export namespace Prisma {
     name: string
     description?: string | null
     isPrivate?: boolean
+    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     pins?: PinCreateNestedManyWithoutBoardsInput
+    saves?: SaveCreateNestedManyWithoutBoardInput
   }
 
   export type BoardUncheckedCreateWithoutUserInput = {
@@ -8766,9 +11188,11 @@ export namespace Prisma {
     name: string
     description?: string | null
     isPrivate?: boolean
+    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     pins?: PinUncheckedCreateNestedManyWithoutBoardsInput
+    saves?: SaveUncheckedCreateNestedManyWithoutBoardInput
   }
 
   export type BoardCreateOrConnectWithoutUserInput = {
@@ -8826,6 +11250,71 @@ export namespace Prisma {
     data: LikeCreateManyUserInput | LikeCreateManyUserInput[]
   }
 
+  export type SaveCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    pin: PinCreateNestedOneWithoutSavesInput
+    board?: BoardCreateNestedOneWithoutSavesInput
+  }
+
+  export type SaveUncheckedCreateWithoutUserInput = {
+    id?: string
+    pinId: string
+    boardId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SaveCreateOrConnectWithoutUserInput = {
+    where: SaveWhereUniqueInput
+    create: XOR<SaveCreateWithoutUserInput, SaveUncheckedCreateWithoutUserInput>
+  }
+
+  export type SaveCreateManyUserInputEnvelope = {
+    data: SaveCreateManyUserInput | SaveCreateManyUserInput[]
+  }
+
+  export type FollowCreateWithoutFollowerInput = {
+    id?: string
+    createdAt?: Date | string
+    following: UserCreateNestedOneWithoutFollowersInput
+  }
+
+  export type FollowUncheckedCreateWithoutFollowerInput = {
+    id?: string
+    followingId: string
+    createdAt?: Date | string
+  }
+
+  export type FollowCreateOrConnectWithoutFollowerInput = {
+    where: FollowWhereUniqueInput
+    create: XOR<FollowCreateWithoutFollowerInput, FollowUncheckedCreateWithoutFollowerInput>
+  }
+
+  export type FollowCreateManyFollowerInputEnvelope = {
+    data: FollowCreateManyFollowerInput | FollowCreateManyFollowerInput[]
+  }
+
+  export type FollowCreateWithoutFollowingInput = {
+    id?: string
+    createdAt?: Date | string
+    follower: UserCreateNestedOneWithoutFollowsInput
+  }
+
+  export type FollowUncheckedCreateWithoutFollowingInput = {
+    id?: string
+    followerId: string
+    createdAt?: Date | string
+  }
+
+  export type FollowCreateOrConnectWithoutFollowingInput = {
+    where: FollowWhereUniqueInput
+    create: XOR<FollowCreateWithoutFollowingInput, FollowUncheckedCreateWithoutFollowingInput>
+  }
+
+  export type FollowCreateManyFollowingInputEnvelope = {
+    data: FollowCreateManyFollowingInput | FollowCreateManyFollowingInput[]
+  }
+
   export type PinUpsertWithWhereUniqueWithoutUserInput = {
     where: PinWhereUniqueInput
     update: XOR<PinUpdateWithoutUserInput, PinUncheckedUpdateWithoutUserInput>
@@ -8850,7 +11339,10 @@ export namespace Prisma {
     title?: StringFilter<"Pin"> | string
     description?: StringNullableFilter<"Pin"> | string | null
     imageUrl?: StringFilter<"Pin"> | string
+    imageWidth?: IntNullableFilter<"Pin"> | number | null
+    imageHeight?: IntNullableFilter<"Pin"> | number | null
     link?: StringNullableFilter<"Pin"> | string | null
+    tags?: StringNullableFilter<"Pin"> | string | null
     userId?: StringFilter<"Pin"> | string
     createdAt?: DateTimeFilter<"Pin"> | Date | string
     updatedAt?: DateTimeFilter<"Pin"> | Date | string
@@ -8880,6 +11372,7 @@ export namespace Prisma {
     name?: StringFilter<"Board"> | string
     description?: StringNullableFilter<"Board"> | string | null
     isPrivate?: BoolFilter<"Board"> | boolean
+    coverImage?: StringNullableFilter<"Board"> | string | null
     userId?: StringFilter<"Board"> | string
     createdAt?: DateTimeFilter<"Board"> | Date | string
     updatedAt?: DateTimeFilter<"Board"> | Date | string
@@ -8939,6 +11432,75 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Like"> | Date | string
   }
 
+  export type SaveUpsertWithWhereUniqueWithoutUserInput = {
+    where: SaveWhereUniqueInput
+    update: XOR<SaveUpdateWithoutUserInput, SaveUncheckedUpdateWithoutUserInput>
+    create: XOR<SaveCreateWithoutUserInput, SaveUncheckedCreateWithoutUserInput>
+  }
+
+  export type SaveUpdateWithWhereUniqueWithoutUserInput = {
+    where: SaveWhereUniqueInput
+    data: XOR<SaveUpdateWithoutUserInput, SaveUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SaveUpdateManyWithWhereWithoutUserInput = {
+    where: SaveScalarWhereInput
+    data: XOR<SaveUpdateManyMutationInput, SaveUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SaveScalarWhereInput = {
+    AND?: SaveScalarWhereInput | SaveScalarWhereInput[]
+    OR?: SaveScalarWhereInput[]
+    NOT?: SaveScalarWhereInput | SaveScalarWhereInput[]
+    id?: StringFilter<"Save"> | string
+    userId?: StringFilter<"Save"> | string
+    pinId?: StringFilter<"Save"> | string
+    boardId?: StringNullableFilter<"Save"> | string | null
+    createdAt?: DateTimeFilter<"Save"> | Date | string
+  }
+
+  export type FollowUpsertWithWhereUniqueWithoutFollowerInput = {
+    where: FollowWhereUniqueInput
+    update: XOR<FollowUpdateWithoutFollowerInput, FollowUncheckedUpdateWithoutFollowerInput>
+    create: XOR<FollowCreateWithoutFollowerInput, FollowUncheckedCreateWithoutFollowerInput>
+  }
+
+  export type FollowUpdateWithWhereUniqueWithoutFollowerInput = {
+    where: FollowWhereUniqueInput
+    data: XOR<FollowUpdateWithoutFollowerInput, FollowUncheckedUpdateWithoutFollowerInput>
+  }
+
+  export type FollowUpdateManyWithWhereWithoutFollowerInput = {
+    where: FollowScalarWhereInput
+    data: XOR<FollowUpdateManyMutationInput, FollowUncheckedUpdateManyWithoutFollowerInput>
+  }
+
+  export type FollowScalarWhereInput = {
+    AND?: FollowScalarWhereInput | FollowScalarWhereInput[]
+    OR?: FollowScalarWhereInput[]
+    NOT?: FollowScalarWhereInput | FollowScalarWhereInput[]
+    id?: StringFilter<"Follow"> | string
+    followerId?: StringFilter<"Follow"> | string
+    followingId?: StringFilter<"Follow"> | string
+    createdAt?: DateTimeFilter<"Follow"> | Date | string
+  }
+
+  export type FollowUpsertWithWhereUniqueWithoutFollowingInput = {
+    where: FollowWhereUniqueInput
+    update: XOR<FollowUpdateWithoutFollowingInput, FollowUncheckedUpdateWithoutFollowingInput>
+    create: XOR<FollowCreateWithoutFollowingInput, FollowUncheckedCreateWithoutFollowingInput>
+  }
+
+  export type FollowUpdateWithWhereUniqueWithoutFollowingInput = {
+    where: FollowWhereUniqueInput
+    data: XOR<FollowUpdateWithoutFollowingInput, FollowUncheckedUpdateWithoutFollowingInput>
+  }
+
+  export type FollowUpdateManyWithWhereWithoutFollowingInput = {
+    where: FollowScalarWhereInput
+    data: XOR<FollowUpdateManyMutationInput, FollowUncheckedUpdateManyWithoutFollowingInput>
+  }
+
   export type UserCreateWithoutPinsInput = {
     id?: string
     name: string
@@ -8946,6 +11508,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -8953,6 +11516,9 @@ export namespace Prisma {
     boards?: BoardCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    saves?: SaveCreateNestedManyWithoutUserInput
+    follows?: FollowCreateNestedManyWithoutFollowerInput
+    followers?: FollowCreateNestedManyWithoutFollowingInput
   }
 
   export type UserUncheckedCreateWithoutPinsInput = {
@@ -8962,6 +11528,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -8969,6 +11536,9 @@ export namespace Prisma {
     boards?: BoardUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    saves?: SaveUncheckedCreateNestedManyWithoutUserInput
+    follows?: FollowUncheckedCreateNestedManyWithoutFollowerInput
+    followers?: FollowUncheckedCreateNestedManyWithoutFollowingInput
   }
 
   export type UserCreateOrConnectWithoutPinsInput = {
@@ -8981,9 +11551,11 @@ export namespace Prisma {
     name: string
     description?: string | null
     isPrivate?: boolean
+    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutBoardsInput
+    saves?: SaveCreateNestedManyWithoutBoardInput
   }
 
   export type BoardUncheckedCreateWithoutPinsInput = {
@@ -8991,9 +11563,11 @@ export namespace Prisma {
     name: string
     description?: string | null
     isPrivate?: boolean
+    coverImage?: string | null
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    saves?: SaveUncheckedCreateNestedManyWithoutBoardInput
   }
 
   export type BoardCreateOrConnectWithoutPinsInput = {
@@ -9047,6 +11621,29 @@ export namespace Prisma {
     data: LikeCreateManyPinInput | LikeCreateManyPinInput[]
   }
 
+  export type SaveCreateWithoutPinInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSavesInput
+    board?: BoardCreateNestedOneWithoutSavesInput
+  }
+
+  export type SaveUncheckedCreateWithoutPinInput = {
+    id?: string
+    userId: string
+    boardId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SaveCreateOrConnectWithoutPinInput = {
+    where: SaveWhereUniqueInput
+    create: XOR<SaveCreateWithoutPinInput, SaveUncheckedCreateWithoutPinInput>
+  }
+
+  export type SaveCreateManyPinInputEnvelope = {
+    data: SaveCreateManyPinInput | SaveCreateManyPinInput[]
+  }
+
   export type UserUpsertWithoutPinsInput = {
     update: XOR<UserUpdateWithoutPinsInput, UserUncheckedUpdateWithoutPinsInput>
     create: XOR<UserCreateWithoutPinsInput, UserUncheckedCreateWithoutPinsInput>
@@ -9065,6 +11662,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9072,6 +11670,9 @@ export namespace Prisma {
     boards?: BoardUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    saves?: SaveUpdateManyWithoutUserNestedInput
+    follows?: FollowUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUpdateManyWithoutFollowingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPinsInput = {
@@ -9081,6 +11682,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9088,6 +11690,9 @@ export namespace Prisma {
     boards?: BoardUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutUserNestedInput
+    follows?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
   }
 
   export type BoardUpsertWithWhereUniqueWithoutPinsInput = {
@@ -9138,6 +11743,22 @@ export namespace Prisma {
     data: XOR<LikeUpdateManyMutationInput, LikeUncheckedUpdateManyWithoutPinInput>
   }
 
+  export type SaveUpsertWithWhereUniqueWithoutPinInput = {
+    where: SaveWhereUniqueInput
+    update: XOR<SaveUpdateWithoutPinInput, SaveUncheckedUpdateWithoutPinInput>
+    create: XOR<SaveCreateWithoutPinInput, SaveUncheckedCreateWithoutPinInput>
+  }
+
+  export type SaveUpdateWithWhereUniqueWithoutPinInput = {
+    where: SaveWhereUniqueInput
+    data: XOR<SaveUpdateWithoutPinInput, SaveUncheckedUpdateWithoutPinInput>
+  }
+
+  export type SaveUpdateManyWithWhereWithoutPinInput = {
+    where: SaveScalarWhereInput
+    data: XOR<SaveUpdateManyMutationInput, SaveUncheckedUpdateManyWithoutPinInput>
+  }
+
   export type UserCreateWithoutBoardsInput = {
     id?: string
     name: string
@@ -9145,6 +11766,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -9152,6 +11774,9 @@ export namespace Prisma {
     pins?: PinCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    saves?: SaveCreateNestedManyWithoutUserInput
+    follows?: FollowCreateNestedManyWithoutFollowerInput
+    followers?: FollowCreateNestedManyWithoutFollowingInput
   }
 
   export type UserUncheckedCreateWithoutBoardsInput = {
@@ -9161,6 +11786,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -9168,6 +11794,9 @@ export namespace Prisma {
     pins?: PinUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    saves?: SaveUncheckedCreateNestedManyWithoutUserInput
+    follows?: FollowUncheckedCreateNestedManyWithoutFollowerInput
+    followers?: FollowUncheckedCreateNestedManyWithoutFollowingInput
   }
 
   export type UserCreateOrConnectWithoutBoardsInput = {
@@ -9180,12 +11809,16 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPinsInput
     comments?: CommentCreateNestedManyWithoutPinInput
     likes?: LikeCreateNestedManyWithoutPinInput
+    saves?: SaveCreateNestedManyWithoutPinInput
   }
 
   export type PinUncheckedCreateWithoutBoardsInput = {
@@ -9193,17 +11826,44 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     comments?: CommentUncheckedCreateNestedManyWithoutPinInput
     likes?: LikeUncheckedCreateNestedManyWithoutPinInput
+    saves?: SaveUncheckedCreateNestedManyWithoutPinInput
   }
 
   export type PinCreateOrConnectWithoutBoardsInput = {
     where: PinWhereUniqueInput
     create: XOR<PinCreateWithoutBoardsInput, PinUncheckedCreateWithoutBoardsInput>
+  }
+
+  export type SaveCreateWithoutBoardInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSavesInput
+    pin: PinCreateNestedOneWithoutSavesInput
+  }
+
+  export type SaveUncheckedCreateWithoutBoardInput = {
+    id?: string
+    userId: string
+    pinId: string
+    createdAt?: Date | string
+  }
+
+  export type SaveCreateOrConnectWithoutBoardInput = {
+    where: SaveWhereUniqueInput
+    create: XOR<SaveCreateWithoutBoardInput, SaveUncheckedCreateWithoutBoardInput>
+  }
+
+  export type SaveCreateManyBoardInputEnvelope = {
+    data: SaveCreateManyBoardInput | SaveCreateManyBoardInput[]
   }
 
   export type UserUpsertWithoutBoardsInput = {
@@ -9224,6 +11884,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9231,6 +11892,9 @@ export namespace Prisma {
     pins?: PinUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    saves?: SaveUpdateManyWithoutUserNestedInput
+    follows?: FollowUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUpdateManyWithoutFollowingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBoardsInput = {
@@ -9240,6 +11904,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9247,6 +11912,9 @@ export namespace Prisma {
     pins?: PinUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutUserNestedInput
+    follows?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
   }
 
   export type PinUpsertWithWhereUniqueWithoutBoardsInput = {
@@ -9265,6 +11933,22 @@ export namespace Prisma {
     data: XOR<PinUpdateManyMutationInput, PinUncheckedUpdateManyWithoutBoardsInput>
   }
 
+  export type SaveUpsertWithWhereUniqueWithoutBoardInput = {
+    where: SaveWhereUniqueInput
+    update: XOR<SaveUpdateWithoutBoardInput, SaveUncheckedUpdateWithoutBoardInput>
+    create: XOR<SaveCreateWithoutBoardInput, SaveUncheckedCreateWithoutBoardInput>
+  }
+
+  export type SaveUpdateWithWhereUniqueWithoutBoardInput = {
+    where: SaveWhereUniqueInput
+    data: XOR<SaveUpdateWithoutBoardInput, SaveUncheckedUpdateWithoutBoardInput>
+  }
+
+  export type SaveUpdateManyWithWhereWithoutBoardInput = {
+    where: SaveScalarWhereInput
+    data: XOR<SaveUpdateManyMutationInput, SaveUncheckedUpdateManyWithoutBoardInput>
+  }
+
   export type UserCreateWithoutCommentsInput = {
     id?: string
     name: string
@@ -9272,6 +11956,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -9279,6 +11964,9 @@ export namespace Prisma {
     pins?: PinCreateNestedManyWithoutUserInput
     boards?: BoardCreateNestedManyWithoutUserInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    saves?: SaveCreateNestedManyWithoutUserInput
+    follows?: FollowCreateNestedManyWithoutFollowerInput
+    followers?: FollowCreateNestedManyWithoutFollowingInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
@@ -9288,6 +11976,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -9295,6 +11984,9 @@ export namespace Prisma {
     pins?: PinUncheckedCreateNestedManyWithoutUserInput
     boards?: BoardUncheckedCreateNestedManyWithoutUserInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    saves?: SaveUncheckedCreateNestedManyWithoutUserInput
+    follows?: FollowUncheckedCreateNestedManyWithoutFollowerInput
+    followers?: FollowUncheckedCreateNestedManyWithoutFollowingInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -9307,12 +11999,16 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPinsInput
     boards?: BoardCreateNestedManyWithoutPinsInput
     likes?: LikeCreateNestedManyWithoutPinInput
+    saves?: SaveCreateNestedManyWithoutPinInput
   }
 
   export type PinUncheckedCreateWithoutCommentsInput = {
@@ -9320,12 +12016,16 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     boards?: BoardUncheckedCreateNestedManyWithoutPinsInput
     likes?: LikeUncheckedCreateNestedManyWithoutPinInput
+    saves?: SaveUncheckedCreateNestedManyWithoutPinInput
   }
 
   export type PinCreateOrConnectWithoutCommentsInput = {
@@ -9351,6 +12051,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9358,6 +12059,9 @@ export namespace Prisma {
     pins?: PinUpdateManyWithoutUserNestedInput
     boards?: BoardUpdateManyWithoutUserNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    saves?: SaveUpdateManyWithoutUserNestedInput
+    follows?: FollowUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUpdateManyWithoutFollowingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -9367,6 +12071,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9374,6 +12079,9 @@ export namespace Prisma {
     pins?: PinUncheckedUpdateManyWithoutUserNestedInput
     boards?: BoardUncheckedUpdateManyWithoutUserNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutUserNestedInput
+    follows?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
   }
 
   export type PinUpsertWithoutCommentsInput = {
@@ -9392,12 +12100,16 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPinsNestedInput
     boards?: BoardUpdateManyWithoutPinsNestedInput
     likes?: LikeUpdateManyWithoutPinNestedInput
+    saves?: SaveUpdateManyWithoutPinNestedInput
   }
 
   export type PinUncheckedUpdateWithoutCommentsInput = {
@@ -9405,12 +12117,16 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     boards?: BoardUncheckedUpdateManyWithoutPinsNestedInput
     likes?: LikeUncheckedUpdateManyWithoutPinNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutPinNestedInput
   }
 
   export type UserCreateWithoutLikesInput = {
@@ -9420,6 +12136,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -9427,6 +12144,9 @@ export namespace Prisma {
     pins?: PinCreateNestedManyWithoutUserInput
     boards?: BoardCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
+    saves?: SaveCreateNestedManyWithoutUserInput
+    follows?: FollowCreateNestedManyWithoutFollowerInput
+    followers?: FollowCreateNestedManyWithoutFollowingInput
   }
 
   export type UserUncheckedCreateWithoutLikesInput = {
@@ -9436,6 +12156,7 @@ export namespace Prisma {
     username: string
     password: string
     avatar?: string | null
+    bio?: string | null
     isGuest?: boolean
     emailVerified?: boolean
     createdAt?: Date | string
@@ -9443,6 +12164,9 @@ export namespace Prisma {
     pins?: PinUncheckedCreateNestedManyWithoutUserInput
     boards?: BoardUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    saves?: SaveUncheckedCreateNestedManyWithoutUserInput
+    follows?: FollowUncheckedCreateNestedManyWithoutFollowerInput
+    followers?: FollowUncheckedCreateNestedManyWithoutFollowingInput
   }
 
   export type UserCreateOrConnectWithoutLikesInput = {
@@ -9455,12 +12179,16 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPinsInput
     boards?: BoardCreateNestedManyWithoutPinsInput
     comments?: CommentCreateNestedManyWithoutPinInput
+    saves?: SaveCreateNestedManyWithoutPinInput
   }
 
   export type PinUncheckedCreateWithoutLikesInput = {
@@ -9468,12 +12196,16 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     boards?: BoardUncheckedCreateNestedManyWithoutPinsInput
     comments?: CommentUncheckedCreateNestedManyWithoutPinInput
+    saves?: SaveUncheckedCreateNestedManyWithoutPinInput
   }
 
   export type PinCreateOrConnectWithoutLikesInput = {
@@ -9499,6 +12231,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9506,6 +12239,9 @@ export namespace Prisma {
     pins?: PinUpdateManyWithoutUserNestedInput
     boards?: BoardUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
+    saves?: SaveUpdateManyWithoutUserNestedInput
+    follows?: FollowUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUpdateManyWithoutFollowingNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLikesInput = {
@@ -9515,6 +12251,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     isGuest?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9522,6 +12259,9 @@ export namespace Prisma {
     pins?: PinUncheckedUpdateManyWithoutUserNestedInput
     boards?: BoardUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutUserNestedInput
+    follows?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
   }
 
   export type PinUpsertWithoutLikesInput = {
@@ -9540,12 +12280,16 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPinsNestedInput
     boards?: BoardUpdateManyWithoutPinsNestedInput
     comments?: CommentUpdateManyWithoutPinNestedInput
+    saves?: SaveUpdateManyWithoutPinNestedInput
   }
 
   export type PinUncheckedUpdateWithoutLikesInput = {
@@ -9553,12 +12297,452 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     boards?: BoardUncheckedUpdateManyWithoutPinsNestedInput
     comments?: CommentUncheckedUpdateManyWithoutPinNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutPinNestedInput
+  }
+
+  export type UserCreateWithoutSavesInput = {
+    id?: string
+    name: string
+    email: string
+    username: string
+    password: string
+    avatar?: string | null
+    bio?: string | null
+    isGuest?: boolean
+    emailVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pins?: PinCreateNestedManyWithoutUserInput
+    boards?: BoardCreateNestedManyWithoutUserInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    likes?: LikeCreateNestedManyWithoutUserInput
+    follows?: FollowCreateNestedManyWithoutFollowerInput
+    followers?: FollowCreateNestedManyWithoutFollowingInput
+  }
+
+  export type UserUncheckedCreateWithoutSavesInput = {
+    id?: string
+    name: string
+    email: string
+    username: string
+    password: string
+    avatar?: string | null
+    bio?: string | null
+    isGuest?: boolean
+    emailVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pins?: PinUncheckedCreateNestedManyWithoutUserInput
+    boards?: BoardUncheckedCreateNestedManyWithoutUserInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    follows?: FollowUncheckedCreateNestedManyWithoutFollowerInput
+    followers?: FollowUncheckedCreateNestedManyWithoutFollowingInput
+  }
+
+  export type UserCreateOrConnectWithoutSavesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSavesInput, UserUncheckedCreateWithoutSavesInput>
+  }
+
+  export type PinCreateWithoutSavesInput = {
+    id?: string
+    title: string
+    description?: string | null
+    imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
+    link?: string | null
+    tags?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutPinsInput
+    boards?: BoardCreateNestedManyWithoutPinsInput
+    comments?: CommentCreateNestedManyWithoutPinInput
+    likes?: LikeCreateNestedManyWithoutPinInput
+  }
+
+  export type PinUncheckedCreateWithoutSavesInput = {
+    id?: string
+    title: string
+    description?: string | null
+    imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
+    link?: string | null
+    tags?: string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    boards?: BoardUncheckedCreateNestedManyWithoutPinsInput
+    comments?: CommentUncheckedCreateNestedManyWithoutPinInput
+    likes?: LikeUncheckedCreateNestedManyWithoutPinInput
+  }
+
+  export type PinCreateOrConnectWithoutSavesInput = {
+    where: PinWhereUniqueInput
+    create: XOR<PinCreateWithoutSavesInput, PinUncheckedCreateWithoutSavesInput>
+  }
+
+  export type BoardCreateWithoutSavesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isPrivate?: boolean
+    coverImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutBoardsInput
+    pins?: PinCreateNestedManyWithoutBoardsInput
+  }
+
+  export type BoardUncheckedCreateWithoutSavesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isPrivate?: boolean
+    coverImage?: string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pins?: PinUncheckedCreateNestedManyWithoutBoardsInput
+  }
+
+  export type BoardCreateOrConnectWithoutSavesInput = {
+    where: BoardWhereUniqueInput
+    create: XOR<BoardCreateWithoutSavesInput, BoardUncheckedCreateWithoutSavesInput>
+  }
+
+  export type UserUpsertWithoutSavesInput = {
+    update: XOR<UserUpdateWithoutSavesInput, UserUncheckedUpdateWithoutSavesInput>
+    create: XOR<UserCreateWithoutSavesInput, UserUncheckedCreateWithoutSavesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSavesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSavesInput, UserUncheckedUpdateWithoutSavesInput>
+  }
+
+  export type UserUpdateWithoutSavesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    isGuest?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pins?: PinUpdateManyWithoutUserNestedInput
+    boards?: BoardUpdateManyWithoutUserNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    likes?: LikeUpdateManyWithoutUserNestedInput
+    follows?: FollowUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUpdateManyWithoutFollowingNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSavesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    isGuest?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pins?: PinUncheckedUpdateManyWithoutUserNestedInput
+    boards?: BoardUncheckedUpdateManyWithoutUserNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    follows?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
+    followers?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  }
+
+  export type PinUpsertWithoutSavesInput = {
+    update: XOR<PinUpdateWithoutSavesInput, PinUncheckedUpdateWithoutSavesInput>
+    create: XOR<PinCreateWithoutSavesInput, PinUncheckedCreateWithoutSavesInput>
+    where?: PinWhereInput
+  }
+
+  export type PinUpdateToOneWithWhereWithoutSavesInput = {
+    where?: PinWhereInput
+    data: XOR<PinUpdateWithoutSavesInput, PinUncheckedUpdateWithoutSavesInput>
+  }
+
+  export type PinUpdateWithoutSavesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPinsNestedInput
+    boards?: BoardUpdateManyWithoutPinsNestedInput
+    comments?: CommentUpdateManyWithoutPinNestedInput
+    likes?: LikeUpdateManyWithoutPinNestedInput
+  }
+
+  export type PinUncheckedUpdateWithoutSavesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    boards?: BoardUncheckedUpdateManyWithoutPinsNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutPinNestedInput
+    likes?: LikeUncheckedUpdateManyWithoutPinNestedInput
+  }
+
+  export type BoardUpsertWithoutSavesInput = {
+    update: XOR<BoardUpdateWithoutSavesInput, BoardUncheckedUpdateWithoutSavesInput>
+    create: XOR<BoardCreateWithoutSavesInput, BoardUncheckedCreateWithoutSavesInput>
+    where?: BoardWhereInput
+  }
+
+  export type BoardUpdateToOneWithWhereWithoutSavesInput = {
+    where?: BoardWhereInput
+    data: XOR<BoardUpdateWithoutSavesInput, BoardUncheckedUpdateWithoutSavesInput>
+  }
+
+  export type BoardUpdateWithoutSavesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutBoardsNestedInput
+    pins?: PinUpdateManyWithoutBoardsNestedInput
+  }
+
+  export type BoardUncheckedUpdateWithoutSavesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pins?: PinUncheckedUpdateManyWithoutBoardsNestedInput
+  }
+
+  export type UserCreateWithoutFollowsInput = {
+    id?: string
+    name: string
+    email: string
+    username: string
+    password: string
+    avatar?: string | null
+    bio?: string | null
+    isGuest?: boolean
+    emailVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pins?: PinCreateNestedManyWithoutUserInput
+    boards?: BoardCreateNestedManyWithoutUserInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    likes?: LikeCreateNestedManyWithoutUserInput
+    saves?: SaveCreateNestedManyWithoutUserInput
+    followers?: FollowCreateNestedManyWithoutFollowingInput
+  }
+
+  export type UserUncheckedCreateWithoutFollowsInput = {
+    id?: string
+    name: string
+    email: string
+    username: string
+    password: string
+    avatar?: string | null
+    bio?: string | null
+    isGuest?: boolean
+    emailVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pins?: PinUncheckedCreateNestedManyWithoutUserInput
+    boards?: BoardUncheckedCreateNestedManyWithoutUserInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    saves?: SaveUncheckedCreateNestedManyWithoutUserInput
+    followers?: FollowUncheckedCreateNestedManyWithoutFollowingInput
+  }
+
+  export type UserCreateOrConnectWithoutFollowsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFollowsInput, UserUncheckedCreateWithoutFollowsInput>
+  }
+
+  export type UserCreateWithoutFollowersInput = {
+    id?: string
+    name: string
+    email: string
+    username: string
+    password: string
+    avatar?: string | null
+    bio?: string | null
+    isGuest?: boolean
+    emailVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pins?: PinCreateNestedManyWithoutUserInput
+    boards?: BoardCreateNestedManyWithoutUserInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    likes?: LikeCreateNestedManyWithoutUserInput
+    saves?: SaveCreateNestedManyWithoutUserInput
+    follows?: FollowCreateNestedManyWithoutFollowerInput
+  }
+
+  export type UserUncheckedCreateWithoutFollowersInput = {
+    id?: string
+    name: string
+    email: string
+    username: string
+    password: string
+    avatar?: string | null
+    bio?: string | null
+    isGuest?: boolean
+    emailVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pins?: PinUncheckedCreateNestedManyWithoutUserInput
+    boards?: BoardUncheckedCreateNestedManyWithoutUserInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    saves?: SaveUncheckedCreateNestedManyWithoutUserInput
+    follows?: FollowUncheckedCreateNestedManyWithoutFollowerInput
+  }
+
+  export type UserCreateOrConnectWithoutFollowersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFollowersInput, UserUncheckedCreateWithoutFollowersInput>
+  }
+
+  export type UserUpsertWithoutFollowsInput = {
+    update: XOR<UserUpdateWithoutFollowsInput, UserUncheckedUpdateWithoutFollowsInput>
+    create: XOR<UserCreateWithoutFollowsInput, UserUncheckedCreateWithoutFollowsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFollowsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFollowsInput, UserUncheckedUpdateWithoutFollowsInput>
+  }
+
+  export type UserUpdateWithoutFollowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    isGuest?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pins?: PinUpdateManyWithoutUserNestedInput
+    boards?: BoardUpdateManyWithoutUserNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    likes?: LikeUpdateManyWithoutUserNestedInput
+    saves?: SaveUpdateManyWithoutUserNestedInput
+    followers?: FollowUpdateManyWithoutFollowingNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFollowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    isGuest?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pins?: PinUncheckedUpdateManyWithoutUserNestedInput
+    boards?: BoardUncheckedUpdateManyWithoutUserNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutUserNestedInput
+    followers?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  }
+
+  export type UserUpsertWithoutFollowersInput = {
+    update: XOR<UserUpdateWithoutFollowersInput, UserUncheckedUpdateWithoutFollowersInput>
+    create: XOR<UserCreateWithoutFollowersInput, UserUncheckedCreateWithoutFollowersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFollowersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFollowersInput, UserUncheckedUpdateWithoutFollowersInput>
+  }
+
+  export type UserUpdateWithoutFollowersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    isGuest?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pins?: PinUpdateManyWithoutUserNestedInput
+    boards?: BoardUpdateManyWithoutUserNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    likes?: LikeUpdateManyWithoutUserNestedInput
+    saves?: SaveUpdateManyWithoutUserNestedInput
+    follows?: FollowUpdateManyWithoutFollowerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFollowersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    isGuest?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pins?: PinUncheckedUpdateManyWithoutUserNestedInput
+    boards?: BoardUncheckedUpdateManyWithoutUserNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutUserNestedInput
+    follows?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
   }
 
   export type PinCreateManyUserInput = {
@@ -9566,7 +12750,10 @@ export namespace Prisma {
     title: string
     description?: string | null
     imageUrl: string
+    imageWidth?: number | null
+    imageHeight?: number | null
     link?: string | null
+    tags?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9576,6 +12763,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     isPrivate?: boolean
+    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9594,17 +12782,40 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type SaveCreateManyUserInput = {
+    id?: string
+    pinId: string
+    boardId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type FollowCreateManyFollowerInput = {
+    id?: string
+    followingId: string
+    createdAt?: Date | string
+  }
+
+  export type FollowCreateManyFollowingInput = {
+    id?: string
+    followerId: string
+    createdAt?: Date | string
+  }
+
   export type PinUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     boards?: BoardUpdateManyWithoutPinsNestedInput
     comments?: CommentUpdateManyWithoutPinNestedInput
     likes?: LikeUpdateManyWithoutPinNestedInput
+    saves?: SaveUpdateManyWithoutPinNestedInput
   }
 
   export type PinUncheckedUpdateWithoutUserInput = {
@@ -9612,12 +12823,16 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     boards?: BoardUncheckedUpdateManyWithoutPinsNestedInput
     comments?: CommentUncheckedUpdateManyWithoutPinNestedInput
     likes?: LikeUncheckedUpdateManyWithoutPinNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutPinNestedInput
   }
 
   export type PinUncheckedUpdateManyWithoutUserInput = {
@@ -9625,7 +12840,10 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9635,9 +12853,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pins?: PinUpdateManyWithoutBoardsNestedInput
+    saves?: SaveUpdateManyWithoutBoardNestedInput
   }
 
   export type BoardUncheckedUpdateWithoutUserInput = {
@@ -9645,9 +12865,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pins?: PinUncheckedUpdateManyWithoutBoardsNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutBoardNestedInput
   }
 
   export type BoardUncheckedUpdateManyWithoutUserInput = {
@@ -9655,6 +12877,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9701,6 +12924,63 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SaveUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pin?: PinUpdateOneRequiredWithoutSavesNestedInput
+    board?: BoardUpdateOneWithoutSavesNestedInput
+  }
+
+  export type SaveUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pinId?: StringFieldUpdateOperationsInput | string
+    boardId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaveUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pinId?: StringFieldUpdateOperationsInput | string
+    boardId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUpdateWithoutFollowerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    following?: UserUpdateOneRequiredWithoutFollowersNestedInput
+  }
+
+  export type FollowUncheckedUpdateWithoutFollowerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followingId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUncheckedUpdateManyWithoutFollowerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followingId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUpdateWithoutFollowingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    follower?: UserUpdateOneRequiredWithoutFollowsNestedInput
+  }
+
+  export type FollowUncheckedUpdateWithoutFollowingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUncheckedUpdateManyWithoutFollowingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CommentCreateManyPinInput = {
     id?: string
     content: string
@@ -9715,14 +12995,23 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type SaveCreateManyPinInput = {
+    id?: string
+    userId: string
+    boardId?: string | null
+    createdAt?: Date | string
+  }
+
   export type BoardUpdateWithoutPinsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutBoardsNestedInput
+    saves?: SaveUpdateManyWithoutBoardNestedInput
   }
 
   export type BoardUncheckedUpdateWithoutPinsInput = {
@@ -9730,9 +13019,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    saves?: SaveUncheckedUpdateManyWithoutBoardNestedInput
   }
 
   export type BoardUncheckedUpdateManyWithoutPinsInput = {
@@ -9740,6 +13031,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9787,17 +13079,49 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SaveUpdateWithoutPinInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSavesNestedInput
+    board?: BoardUpdateOneWithoutSavesNestedInput
+  }
+
+  export type SaveUncheckedUpdateWithoutPinInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    boardId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaveUncheckedUpdateManyWithoutPinInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    boardId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaveCreateManyBoardInput = {
+    id?: string
+    userId: string
+    pinId: string
+    createdAt?: Date | string
+  }
+
   export type PinUpdateWithoutBoardsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPinsNestedInput
     comments?: CommentUpdateManyWithoutPinNestedInput
     likes?: LikeUpdateManyWithoutPinNestedInput
+    saves?: SaveUpdateManyWithoutPinNestedInput
   }
 
   export type PinUncheckedUpdateWithoutBoardsInput = {
@@ -9805,12 +13129,16 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUncheckedUpdateManyWithoutPinNestedInput
     likes?: LikeUncheckedUpdateManyWithoutPinNestedInput
+    saves?: SaveUncheckedUpdateManyWithoutPinNestedInput
   }
 
   export type PinUncheckedUpdateManyWithoutBoardsInput = {
@@ -9818,13 +13146,81 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: StringFieldUpdateOperationsInput | string
+    imageWidth?: NullableIntFieldUpdateOperationsInput | number | null
+    imageHeight?: NullableIntFieldUpdateOperationsInput | number | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SaveUpdateWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSavesNestedInput
+    pin?: PinUpdateOneRequiredWithoutSavesNestedInput
+  }
 
+  export type SaveUncheckedUpdateWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    pinId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaveUncheckedUpdateManyWithoutBoardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    pinId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+
+
+  /**
+   * Aliases for legacy arg types
+   */
+    /**
+     * @deprecated Use UserCountOutputTypeDefaultArgs instead
+     */
+    export type UserCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PinCountOutputTypeDefaultArgs instead
+     */
+    export type PinCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PinCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use BoardCountOutputTypeDefaultArgs instead
+     */
+    export type BoardCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = BoardCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use UserDefaultArgs instead
+     */
+    export type UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PinDefaultArgs instead
+     */
+    export type PinArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PinDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use BoardDefaultArgs instead
+     */
+    export type BoardArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = BoardDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use CommentDefaultArgs instead
+     */
+    export type CommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CommentDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use LikeDefaultArgs instead
+     */
+    export type LikeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = LikeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use SaveDefaultArgs instead
+     */
+    export type SaveArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SaveDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use FollowDefaultArgs instead
+     */
+    export type FollowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = FollowDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

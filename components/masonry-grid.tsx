@@ -25,21 +25,23 @@ export function MasonryGrid({ pins }: MasonryGridProps) {
     return () => window.removeEventListener("resize", updateColumns)
   }, [])
 
-  // Distribute pins across columns
+  // Distribute pins across columns with better spacing
   const columnPins: Pin[][] = Array.from({ length: columns }, () => [])
   pins.forEach((pin, index) => {
     columnPins[index % columns].push(pin)
   })
 
   return (
-    <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
-      {columnPins.map((columnPinList, columnIndex) => (
-        <div key={columnIndex} className="flex flex-col gap-4">
-          {columnPinList.map((pin) => (
-            <PinCard key={pin.id} pin={pin} />
-          ))}
-        </div>
-      ))}
+    <div className="max-w-7xl mx-auto px-4">
+      <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
+        {columnPins.map((columnPinList, columnIndex) => (
+          <div key={columnIndex} className="flex flex-col gap-4">
+            {columnPinList.map((pin) => (
+              <PinCard key={pin.id} pin={pin} />
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

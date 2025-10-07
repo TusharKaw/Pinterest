@@ -50,13 +50,38 @@ export function PinDetailNew({ pinId, onClose }: PinDetailNewProps) {
 
   // Load pin data
   useEffect(() => {
-    const foundPin = mockPins.find((p) => p.id === pinId)
-    if (foundPin) {
-      setPin(foundPin)
-      // Smarter related pins selection similar to Pinterest experience
-      const related = findRelatedPins(foundPin, mockPins, 12)
-      setRelatedPins(related)
+    const fetchPin = async () => {
+      try {
+        const response = await fetch(`/api/pins/${pinId}`)
+        if (response.ok) {
+          const data = await response.json()
+          setPin({
+            id: data.id,
+            title: data.title,
+            description: data.description,
+            imageUrl: data.imageUrl,
+            imageWidth: data.imageWidth,
+            imageHeight: data.imageHeight,
+            link: data.link,
+            tags: data.tags,
+            userId: data.userId,
+            userName: data.userName,
+            userAvatar: data.userAvatar,
+            likes: data.likes,
+            comments: data.comments,
+            saves: data.saves,
+            createdAt: data.createdAt
+          })
+          setRelatedPins(data.relatedPins)
+        } else {
+          console.error('Failed to fetch pin:', response.statusText)
+        }
+      } catch (error) {
+        console.error('Error fetching pin:', error)
+      }
     }
+
+    fetchPin()
   }, [pinId])
 
   const handleDownload = async () => {

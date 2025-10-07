@@ -12,20 +12,26 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String   @id @default(uuid())
   name          String
-  email         String    @unique
-  username      String    @unique
+  email         String   @unique
+  username      String   @unique
   password      String
   avatar        String?
-  isGuest       Boolean   @default(false)
-  emailVerified Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  pins          Pin[]
-  boards        Board[]
-  comments      Comment[]
-  likes         Like[]
+  bio           String?
+  isGuest       Boolean  @default(false)
+  emailVerified Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  pins      Pin[]
+  boards    Board[]
+  comments  Comment[]
+  likes     Like[]
+  saves     Save[]
+  follows   Follow[]  @relation("UserFollows")
+  followers Follow[]  @relation("UserFollowers")
 }
 
 model Pin {
@@ -33,12 +39,16 @@ model Pin {
   title       String
   description String?
   imageUrl    String
+  imageWidth  Int?
+  imageHeight Int?
   link        String?
+  tags        String?
   userId      String
   user        User      @relation(fields: [userId], references: [id])
   boards      Board[]   @relation("PinsOnBoards")
   comments    Comment[]
   likes       Like[]
+  saves       Save[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -48,9 +58,11 @@ model Board {
   name        String
   description String?
   isPrivate   Boolean  @default(false)
+  coverImage  String?
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   pins        Pin[]    @relation("PinsOnBoards")
+  saves       Save[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -75,4 +87,28 @@ model Like {
   createdAt DateTime @default(now())
 
   @@unique([userId, pinId])
+}
+
+model Save {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  pinId     String
+  pin       Pin      @relation(fields: [pinId], references: [id])
+  boardId   String?
+  board     Board?   @relation(fields: [boardId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, pinId])
+}
+
+model Follow {
+  id          String   @id @default(uuid())
+  followerId  String
+  follower    User     @relation("UserFollows", fields: [followerId], references: [id])
+  followingId String
+  following   User     @relation("UserFollowers", fields: [followingId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
 }

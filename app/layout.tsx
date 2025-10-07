@@ -1,9 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
-import { AuthProvider } from "@/components/auth-provider"
-import { NotificationProvider } from "@/contexts/notification-context"
-import { Suspense } from "react"
+import { Providers } from "@/components/providers"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -30,13 +28,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <body className="font-sans">
-        <Suspense fallback={null}>
-          <AuthProvider>
-            <NotificationProvider>
-              {children}
-            </NotificationProvider>
-          </AuthProvider>
-        </Suspense>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )

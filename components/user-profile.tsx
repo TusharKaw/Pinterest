@@ -12,6 +12,7 @@ import { MasonryGrid } from "./masonry-grid"
 import type { Pin, Board } from "@/lib/types"
 import { useFollow } from "@/hooks/use-social"
 import { Card, CardContent } from "./ui/card"
+import { EditProfileDialog } from "./edit-profile-dialog"
 
 interface UserProfileProps {
   username: string
@@ -33,55 +34,38 @@ export function UserProfile({ username }: UserProfileProps) {
   const [profileUser, setProfileUser] = useState<ProfileUser | null>(null)
   const [pins, setPins] = useState<Pin[]>([])
   const [boards, setBoards] = useState<Board[]>([])
+  const [showEditDialog, setShowEditDialog] = useState(false)
   const { isFollowing, toggleFollow } = useFollow(profileUser?.id || "")
 
   const isOwnProfile = currentUser?.username === username
 
   useEffect(() => {
-    // Mock profile data
-    const mockProfile: ProfileUser = {
-      id: "1",
-      name: "Sarah Design",
-      username: "sarahdesign",
-      avatar: "/sarah-avatar.png",
-      bio: "Interior designer & minimalist enthusiast. Creating beautiful spaces that inspire. 🏡✨",
-      followers: 12500,
-      following: 342,
-      website: "https://sarahdesign.com",
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch(`/api/users/${username}`)
+        if (response.ok) {
+          const data = await response.json()
+          setProfileUser({
+            id: data.id,
+            name: data.name,
+            username: data.username,
+            avatar: data.avatar,
+            bio: data.bio,
+            followers: data.followers,
+            following: data.following,
+            website: data.website
+          })
+          setPins(data.pins)
+          setBoards(data.boards)
+        } else {
+          console.error('Failed to fetch profile:', response.statusText)
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error)
+      }
     }
-    setProfileUser(mockProfile)
 
-    // Load user's pins
-    const userPins = mockPins.filter((pin) => pin.userId === "1")
-    const multiplied = Array.from({ length: 3 }, (_, i) =>
-      userPins.map((pin) => ({ ...pin, id: `${pin.id}-profile-${i}` })),
-    ).flat()
-    setPins(multiplied)
-
-    // Load user's boards
-    const mockBoards: Board[] = [
-      {
-        id: "1",
-        name: "Home Inspiration",
-        description: "Ideas for my dream home",
-        userId: "1",
-        pins: ["1", "5"],
-        isPrivate: false,
-        coverImage: "/modern-minimalist-interior-design.jpg",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        id: "2",
-        name: "Travel Dreams",
-        description: "Places I want to visit",
-        userId: "1",
-        pins: ["2"],
-        isPrivate: false,
-        coverImage: "/sunset-mountain-landscape.jpg",
-        createdAt: new Date().toISOString(),
-      },
-    ]
-    setBoards(mockBoards)
+    fetchProfile()
   }, [username])
 
   if (!profileUser) {
@@ -132,12 +116,10 @@ export function UserProfile({ username }: UserProfileProps) {
           <div className="flex items-center gap-2">
             {isOwnProfile ? (
               <>
-                <Link href="/settings">
-                  <Button variant="outline">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Edit Profile
-                  </Button>
-                </Link>
+                <Button variant="outline" onClick={() => setShowEditDialog(true)}>
+                  <Settings className="h-4 w-4 mr-2" />
+                  Edit Profile
+                </Button>
                 <Button variant="outline" size="icon">
                   <Share2 className="h-4 w-4" />
                 </Button>
@@ -227,6 +209,18 @@ export function UserProfile({ username }: UserProfileProps) {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Edit Profile Dialog */}
+      {profileUser && (
+        <EditProfileDialog
+          open={showEditDialog}
+          onOpenChange={setShowEditDialog}
+          user={profileUser}
+          onProfileUpdate={(updatedUser) => {
+            setProfileUser(prev => prev ? { ...prev, ...updatedUser } : null)
+          }}
+        />
+      )}
     </div>
   )
 }

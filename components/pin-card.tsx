@@ -55,25 +55,24 @@ export function PinCard({ pin }: PinCardProps) {
   return (
     <>
       <div 
-        className="relative group"
+        className="relative group cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <Link href={`/pin/${pin.id}`} className="block w-full">
-          <div className="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[2/3] w-full">
+          <div className="relative overflow-hidden rounded-2xl bg-gray-100 w-full">
             <img
               src={pin.imageUrl || "/placeholder.svg"}
               alt={pin.title}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
             />
             {isHovered && (
-              <div className="absolute inset-0 bg-black/20 transition-opacity flex flex-col justify-between p-4">
+              <div className="absolute inset-0 bg-black/20 transition-opacity flex flex-col justify-between p-3">
                 <div className="flex justify-end">
                   <Button
                     size="sm"
-                    variant="secondary"
-                    className="bg-white/90 hover:bg-white/80 backdrop-blur-sm shadow-sm"
+                    className="bg-primary hover:bg-primary/90 text-white rounded-full px-4 py-2 text-sm font-semibold shadow-lg"
                     onClick={(e) => {
                       e.preventDefault()
                       setShowSaveDialog(true)
@@ -86,39 +85,36 @@ export function PinCard({ pin }: PinCardProps) {
                   <div className="flex items-center gap-2">
                     <Button
                       size="icon"
-                      variant="ghost"
-                      className="h-8 w-8 bg-white/90 hover:bg-white/80 backdrop-blur-sm shadow-sm"
+                      className="h-10 w-10 bg-white/90 hover:bg-white backdrop-blur-sm shadow-lg rounded-full"
                       onClick={(e) => {
                         e.preventDefault()
                         toggleLike()
                       }}
                     >
-                      <Heart className={cn("h-4 w-4", isLiked && "fill-red-500 text-red-500")} />
+                      <Heart className={cn("h-5 w-5", isLiked && "fill-red-500 text-red-500")} />
                     </Button>
                     <Button
                       size="icon"
-                      variant="ghost"
-                      className="h-8 w-8 bg-white/90 hover:bg-white/80 backdrop-blur-sm shadow-sm"
+                      className="h-10 w-10 bg-white/90 hover:bg-white backdrop-blur-sm shadow-lg rounded-full"
                       onClick={(e) => {
                         e.preventDefault()
                         setShowShareDialog(true)
                       }}
                     >
-                      <Share2 className="h-4 w-4" />
+                      <Share2 className="h-5 w-5" />
                     </Button>
                   </div>
                   <Button
                     size="icon"
-                    variant="ghost"
-                    className="h-8 w-8 bg-white/90 hover:bg-white/80 backdrop-blur-sm shadow-sm"
+                    className="h-10 w-10 bg-white/90 hover:bg-white backdrop-blur-sm shadow-lg rounded-full"
                     onClick={handleDownload}
                     disabled={isDownloading}
                     title="Download image"
                   >
                     {isDownloading ? (
-                      <div className="h-4 w-4 border-2 border-transparent border-t-current rounded-full animate-spin" />
+                      <div className="h-5 w-5 border-2 border-transparent border-t-current rounded-full animate-spin" />
                     ) : (
-                      <Download className="h-4 w-4" />
+                      <Download className="h-5 w-5" />
                     )}
                   </Button>
                 </div>
