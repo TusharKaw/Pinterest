@@ -1,13 +1,21 @@
-import { Header } from "@/components/header"
-import { PinDetail } from "@/components/pin-detail"
+"use client"
 
-export default function PinPage({ params }: { params: { id: string } }) {
+import { useRouter } from "next/navigation"
+import { PinDetailNew } from "@/components/pin-detail-new"
+import { use } from "react"
+
+export default function PinPage({ params }: { params: Promise<{ id: string }> }) {
+  const router = useRouter()
+  const { id } = use(params)
+
+  const handleClose = () => {
+    router.back()
+  }
+
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="pt-16">
-        <PinDetail pinId={params.id} />
-      </main>
-    </div>
+    <PinDetailNew 
+      pinId={id} 
+      onClose={handleClose} 
+    />
   )
 }

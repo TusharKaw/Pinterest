@@ -1,13 +1,12 @@
 "use client"
 
-import type { Pin, Comment } from "@/lib/types"
+import type { Pin } from "@/lib/types"
 import { useState, useEffect } from "react"
 import { mockPins } from "@/lib/mock-data"
 import { Button } from "./ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
-import { Textarea } from "./ui/textarea"
 import { Card, CardContent } from "./ui/card"
-import { Heart, Share2, Bookmark, ExternalLink, MoreHorizontal, Download } from "lucide-react"
+import { Heart, Share2, Bookmark, ExternalLink, Download } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useAuth } from "./auth-provider"
@@ -24,8 +23,6 @@ export function PinDetail({ pinId }: PinDetailProps) {
   const [pin, setPin] = useState<Pin | null>(null)
   const { isLiked, toggleLike } = useLike(pinId)
   const { isSaved, toggleSave } = useSave(pinId)
-  const [comment, setComment] = useState("")
-  const [comments, setComments] = useState<Comment[]>([])
   const [showShareDialog, setShowShareDialog] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
 
@@ -62,23 +59,6 @@ export function PinDetail({ pinId }: PinDetailProps) {
       setPin(foundPin)
     }
   }, [pinId])
-
-  const handleAddComment = () => {
-    if (!comment.trim() || !user) return
-
-    const newComment: Comment = {
-      id: Date.now().toString(),
-      pinId: pin!.id,
-      userId: user.id,
-      userName: user.name,
-      userAvatar: user.avatar,
-      content: comment,
-      createdAt: new Date().toISOString(),
-    }
-
-    setComments([newComment, ...comments])
-    setComment("")
-  }
 
   if (!pin) {
     return (
@@ -162,7 +142,7 @@ export function PinDetail({ pinId }: PinDetailProps) {
                     ))}
                   </div>
 
-                  <Link href={`/profile/${pin.userId}`} className="flex items-center gap-3 mb-8 group">
+                  <Link href={`/profile/${pin.userId}`} className="flex items-center gap-3 group">
                     <Avatar className="h-12 w-12">
                       <AvatarImage src={pin.userAvatar || "/placeholder.svg"} alt={pin.userName} />
                       <AvatarFallback>{pin.userName[0]}</AvatarFallback>
@@ -172,60 +152,16 @@ export function PinDetail({ pinId }: PinDetailProps) {
                       <p className="text-sm text-muted-foreground">{new Date(pin.createdAt).toLocaleDateString()}</p>
                     </div>
                   </Link>
-
-                  <div className="border-t border-border pt-6 flex-1">
-                    <h2 className="text-xl font-semibold text-foreground mb-4">Comments ({comments.length})</h2>
-
-                    <div className="space-y-4 mb-6">
-                      <div className="flex gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name} />
-                          <AvatarFallback>{user?.name?.[0]}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <Textarea
-                            placeholder="Add a comment..."
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            rows={2}
-                          />
-                          <Button size="sm" className="mt-2" onClick={handleAddComment} disabled={!comment.trim()}>
-                            Post
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      {comments.map((c) => (
-                        <div key={c.id} className="flex gap-3">
-                          <Avatar className="h-10 w-10">
-                            <AvatarImage src={c.userAvatar || "/placeholder.svg"} alt={c.userName} />
-                            <AvatarFallback>{c.userName[0]}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-semibold text-sm">{c.userName}</span>
-                              <span className="text-xs text-muted-foreground">
-                                {new Date(c.createdAt).toLocaleDateString()}
-                              </span>
-                            </div>
-                            <p className="text-sm text-foreground">{c.content}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
+
+        {pin && <RelatedPins currentPin={pin} />}
+
+        <ShareDialog open={showShareDialog} onOpenChange={setShowShareDialog} pinId={pinId} />
       </div>
-
-      {pin && <RelatedPins currentPin={pin} />}
-
-      <ShareDialog open={showShareDialog} onOpenChange={setShowShareDialog} pinId={pinId} />
     </>
   )
 }
