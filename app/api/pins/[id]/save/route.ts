@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
+import connectDB from "@/lib/mongodb"
+import Pin from "@/lib/models/Pin"
 
 export async function POST(
   request: NextRequest,
@@ -10,106 +11,54 @@ export async function POST(
   try {
     const session = await getServerSession(authOptions)
     
-    if (!session?.user?.id) {
+    if (!session?.user) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
       )
     }
-
-    const pinId = params.id
-    const { boardId } = await request.json()
-
-    // Check if save already exists
-    const existingSave = await prisma.save.findUnique({
-      where: {
-        userId_pinId: {
-          userId: session.user.id,
-          pinId
-        }
-      }
-    })
-
-    if (existingSave) {
-      // Update existing save with new board
-      const updatedSave = await prisma.save.update({
-        where: {
-          id: existingSave.id
-        },
-        data: {
-          boardId
-        },
-        include: {
-          board: {
-            select: {
-              id: true,
-              name: true
-            }
-          }
-        }
+    
+    await connectDB()
+    
+    const { id } = params
+    const userId = session.user.id
+    
+    // Find the pin
+    const pin = await Pin.findById(id)
+    if (!pin) {
+      return NextResponse.json(
+        { error: "Pin not found" },
+        { status: 404 }
+      )
+    }
+    
+    // Check if user already saved the pin
+    const isSaved = pin.saves.includes(userId)
+    
+    if (isSaved) {
+      // Unsave the pin
+      await Pin.findByIdAndUpdate(id, {
+        $pull: { saves: userId }
       })
-      
-      return NextResponse.json({ saved: true, save: updatedSave })
     } else {
-      // Create new save
-      const newSave = await prisma.save.create({
-        data: {
-          userId: session.user.id,
-          pinId,
-          boardId
-        },
-        include: {
-          board: {
-            select: {
-              id: true,
-              name: true
-            }
-          }
-        }
+      // Save the pin
+      await Pin.findByIdAndUpdate(id, {
+        $addToSet: { saves: userId }
       })
-      
-      return NextResponse.json({ saved: true, save: newSave })
     }
-  } catch (error) {
-    console.error("Error saving pin:", error)
-    return NextResponse.json(
-      { error: "Failed to save pin" },
-      { status: 500 }
-    )
-  }
-}
-
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const session = await getServerSession(authOptions)
     
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      )
-    }
-
-    const pinId = params.id
-
-    // Remove save
-    await prisma.save.deleteMany({
-      where: {
-        userId: session.user.id,
-        pinId
-      }
+    // Get updated save count
+    const updatedPin = await Pin.findById(id)
+    
+    return NextResponse.json({
+      isSaved: !isSaved,
+      savesCount: updatedPin.saves.length
     })
-    
-    return NextResponse.json({ saved: false })
   } catch (error) {
-    console.error("Error removing save:", error)
+    console.error("Error toggling save:", error)
     return NextResponse.json(
-      { error: "Failed to remove save" },
+      { error: "Failed to toggle save" },
       { status: 500 }
     )
   }
 }
-

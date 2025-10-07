@@ -11,6 +11,22 @@ export function HomeFeed() {
   const [hasMore, setHasMore] = useState(true)
   const [page, setPage] = useState(1)
 
+  // Function to refresh pins (for when new pins are created)
+  const refreshPins = () => {
+    setPins([])
+    setPage(1)
+    setHasMore(true)
+    loadMorePins()
+  }
+
+  // Expose refresh function globally for pin creation
+  useEffect(() => {
+    (window as any).refreshHomeFeed = refreshPins
+    return () => {
+      delete (window as any).refreshHomeFeed
+    }
+  }, [])
+
   useEffect(() => {
     // Initial load
     loadMorePins()

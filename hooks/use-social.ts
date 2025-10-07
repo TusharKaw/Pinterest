@@ -20,7 +20,7 @@ export function useLike(pinId: string) {
       
       if (response.ok) {
         const data = await response.json()
-        setIsLiked(data.liked)
+        setIsLiked(data.isLiked)
       }
     } catch (error) {
       console.error("Error toggling like:", error)
@@ -36,34 +36,21 @@ export function useSave(pinId: string) {
   const [isSaved, setIsSaved] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const toggleSave = async (boardId?: string) => {
+  const toggleSave = async () => {
     if (isLoading) return
     
     setIsLoading(true)
     try {
-      if (isSaved) {
-        // Remove save
-        const response = await fetch(`/api/pins/${pinId}/save`, {
-          method: "DELETE",
-        })
-        
-        if (response.ok) {
-          setIsSaved(false)
-        }
-      } else {
-        // Add save
-        const response = await fetch(`/api/pins/${pinId}/save`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ boardId }),
-        })
-        
-        if (response.ok) {
-          const data = await response.json()
-          setIsSaved(data.saved)
-        }
+      const response = await fetch(`/api/pins/${pinId}/save`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setIsSaved(data.isSaved)
       }
     } catch (error) {
       console.error("Error toggling save:", error)
@@ -93,7 +80,7 @@ export function useFollow(userId: string) {
       
       if (response.ok) {
         const data = await response.json()
-        setIsFollowing(data.following)
+        setIsFollowing(data.isFollowing)
       }
     } catch (error) {
       console.error("Error toggling follow:", error)

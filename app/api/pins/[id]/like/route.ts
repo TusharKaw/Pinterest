@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
+import connectDB from "@/lib/mongodb"
+import Pin from "@/lib/models/Pin"
 
 export async function POST(
   request: NextRequest,
@@ -10,45 +11,49 @@ export async function POST(
   try {
     const session = await getServerSession(authOptions)
     
-    if (!session?.user?.id) {
+    if (!session?.user) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
       )
     }
-
-    const pinId = params.id
-
-    // Check if like already exists
-    const existingLike = await prisma.like.findUnique({
-      where: {
-        userId_pinId: {
-          userId: session.user.id,
-          pinId
-        }
-      }
-    })
-
-    if (existingLike) {
-      // Unlike
-      await prisma.like.delete({
-        where: {
-          id: existingLike.id
-        }
-      })
-      
-      return NextResponse.json({ liked: false })
-    } else {
-      // Like
-      await prisma.like.create({
-        data: {
-          userId: session.user.id,
-          pinId
-        }
-      })
-      
-      return NextResponse.json({ liked: true })
+    
+    await connectDB()
+    
+    const { id } = params
+    const userId = session.user.id
+    
+    // Find the pin
+    const pin = await Pin.findById(id)
+    if (!pin) {
+      return NextResponse.json(
+        { error: "Pin not found" },
+        { status: 404 }
+      )
     }
+    
+    // Check if user already liked the pin
+    const isLiked = pin.likes.includes(userId)
+    
+    if (isLiked) {
+      // Unlike the pin
+      await Pin.findByIdAndUpdate(id, {
+        $pull: { likes: userId }
+      })
+    } else {
+      // Like the pin
+      await Pin.findByIdAndUpdate(id, {
+        $addToSet: { likes: userId }
+      })
+    }
+    
+    // Get updated like count
+    const updatedPin = await Pin.findById(id)
+    
+    return NextResponse.json({
+      isLiked: !isLiked,
+      likesCount: updatedPin.likes.length
+    })
   } catch (error) {
     console.error("Error toggling like:", error)
     return NextResponse.json(
@@ -57,4 +62,3 @@ export async function POST(
     )
   }
 }
-

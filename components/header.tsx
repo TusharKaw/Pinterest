@@ -18,6 +18,7 @@ import {
 } from "./ui/dropdown-menu"
 import { Search, Plus, X } from "lucide-react"
 import { NotificationsDropdown } from "./notifications-dropdown"
+import { CreatePinDialog } from "./create-pin-dialog"
 
 export function Header() {
   const { user, logout } = useAuth()
@@ -26,6 +27,7 @@ export function Header() {
   const [debouncedQuery] = useDebounce(searchQuery, 300)
   const pathname = usePathname()
   const { addNotification } = useNotifications()
+  const [showCreatePinDialog, setShowCreatePinDialog] = useState(false)
 
   // Don't render if user is not available
   if (!user) {
@@ -96,11 +98,14 @@ export function Header() {
               Home
             </Button>
           </Link>
-          <Link href="/create">
-            <Button variant="ghost" size="icon" className="h-12 w-12 hover:bg-gray-100 rounded-full">
-              <Plus className="h-6 w-6" />
-            </Button>
-          </Link>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-12 w-12 hover:bg-gray-100 rounded-full"
+            onClick={() => setShowCreatePinDialog(true)}
+          >
+            <Plus className="h-6 w-6" />
+          </Button>
           <NotificationsDropdown />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -129,6 +134,18 @@ export function Header() {
           </DropdownMenu>
         </div>
       </div>
+
+      {/* Create Pin Dialog */}
+      <CreatePinDialog
+        open={showCreatePinDialog}
+        onOpenChange={setShowCreatePinDialog}
+        onPinCreated={(pin) => {
+          addNotification({
+            type: 'success',
+            message: 'Pin created successfully!'
+          })
+        }}
+      />
     </header>
   )
 }

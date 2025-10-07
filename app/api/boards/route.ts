@@ -1,58 +1,48 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
+import connectDB from "@/lib/mongodb"
+import Board from "@/lib/models/Board"
+import { z } from "zod"
+
+const createBoardSchema = z.object({
+  name: z.string().min(1, "Board name is required").max(50, "Board name must be less than 50 characters"),
+  description: z.string().max(200, "Description must be less than 200 characters").optional(),
+  isPrivate: z.boolean().optional(),
+  coverImage: z.string().url("Invalid cover image URL").optional().or(z.literal(""))
+})
 
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    const { searchParams } = new URL(request.url)
-    const userId = searchParams.get("userId")
-
-    if (!session?.user?.id && !userId) {
+    
+    if (!session?.user) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
       )
     }
-
-    const targetUserId = userId || session.user.id
-
-    const boards = await prisma.board.findMany({
-      where: {
-        userId: targetUserId,
-        OR: [
-          { isPrivate: false },
-          { userId: session?.user?.id }
-        ]
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            avatar: true
-          }
-        },
-        pins: {
-          take: 4,
-          orderBy: {
-            createdAt: "desc"
-          }
-        },
-        _count: {
-          select: {
-            pins: true
-          }
-        }
-      },
-      orderBy: {
-        updatedAt: "desc"
-      }
-    })
-
-    return NextResponse.json(boards)
+    
+    await connectDB()
+    
+    // Get user's boards
+    const boards = await Board.find({ userId: session.user.id })
+      .populate('pins')
+      .sort({ createdAt: -1 })
+    
+    const boardsData = boards.map(board => ({
+      id: board._id,
+      name: board.name,
+      description: board.description,
+      isPrivate: board.isPrivate,
+      coverImage: board.coverImage,
+      userId: board.userId,
+      pins: board.pins.length,
+      saves: board.saves.length,
+      createdAt: board.createdAt
+    }))
+    
+    return NextResponse.json(boardsData)
   } catch (error) {
     console.error("Error fetching boards:", error)
     return NextResponse.json(
@@ -66,44 +56,50 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
-    if (!session?.user?.id) {
+    if (!session?.user) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
       )
     }
-
+    
+    await connectDB()
+    
     const body = await request.json()
-    const { name, description, isPrivate, coverImage } = body
-
-    const board = await prisma.board.create({
-      data: {
-        name,
-        description,
-        isPrivate: isPrivate || false,
-        coverImage,
-        userId: session.user.id
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            avatar: true
-          }
-        },
-        pins: true,
-        _count: {
-          select: {
-            pins: true
-          }
-        }
-      }
+    const validatedData = createBoardSchema.parse(body)
+    
+    // Create new board
+    const board = await Board.create({
+      name: validatedData.name,
+      description: validatedData.description || '',
+      isPrivate: validatedData.isPrivate || false,
+      coverImage: validatedData.coverImage || null,
+      userId: session.user.id,
+      pins: [],
+      saves: []
     })
-
-    return NextResponse.json(board, { status: 201 })
+    
+    const boardData = {
+      id: board._id,
+      name: board.name,
+      description: board.description,
+      isPrivate: board.isPrivate,
+      coverImage: board.coverImage,
+      userId: board.userId,
+      pins: board.pins.length,
+      saves: board.saves.length,
+      createdAt: board.createdAt
+    }
+    
+    return NextResponse.json(boardData, { status: 201 })
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: "Validation failed", details: error.errors },
+        { status: 400 }
+      )
+    }
+    
     console.error("Error creating board:", error)
     return NextResponse.json(
       { error: "Failed to create board" },
@@ -111,4 +107,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-
